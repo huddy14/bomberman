@@ -11,6 +11,9 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Bomberman(), config);
+		//Podświetlanie ekranu
+		config.useWakelock = true;
+		//Uruchomienie gry
+		initialize(new BombGame(), config);
 	}
 }
