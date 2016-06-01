@@ -34,6 +34,7 @@ public class BoardController {
 
     public void leftPressed() {
         keys.get(keys.put(Keys.LEFT, true));
+
     }
 
     public void rightPressed() {
@@ -76,18 +77,27 @@ public class BoardController {
         upReleased();
     }
     private void processInput() {
-        if (keys.get(Keys.LEFT))
+        if (keys.get(Keys.LEFT)) {
             player.getVelocity().x = -Player.SPEED;
+            player.setDirection(Player.Direction.LEFT);
+        }
 
-        if (keys.get(Keys.RIGHT))
-            player.getVelocity().x =Player.SPEED;
+        if (keys.get(Keys.RIGHT)) {
+            player.getVelocity().x = Player.SPEED;
+            player.setDirection(Player.Direction.RIGHT);
+        }
 
-        if (keys.get(Keys.UP))
-            player.getVelocity().y = Player.SPEED;
+            if (keys.get(Keys.UP)) {
+                player.getVelocity().y = Player.SPEED;
+                player.setDirection(Player.Direction.UP);
 
-        if (keys.get(Keys.DOWN))
+            }
+
+        if (keys.get(Keys.DOWN)) {
             player.getVelocity().y = -Player.SPEED;
-        if ((keys.get(Keys.LEFT) && keys.get(Keys.RIGHT)) ||
+            player.setDirection(Player.Direction.DOWN);
+        }
+            if ((keys.get(Keys.LEFT) && keys.get(Keys.RIGHT)) ||
                 (!keys.get(Keys.LEFT) && (!keys.get(Keys.RIGHT))))
             player.getVelocity().x = 0;
 

@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.bomberman.game.Bomberman;
 import com.bomberman.game.Model.*;
 import com.bomberman.game.View.*;
 import com.bomberman.game.Controller.*;
@@ -18,6 +22,11 @@ public class GameScreen implements Screen, InputProcessor {
     private Board board;
     private BoardDraw boardDraw;
     private BoardController	controller;
+    private TextureAtlas textureAtlas;
+    private Animation animation;
+    private float elapsedTime;
+    private SpriteBatch batch;
+    private BombermanView bombermanView;
 
     private int width, height;
 
@@ -26,6 +35,10 @@ public class GameScreen implements Screen, InputProcessor {
         board = new Board();
         boardDraw = new BoardDraw(board);
         controller = new BoardController(board);
+        textureAtlas = new TextureAtlas("Bomberman/Front/BombermanFront.pack");
+        animation = new Animation(1/10f,textureAtlas.getRegions());
+        batch = new SpriteBatch();
+        bombermanView = new BombermanView(controller.player);
         Gdx.input.setInputProcessor(this);
     }
 
@@ -87,6 +100,10 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
         boardDraw.render();
+        batch.begin();
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        batch.draw(bombermanView.getAnimation(controller.player.getDirection()).getKeyFrame(elapsedTime,true),controller.player.getPosition().x,controller.player.getPosition().y);
+        batch.end();
     }
     @Override
     public boolean keyUp(int keycode) {

@@ -14,6 +14,7 @@ public class Player {
     Vector2 velocity = new Vector2();
     Rectangle bounds = new Rectangle();
     Status status = Status.IDLE;
+    Direction direction = Direction.LEFT;
 
     public Player(Vector2 position) {
         this.position = position;
@@ -47,4 +48,26 @@ public class Player {
     public void update(float delta) {
         position.add(velocity.cpy().scl(delta));
     }
+
+    public Status getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(Status status)
+    {
+        this.status = status;
+    }
+
+    public Direction getDirection()
+    {
+        return direction;
+    }
+
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
+    }
+
+
 }
