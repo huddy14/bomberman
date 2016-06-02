@@ -1,13 +1,19 @@
 package com.bomberman.game.Screen;
 
+import android.text.method.Touch;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.bomberman.game.Bomberman;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bomberman.game.Model.*;
 import com.bomberman.game.View.*;
 import com.bomberman.game.Controller.*;
@@ -18,54 +24,51 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Patryk on 16.05.2016.
  */
 
-public class GameScreen implements Screen, InputProcessor {
+public class GameScreen implements Screen {
     private Board board;
     private BoardDraw boardDraw;
-    private BoardController	controller;
+    private BombermanController controller;
     private TextureAtlas textureAtlas;
     private Animation animation;
+    private Stage stage;
     private float elapsedTime;
     private SpriteBatch batch;
     private BombermanView bombermanView;
+    private Touchpad touchpad;
+    private Button bombButton;
+    private Camera camera;
+    private Player player;
 
     private int width, height;
 
     @Override
     public void show() {
         board = new Board();
-        boardDraw = new BoardDraw(board);
-        controller = new BoardController(board);
+        player = new Player(new Vector2(10,10));
+        //boardDraw = new BoardDraw(board);
+       // controller = new BombermanController(board);
         textureAtlas = new TextureAtlas("Bomberman/Front/BombermanFront.pack");
         animation = new Animation(1/10f,textureAtlas.getRegions());
         batch = new SpriteBatch();
-        bombermanView = new BombermanView(controller.player);
-        Gdx.input.setInputProcessor(this);
-    }
-
-    @Override
-    public boolean touchDragged(int x, int y, int pointer) {
-        ChangeNavigation(x,y);
-        return false;
-    }
+        touchpad = (new TouchpadView()).getTouchpad();
+        bombButton = (new BombButton()).getButton();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+        stage.addActor(touchpad);
+        stage.addActor(bombButton);
+        camera = new OrthographicCamera();
 
 
-    public boolean touchMoved(int x, int y) {
-        return false;
+        bombermanView = new BombermanView(player);
+        Gdx.input.setInputProcessor(stage);
+
+        //Gdx.input.setInputProcessor(this);
     }
 
-    @Override
-    public boolean mouseMoved(int x, int y) {
-        return false;
-    }
 
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
 
     @Override
     public void resize(int width, int height) {
-        boardDraw.setSize(width, height);
+        //boardDraw.setSize(width, height);
         this.width = width;
         this.height = height;
     }
@@ -89,60 +92,42 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return true;
-    }
+    //TODO: zaimplementowac metodę obliczającą kąt z pozycji touchpad knopa i na tej podstawie ustalić direction w którym ma się poruszać bomberman
+
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        controller.update(delta);
-        boardDraw.render();
+        camera.update();
+        player.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
+        //boardDraw.render();
         batch.begin();
         elapsedTime += Gdx.graphics.getDeltaTime();
-        batch.draw(bombermanView.getAnimation(controller.player.getDirection()).getKeyFrame(elapsedTime,true),controller.player.getPosition().x,controller.player.getPosition().y);
+        batch.draw(bombermanView.getAnimation(player.getDirection()).getKeyFrame(elapsedTime,true),player.getPosition().x,player.getPosition().y);
         batch.end();
-    }
-    @Override
-    public boolean keyUp(int keycode) {
-        return true;
+        stage.act(elapsedTime);
+        stage.draw();
     }
 
-    private void ChangeNavigation(int x, int y){
-        controller.resetWay();
-        if(height-y >  controller.player.getPosition().y * boardDraw.ppuY)
-            controller.upPressed();
+//    public boolean keyUp(int keycode) {
+//        return true;
+//    }
+//
+//    private void ChangeNavigation(int x, int y){
+//        controller.resetWay();
+//        if(height-y >  controller.player.getPosition().y * boardDraw.ppuY)
+//            controller.upPressed();
+//
+//        if(height-y <  controller.player.getPosition().y * boardDraw.ppuY)
+//            controller.downPressed();
+//
+//        if ( x< controller.player.getPosition().x * boardDraw.ppuX)
+//            controller.leftPressed();
+//
+//        if (x> (controller.player.getPosition().x +Player.SIZE)* boardDraw.ppuX)
+//            controller.rightPressed();
+//    }
 
-        if(height-y <  controller.player.getPosition().y * boardDraw.ppuY)
-            controller.downPressed();
 
-        if ( x< controller.player.getPosition().x * boardDraw.ppuX)
-            controller.leftPressed();
-
-        if (x> (controller.player.getPosition().x +Player.SIZE)* boardDraw.ppuX)
-            controller.rightPressed();
-    }
-
-    @Override
-    public boolean touchDown(int x, int y, int pointer, int button) {
-        if (!Gdx.app.getType().equals(ApplicationType.Android))
-            return false;
-        ChangeNavigation(x,y);
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int x, int y, int pointer, int button) {
-        if (!Gdx.app.getType().equals(ApplicationType.Android))
-            return false;
-        controller.resetWay();
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }

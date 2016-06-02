@@ -22,7 +22,7 @@ public class BombermanView extends Sprite {
         this.player = player;
         animations.put(Player.Direction.DOWN, new Animation(1/10f,new TextureAtlas("Bomberman/Front/BombermanFront.pack").getRegions()));
         animations.put(Player.Direction.UP, new Animation(1/10f,new TextureAtlas("Bomberman/Back/BombermanBack.pack").getRegions()));
-        animations.put(Player.Direction.LEFT, new Animation(1/10f,new TextureAtlas("Bomberman/Side/BombermanSide.pack").getRegions()));
+        animations.put(Player.Direction.LEFT, new Animation(1/10f,new TextureAtlas("Bomberman/SideLeft/BombermanSideLeft.pack").getRegions()));
         animations.put(Player.Direction.RIGHT, new Animation(1/10f,new TextureAtlas("Bomberman/Side/BombermanSide.pack").getRegions()));
 
     }
