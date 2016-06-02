@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 /**
  * Created by Patryk on 15.05.2016.
  */
-public class Board {
+public class Map {
     public Player player;
     public int width;
     public int height;
@@ -20,7 +20,7 @@ public class Board {
         return player;
     }
 
-    public Board() {
+    public Map() {
         width = 80;
         height = 50;
         createWorld();

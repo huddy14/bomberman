@@ -8,10 +8,9 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player {
 
-    public static final int SPEED = 20;
     public static final int SIZE = 10;
     Vector2 position = new Vector2();
-    float velocity = 2;
+    float velocity = 1f;
     Rectangle bounds = new Rectangle();
     Status status = Status.IDLE;
     Direction direction = Direction.DOWN;

@@ -1,14 +1,15 @@
 package com.bomberman.game.Screen;
 
-import android.text.method.Touch;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -25,7 +26,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 
 public class GameScreen implements Screen {
-    private Board board;
+    private Map map;
     private BoardDraw boardDraw;
     private BombermanController controller;
     private TextureAtlas textureAtlas;
@@ -36,17 +37,21 @@ public class GameScreen implements Screen {
     private BombermanView bombermanView;
     private Touchpad touchpad;
     private Button bombButton;
-    private Camera camera;
+    private MapCamera camera;
     private Player player;
+    private TiledMap tiledMap;
+    private TiledMapRenderer tiledMapRenderer;
 
     private int width, height;
 
     @Override
     public void show() {
-        board = new Board();
+        map = new Map();
+        tiledMap = new TmxMapLoader().load("Maps/map1.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         player = new Player(new Vector2(10,10));
-        //boardDraw = new BoardDraw(board);
-       // controller = new BombermanController(board);
+        //boardDraw = new BoardDraw(map);
+       // controller = new BombermanController(map);
         textureAtlas = new TextureAtlas("Bomberman/Front/BombermanFront.pack");
         animation = new Animation(1/10f,textureAtlas.getRegions());
         batch = new SpriteBatch();
@@ -55,7 +60,9 @@ public class GameScreen implements Screen {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         stage.addActor(touchpad);
         stage.addActor(bombButton);
-        camera = new OrthographicCamera();
+        camera = new MapCamera(tiledMap.getProperties(),player);
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.update();
 
 
         bombermanView = new BombermanView(player);
@@ -99,7 +106,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        //camera.position.set(camera.position.x-2,camera.position.y-2,0);
         camera.update();
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+
         player.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
         //boardDraw.render();
         batch.begin();

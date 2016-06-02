@@ -1,14 +1,5 @@
 package com.bomberman.game.View;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Rectangle;
-import com.bomberman.game.Model.Board;
-import com.bomberman.game.Model.Player;
-
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.bomberman.game.Model.Wall;
-
 /**
  * Created by Patryk on 15.05.2016.
  */
@@ -16,7 +7,7 @@ public class BoardDraw {
 //    public static int CAMERA_WIDTH = 80;
 //    public static int CAMERA_HEIGHT = 50;
 //
-//    private Board board;
+//    private Map board;
 //    public OrthographicCamera cam;
 //    ShapeRenderer renderer = new ShapeRenderer();
 //
@@ -37,7 +28,7 @@ public class BoardDraw {
 //        this.cam.update();
 //    }
 //
-//    public BoardDraw(Board board) {
+//    public BoardDraw(Map board) {
 //        this.board = board;
 //        this.cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 //        SetCamera(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2);

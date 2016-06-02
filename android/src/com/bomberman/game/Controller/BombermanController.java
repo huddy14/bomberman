@@ -1,12 +1,5 @@
 package com.bomberman.game.Controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bomberman.game.Model.Board;
-import com.bomberman.game.Model.Player;
-
-
 
 /**
  * Created by Patryk on 15.05.2016.
@@ -27,7 +20,7 @@ public class BombermanController {
 //        keys.put(Keys.DOWN, false);
 //    }
 //
-//    public BombermanController(Board board) {
+//    public BombermanController(Map board) {
 //        this.player = board.getPlayer();
 //    }
 //
