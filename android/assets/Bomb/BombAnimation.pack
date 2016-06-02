@@ -1,0 +1,26 @@
+
+BombAnimation.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Bomb_f03
+  rotate: false
+  xy: 1, 1
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Bomb_f01
+  rotate: false
+  xy: 51, 1
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Bomb_f02
+  rotate: false
+  xy: 101, 1
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1

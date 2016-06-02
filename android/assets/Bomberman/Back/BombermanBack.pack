@@ -1,0 +1,61 @@
+
+BombermanBack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Bman_B_f05
+  rotate: false
+  xy: 1, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f06
+  rotate: false
+  xy: 67, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f01
+  rotate: false
+  xy: 133, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f04
+  rotate: false
+  xy: 199, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f00
+  rotate: false
+  xy: 199, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f07
+  rotate: false
+  xy: 265, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f03
+  rotate: false
+  xy: 331, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+Bman_B_f02
+  rotate: false
+  xy: 397, 1
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
