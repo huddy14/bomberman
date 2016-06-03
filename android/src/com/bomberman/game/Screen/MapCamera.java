@@ -1,12 +1,9 @@
 package com.bomberman.game.Screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
-import com.bomberman.game.Model.Player;
+import com.bomberman.game.Model.Bomberman;
 
 /**
  * Created by huddy on 6/2/16.
@@ -15,15 +12,17 @@ public class MapCamera extends OrthographicCamera {
     //Map properties to get TiledMap width and height
     private MapProperties map;
     //player instacne to get velocity and movement directions
-    private Player player;
+    private Bomberman player;
 
     private int mapLeft,mapRight,mapTop,mapBottom;
 
     float playerVelocity;
 
+    boolean firstCall = true;
+
     //float moveLeft,moveRight,moveBottom, moveTop;
 
-    public MapCamera(MapProperties map, Player player)
+    public MapCamera(MapProperties map, Bomberman player)
     {
         super();
         this.player = player;
@@ -50,7 +49,7 @@ public class MapCamera extends OrthographicCamera {
         float halfWidth = this.viewportWidth * .5f;
         float halfHeight = this.viewportHeight * .5f;
         //if player is moving we make sure we aint gonna move through map boundries
-        if(player.getStatus().equals(Player.Status.MOVE)&& !player.isColiding())
+        if(player.getStatus().equals(Bomberman.Status.MOVE) || firstCall)//&& !player.isColiding()
         {
             switch (player.getDirection())
             {
@@ -72,7 +71,7 @@ public class MapCamera extends OrthographicCamera {
                     break;
                 default:break;
             }
-
+            firstCall = false;
 
         }
         super.update();

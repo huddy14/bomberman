@@ -8,36 +8,23 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Patryk on 15.05.2016.
  */
-public class Player extends SpriteBatch {
+public class Bomberman {
 
     public static final int SIZE = 10;
     Vector2 position = new Vector2();
-    float velocity = 1f;
+    float velocity = 3f;
     Rectangle bounds = new Rectangle();
     Status status = Status.IDLE;
     Direction direction = Direction.DOWN;
     private static final double pi = Math.PI;
     boolean collision;
 
-    public Player(Vector2 position) {
+    public Bomberman(Vector2 position) {
         this.position = position;
         this.bounds.height = SIZE;
         this.bounds.width = SIZE;
     }
 
-    public boolean isColiding() {
-        return collision;
-    }
-
-    public void setCollision(boolean collision)
-    {
-        this.collision = collision;
-    }
-
-    @Override
-    public void draw(TextureRegion region, float x, float y) {
-        super.draw(region, x, y);
-    }
 
     //Możliwe stany gracza
     public enum Status {
@@ -62,10 +49,12 @@ public class Player extends SpriteBatch {
     {
         position.x = x;
     }
+
     public void setY(float y)
     {
         position.y =y;
     }
+
     public float getVelocity() {
         return velocity;
     }
@@ -125,6 +114,7 @@ public class Player extends SpriteBatch {
     {
 
         double angle = Math.atan2(x,y);
+
         if(x == 0 && y ==0)return Direction.DOWN;
         else if(angle >=-(pi/4) && angle < pi/4)return Direction.UP;
         else if(angle < -(pi/4d) && angle >= -((3d/4d)*pi))return Direction.LEFT;

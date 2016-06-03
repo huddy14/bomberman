@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
  * Created by Patryk on 15.05.2016.
  */
 public class Map {
-    public Player player;
+    public Bomberman player;
     public int width;
     public int height;
     Array<Wall> walls = new Array<>();
@@ -16,7 +16,7 @@ public class Map {
         return walls;
     }
 
-    public Player getPlayer() {
+    public Bomberman getPlayer() {
         return player;
     }
 
@@ -28,7 +28,7 @@ public class Map {
 
     public void createWorld() {
         // X/Y Szer/Wys
-        player = new Player(new Vector2(35,25));
+        player = new Bomberman(new Vector2(35,25));
 
         walls.add(new Wall(new Vector2(0, 0)));
         walls.add(new Wall(new Vector2(10, 10)));

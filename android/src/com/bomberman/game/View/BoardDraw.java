@@ -54,7 +54,7 @@ public class BoardDraw {
 //    }
 //    private void drawPlayer() {
 //        renderer.setProjectionMatrix(cam.combined);
-//        Player player = board.getPlayer();
+//        Bomberman player = board.getPlayer();
 //        renderer.begin(ShapeRenderer.ShapeType.Line);
 //
 //        Rectangle rect = player.getBounds();
