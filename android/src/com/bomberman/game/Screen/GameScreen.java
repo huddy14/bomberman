@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     private Bomberman player;
     private TiledMap tiledMap;
     private TiledMapRenderer tiledMapRenderer;
+    private BombController bombController;
     float time =0;
     float x,y;
     Bomb bomb;
@@ -55,10 +56,13 @@ public class GameScreen implements Screen {
         tiledMap = new TmxMapLoader().load(Constants.MAP_1);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
-        player = new Bomberman(new Vector2(80,700));
+        //player = new Bomberman(new Vector2(80,700));
+        player = new Bomberman(new Vector2(64,64*10));
         bombermanView = new BombermanView();
 
         bombermanController = new BombermanController(player,tiledMap);
+
+        bombController = new BombController(bombermanController,tiledMap);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());
@@ -68,6 +72,7 @@ public class GameScreen implements Screen {
                 //Bomb bomb = new Bomb(new Vector2(player.getPosition().x,player.getPosition().y));
                 if(!bombPlanted) {
                     bomb = new Bomb(new Vector2(player.getPosition().x,player.getPosition().y));
+                    bombController.addBomb(bomb);
                     bombPlanted = true;
                 }
             }
@@ -115,6 +120,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        camera.update();
 
 
         bombermanController.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
@@ -138,7 +144,6 @@ public class GameScreen implements Screen {
         }
         stage.act(elapsedTime);
         stage.draw();
-        camera.update();
 
 
     }

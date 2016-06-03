@@ -66,4 +66,14 @@ public class BombermanController {
         }
     }
 
+    public void updateSolidElements(ArrayList<Rectangle>diff)
+    {
+        solidElements.removeAll(diff);
+    }
+
+    public void deleteExplodableElements(Rectangle obj)
+    {
+        solidElements.remove(obj);
+    }
+
 }

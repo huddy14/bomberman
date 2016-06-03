@@ -1,5 +1,6 @@
 package com.bomberman.game.Model;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,27 +9,28 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Bomb {
     private Vector2 position = new Vector2();
-    private Rectangle bounds;
-    private final static float WIDHT = 64;
-    private final static float HEIGHT = 64;
+    private Circle bounds;
+    private final static float CELL_SIZE = 64;
+    private final static float WIDHT = 900;
+    private final static float HEIGHT = 900;
 
     public Bomb (Vector2 position)
     {
+        bounds = new Circle(position.x,position.y,CELL_SIZE * 2f);
         this.position.x = fixPosition(position.x);
         this.position.y = fixPosition(position.y);
-        bounds = new Rectangle(position.x,position.y,WIDHT,HEIGHT);
     }
 
-    public Rectangle getBounds()
+    public Circle getBounds()
     {
         return bounds;
     }
 //TODO: bomba ma sie wyswietlac rowno miedzy kolumnami
     private float fixPosition(float x)
     {
-//        float temp = x % 64;
-//        return x-temp+32;
-        return x;
+        float temp = x % CELL_SIZE;
+        return x-temp+(CELL_SIZE/8);
+        //return x;
     }
 
     public float getX()

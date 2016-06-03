@@ -36,7 +36,8 @@ public class BombView extends SpriteBatch {
         else
         {
             elapsedTime = 0;
-            return false;        }
+            return false;
+        }
     }
 
 }
