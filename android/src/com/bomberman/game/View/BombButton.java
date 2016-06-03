@@ -28,7 +28,11 @@ public class BombButton  {
         buttonStyle.checked = buttonSkin.getDrawable("Bomb_f02");
         buttonStyle.up = buttonSkin.getDrawable("Bomb_f03");
         button = new Button(buttonStyle);
-        button.setBounds(300,15,Gdx.graphics.getWidth()/10f,Gdx.graphics.getHeight()/10);
+        button.setBounds(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()/10f),
+                0 + Gdx.graphics.getHeight()/10f,
+                Gdx.graphics.getWidth()/15f,
+                Gdx.graphics.getWidth()/15f
+        );
     }
 
 

@@ -1,5 +1,6 @@
 package com.bomberman.game.View;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -36,7 +37,9 @@ public class TouchpadView
         touchpad = new Touchpad(10,touchpadStyle);
 
         //setBounds(x,y,width,height)
-        touchpad.setBounds(50, 50, 200, 200);
+        touchpad.setBounds(Gdx.graphics.getHeight()/10f, Gdx.graphics.getHeight()/10f,
+                Gdx.graphics.getWidth()/10f,
+                Gdx.graphics.getWidth()/10f);
     }
     public Touchpad getTouchpad()
     {

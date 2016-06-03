@@ -6,11 +6,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -18,6 +26,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bomberman.game.Model.*;
 import com.bomberman.game.View.*;
 import com.bomberman.game.Controller.*;
+
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -41,6 +51,10 @@ public class GameScreen implements Screen {
     private Player player;
     private TiledMap tiledMap;
     private TiledMapRenderer tiledMapRenderer;
+    boolean collision = false;
+    private ArrayList<Rectangle> rectArray = new ArrayList<>();
+    MapObjects coll;
+
 
     private int width, height;
 
@@ -49,7 +63,7 @@ public class GameScreen implements Screen {
         map = new Map();
         tiledMap = new TmxMapLoader().load("Maps/map1.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        player = new Player(new Vector2(10,10));
+        player = new Player(new Vector2(100,200));
         //boardDraw = new BoardDraw(map);
        // controller = new BombermanController(map);
         textureAtlas = new TextureAtlas("Bomberman/Front/BombermanFront.pack");
@@ -62,8 +76,17 @@ public class GameScreen implements Screen {
         stage.addActor(bombButton);
         camera = new MapCamera(tiledMap.getProperties(),player);
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        camera.update();
+        float a =Gdx.graphics.getWidth();
+        float b = Gdx.graphics.getHeight();
 
+        camera.update();
+        coll = tiledMap.getLayers().get(1).getObjects();
+        for(int i = 0 ; i < coll.getCount();i++)
+        {
+            RectangleMapObject obj = (RectangleMapObject)coll.get(i);
+
+            rectArray.add(obj.getRectangle());
+        }
 
         bombermanView = new BombermanView(player);
         Gdx.input.setInputProcessor(stage);
@@ -107,18 +130,46 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         //camera.position.set(camera.position.x-2,camera.position.y-2,0);
-        camera.update();
+
+        float oldX = player.getPosition().x;
+        float oldY = player.getPosition().y;
+        player.setCollision(false);
+        player.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
+        int objectLayerId = 1;
+//        TiledMapTileLayer collisionLayer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
+//        MapObjects objects = collisionLayer.getObjects();
+        for(int i = 0 ; i < rectArray.size();i++)
+        {
+
+
+            if(Intersector.overlaps(rectArray.get(i),player.getRectangle()))
+            {
+                player.setCollision(true);
+                player.setX(oldX);
+                player.setY(oldY);
+                player.getPosition();
+                break;
+
+            }
+
+        }
+
+
+        //ustawiamy projectionMatrix zeby wspolrzedne gracza byly dobrze renderowane na naszej mapie
+        player.setProjectionMatrix(camera.combined);
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-
-        player.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
+        //player.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
         //boardDraw.render();
-        batch.begin();
+        player.begin();
         elapsedTime += Gdx.graphics.getDeltaTime();
-        batch.draw(bombermanView.getAnimation(player.getDirection()).getKeyFrame(elapsedTime,true),player.getPosition().x,player.getPosition().y);
-        batch.end();
+
+        player.draw(bombermanView.getAnimation(player.getDirection()).getKeyFrame(elapsedTime,true),player.getPosition().x,player.getPosition().y);
+        player.end();
         stage.act(elapsedTime);
         stage.draw();
+        camera.update();
+
     }
 
 //    public boolean keyUp(int keycode) {

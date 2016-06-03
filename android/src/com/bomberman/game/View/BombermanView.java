@@ -15,7 +15,6 @@ import java.util.Map;
 public class BombermanView extends Sprite {
     private Player player;
     private Map<Player.Direction,Animation>animations=new HashMap<>();
-    private int i;
 
     public BombermanView(Player player)
     {

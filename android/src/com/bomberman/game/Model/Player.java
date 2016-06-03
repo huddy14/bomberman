@@ -1,12 +1,14 @@
 package com.bomberman.game.Model;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Patryk on 15.05.2016.
  */
-public class Player {
+public class Player extends SpriteBatch {
 
     public static final int SIZE = 10;
     Vector2 position = new Vector2();
@@ -15,11 +17,26 @@ public class Player {
     Status status = Status.IDLE;
     Direction direction = Direction.DOWN;
     private static final double pi = Math.PI;
+    boolean collision;
 
     public Player(Vector2 position) {
         this.position = position;
         this.bounds.height = SIZE;
         this.bounds.width = SIZE;
+    }
+
+    public boolean isColiding() {
+        return collision;
+    }
+
+    public void setCollision(boolean collision)
+    {
+        this.collision = collision;
+    }
+
+    @Override
+    public void draw(TextureRegion region, float x, float y) {
+        super.draw(region, x, y);
     }
 
     //Możliwe stany gracza
@@ -116,6 +133,11 @@ public class Player {
         else return Direction.DOWN;
 
 
+    }
+
+    public Rectangle getRectangle()
+    {
+        return new Rectangle(position.x,position.y,50,50);
     }
 
 

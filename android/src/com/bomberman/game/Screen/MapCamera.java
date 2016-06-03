@@ -1,9 +1,11 @@
 package com.bomberman.game.Screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.bomberman.game.Model.Player;
 
 /**
@@ -48,21 +50,25 @@ public class MapCamera extends OrthographicCamera {
         float halfWidth = this.viewportWidth * .5f;
         float halfHeight = this.viewportHeight * .5f;
         //if player is moving we make sure we aint gonna move through map boundries
-        if(player.getStatus().equals(Player.Status.MOVE))
+        if(player.getStatus().equals(Player.Status.MOVE)&& !player.isColiding())
         {
             switch (player.getDirection())
             {
                 case UP:
-                    this.position.y = MathUtils.clamp(this.position.y + playerVelocity, mapBottom + halfHeight,mapTop - halfHeight);
+                    //this.position.y = this.position.y + playerVelocity;
+
+                    this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom + halfHeight,mapTop - halfHeight);
                     break;
                 case DOWN:
-                    this.position.y = MathUtils.clamp(this.position.y - playerVelocity, mapBottom+ halfHeight,mapTop-halfHeight);
+                    this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom+ halfHeight,mapTop-halfHeight);
                     break;
                 case LEFT:
-                    this.position.x = MathUtils.clamp(this.position.x - playerVelocity, mapLeft + halfWidth,mapRight - halfWidth);
+                    this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
                     break;
                 case RIGHT:
-                    this.position.x = MathUtils.clamp(this.position.x + playerVelocity, mapLeft + halfWidth,mapRight - halfWidth);
+                    this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
+                    //this.position.x = this.position.x + playerVelocity;
+
                     break;
                 default:break;
             }
