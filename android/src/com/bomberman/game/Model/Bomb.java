@@ -13,6 +13,7 @@ public class Bomb {
     private final static float CELL_SIZE = 64;
     private final static float WIDHT = 900;
     private final static float HEIGHT = 900;
+    //private boolean exploded = false;
 
     public Bomb (Vector2 position)
     {
@@ -49,5 +50,6 @@ public class Bomb {
     {
         return this.position;
     }
+
 
 }

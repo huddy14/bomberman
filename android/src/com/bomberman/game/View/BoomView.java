@@ -13,24 +13,21 @@ public class BoomView extends SpriteBatch {
     private Animation animation;
     private float elapsedTime = 0;
     private final static float drawingTime = 1f;
+    float x,y;
 
-    public BoomView ()
+    public BoomView (float x, float y)
     {
-        animation = new Animation(1/10f,new TextureAtlas(Constants.BOOM_ANIMATION).getRegions());
+        this.x = x * 64f + 16f;
+        this.y = y * 64f + 16f;
+        animation = new Animation(1/40f,new TextureAtlas(Constants.BOOM_ANIMATION).getRegions());
     }
 
-    public void drawBoom(float x,float y)
+    public void drawBoom()
     {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-        if(elapsedTime < drawingTime) {
-            this.begin();
-            this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(), true), x, y);
-            this.end();
-        }
-        else {
-            //this.dispose();
+        this.begin();
+        this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(), true), x, y);
+        this.end();
 
-        }
     }
 
 }
