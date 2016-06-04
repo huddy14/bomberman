@@ -35,11 +35,4 @@ public class BombButton  extends Button{
                 Gdx.graphics.getWidth()/15f
         );
     }
-
-
-
-    //public Button getButton()
-//    {
-//        return button;
-//    }
 }

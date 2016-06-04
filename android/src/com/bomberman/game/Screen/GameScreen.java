@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
     float time =0;
     float x,y;
     Bomb bomb;
-    BombView bv = new BombView();
+    //BombView bv = new BombView();
     boolean bombPlanted = false;
     private ShapeRenderer shapeRenderer;
 
@@ -62,33 +62,23 @@ public class GameScreen implements Screen {
         //player = new Bomberman(new Vector2(80,700));
         player = new Bomberman(new Vector2(64,64*10));
         bombermanView = new BombermanView();
-        //rysowanie granic obiektu
-        shapeRenderer = new ShapeRenderer();
+
+        camera = new MapCamera(tiledMap.getProperties(),player);
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         bombermanController = new BombermanController(player,tiledMap);
 
-        bombController = new BombController(bombermanController,tiledMap);
+        bombController = new BombController(player,bombermanController,tiledMap,camera);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());
-        bombButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                //Bomb bomb = new Bomb(new Vector2(player.getPosition().x,player.getPosition().y));
-                if(!bombPlanted) {
-                    bomb = new Bomb(new Vector2(player.getPosition().x,player.getPosition().y));
-                    bombController.addBomb(bomb);
-                    bombPlanted = true;
-                }
-            }
-        });
+        bombButton.addListener(bombController);
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),bombermanView);
         stage.addActor(touchpad);
         stage.addActor(bombButton);
 
-        camera = new MapCamera(tiledMap.getProperties(),player);
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -130,7 +120,7 @@ public class GameScreen implements Screen {
 
         bombermanController.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
 
-        bv.setProjectionMatrix(camera.combined);
+        //bv.setProjectionMatrix(camera.combined);
         //ustawiamy projectionMatrix zeby wspolrzedne gracza byly dobrze renderowane na naszej mapie
         bombermanView.setProjectionMatrix(camera.combined);
         tiledMapRenderer.setView(camera);
@@ -141,19 +131,8 @@ public class GameScreen implements Screen {
 
         bombermanView.drawBomberman(player.getDirection(),elapsedTime,player.getPosition().x,player.getPosition().y);
         bombermanView.end();
-        bv.setProjectionMatrix(camera.combined);
-
-        if(bombPlanted)
-        {
-            bombPlanted = bv.drawBomb(Gdx.graphics.getDeltaTime(),bomb.getX(),bomb.getY());
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.WHITE);
-            //shapeRenderer.set();
-            shapeRenderer.circle(bomb.getBounds().x,bomb.getBounds().y,bomb.getBounds().radius);
-            shapeRenderer.end();
-            //shapeRenderer.begin(ShapeRenderer.ShapeType.FilledCircle);
-        }
+        //bv.setProjectionMatrix(camera.combined);
+        bombController.drawBomb();
         stage.act(elapsedTime);
         stage.draw();
 

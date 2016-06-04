@@ -1,10 +1,12 @@
 package com.bomberman.game.View;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Screen.MapCamera;
 
@@ -14,7 +16,7 @@ import com.bomberman.game.Screen.MapCamera;
 public class BombView extends SpriteBatch {
 
     private Animation animation;
-    private float elapsedTime = 0;
+
 
     public BombView()
     {
@@ -22,22 +24,14 @@ public class BombView extends SpriteBatch {
     }
 
 
-
-    public boolean drawBomb(float deltaTime, float x, float y)
+    //rysowanie bomby przez okreslony czas
+    public void drawBomb(Vector2 position)
     {
-        elapsedTime += deltaTime;
-        if(elapsedTime < 3f)
-        {
             this.begin();
-            this.draw(animation.getKeyFrame(elapsedTime,true),x,y);
+            this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(),true),position.x,position.y);
             this.end();
-            return true;
-        }
-        else
-        {
-            elapsedTime = 0;
-            return false;
-        }
     }
+
+
 
 }

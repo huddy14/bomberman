@@ -9,6 +9,7 @@ public final class Constants {
     public static final String BOMBERMAN_SIDE_LEFT_PACK= "Bomberman/SideLeft/BombermanSideLeft.pack" ;
     public static final String BOMBERMAN_SIDE_RIGHT = "Bomberman/Side/BombermanSide.pack" ;
     public static final String BOMB_ANIMATION = "Bomb/BombAnimation.pack" ;
+    public static final String BOOM_ANIMATION = "Flame/FlameAnimation.pack";
     public static final String BOMB_1 = "Bomb_f01" ;
     public static final String BOMB_2 = "Bomb_f02" ;
     public static final String BOMB_3 = "Bomb_f03" ;

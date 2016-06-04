@@ -16,9 +16,10 @@ public class Bomb {
 
     public Bomb (Vector2 position)
     {
-        this.position.x = fixPosition(position.x);
-        this.position.y = fixPosition(position.y);
-        bounds = new Circle(position.x +32f ,position.y+32f ,CELL_SIZE);
+        //dodajemy polowe szerkosci i wysokosci komorki, zeby bomba sie dobrze rysowala sie w odpowiedniej komorce
+        this.position.x = fixPosition(position.x + CELL_SIZE/2);
+        this.position.y = fixPosition(position.y + CELL_SIZE/2);
+        bounds = new Circle(this.position.x +24f ,this.position.y+24f ,CELL_SIZE + 15f);
 
     }
 
@@ -42,6 +43,11 @@ public class Bomb {
     public float getY()
     {
         return position.y;
+    }
+
+    public Vector2 getPosition ()
+    {
+        return this.position;
     }
 
 }
