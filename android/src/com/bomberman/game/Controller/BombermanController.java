@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomberman;
 
 import java.util.ArrayList;
@@ -28,13 +29,13 @@ public class BombermanController {
 
     private void getCollisionLayers()
     {
-        mapObjects = tiledMap.getLayers().get(1).getObjects();
+        mapObjects = tiledMap.getLayers().get(Constants.SOLID_OBJECT).getObjects();
         for(int i = 0 ; i < mapObjects.getCount(); i++)
         {
             RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
             solidElements.add(obj.getRectangle());
         }
-        mapObjects = tiledMap.getLayers().get(3).getObjects();
+        mapObjects = tiledMap.getLayers().get(Constants.EXPLODING_OBJECT).getObjects();
         for(int i = 0 ; i < mapObjects.getCount(); i++)
         {
             RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);

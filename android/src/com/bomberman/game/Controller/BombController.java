@@ -27,14 +27,14 @@ public class BombController {
     public BombController(BombermanController bombermanController, TiledMap map)
     {
         this.map = map;
-        this.layer = (TiledMapTileLayer)map.getLayers().get(4);//tile layer explodin
+        this.layer = (TiledMapTileLayer)map.getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
         this.bombermanController = bombermanController;
         getExplodableElements();
     }
 
     private void getExplodableElements()
     {
-        mapObjects = map.getLayers().get(3).getObjects();
+        mapObjects = map.getLayers().get(Constants.EXPLODING_OBJECT).getObjects();
         for(int i=0 ; i < mapObjects.getCount(); i++)
         {
             RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
