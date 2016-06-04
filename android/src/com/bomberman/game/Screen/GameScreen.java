@@ -2,6 +2,8 @@ package com.bomberman.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -41,6 +43,7 @@ public class GameScreen implements Screen {
     Bomb bomb;
     BombView bv = new BombView();
     boolean bombPlanted = false;
+    private ShapeRenderer shapeRenderer;
 
 
     private int width, height;
@@ -59,6 +62,8 @@ public class GameScreen implements Screen {
         //player = new Bomberman(new Vector2(80,700));
         player = new Bomberman(new Vector2(64,64*10));
         bombermanView = new BombermanView();
+        //rysowanie granic obiektu
+        shapeRenderer = new ShapeRenderer();
 
         bombermanController = new BombermanController(player,tiledMap);
 
@@ -141,9 +146,20 @@ public class GameScreen implements Screen {
         if(bombPlanted)
         {
             bombPlanted = bv.drawBomb(Gdx.graphics.getDeltaTime(),bomb.getX(),bomb.getY());
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.WHITE);
+            //shapeRenderer.set();
+            shapeRenderer.circle(bomb.getBounds().x,bomb.getBounds().y,bomb.getBounds().radius);
+            shapeRenderer.end();
+            //shapeRenderer.begin(ShapeRenderer.ShapeType.FilledCircle);
         }
         stage.act(elapsedTime);
         stage.draw();
+
+
+
+
 
 
     }

@@ -15,5 +15,6 @@ public final class Constants {
     public static final String MAP_1 = "Maps/map1.tmx";
     public static final String TOUCHPAD_BACKGROUND = "Touchpad/touchBackground.png"  ;
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
+    public static final int TILE_SIZE = 64;
 
 }

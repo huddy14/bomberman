@@ -16,9 +16,10 @@ public class Bomb {
 
     public Bomb (Vector2 position)
     {
-        bounds = new Circle(position.x,position.y,CELL_SIZE * 2f);
         this.position.x = fixPosition(position.x);
         this.position.y = fixPosition(position.y);
+        bounds = new Circle(position.x +32f ,position.y+32f ,CELL_SIZE);
+
     }
 
     public Circle getBounds()
