@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.bomberman.game.GlobalMethods;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomb;
@@ -65,22 +66,24 @@ public class BombController extends ChangeListener {
 
     private void getExplodableElements()
     {
-        mapObjects = map.getLayers().get(Constants.EXPLODING_OBJECT).getObjects();
-        for(int i=0 ; i < mapObjects.getCount(); i++)
-        {
-            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-            explodableElements.add(obj.getRectangle());
-        }
+        explodableElements = GlobalMethods.getElements(map,Constants.EXPLODING_OBJECT);
+//        mapObjects = map.getLayers().get(Constants.EXPLODING_OBJECT).getObjects();
+//        for(int i=0 ; i < mapObjects.getCount(); i++)
+//        {
+//            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
+//            explodableElements.add(obj.getRectangle());
+//        }
     }
 
     private void getSolidElements()
     {
-        mapObjects = map.getLayers().get(Constants.SOLID_OBJECT).getObjects();
-        for(int i=0 ; i < mapObjects.getCount(); i++)
-        {
-            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-            solidElements.add(obj.getRectangle());
-        }
+        solidElements = GlobalMethods.getElements(map,Constants.SOLID_OBJECT);
+//        mapObjects = map.getLayers().get(Constants.SOLID_OBJECT).getObjects();
+//        for(int i=0 ; i < mapObjects.getCount(); i++)
+//        {
+//            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
+//            solidElements.add(obj.getRectangle());
+//        }
     }
     //TODO:usuwanie elementów dopiero w momencie gdy bomba wybuchnie nie wcześniej
     private void updateExplodableElements()
@@ -102,7 +105,7 @@ public class BombController extends ChangeListener {
                 {
                     layer.getCell(x, y).setTile(null);
                     //usuwanie elementu z tablicy kolizji
-                    bombermanController.deleteExplodableElements(explodableElements.get(i));
+                    bombermanController.updateCollisionElements(explodableElements.get(i));
                     explodableElements.remove(i);
                 }
 
@@ -213,7 +216,7 @@ public class BombController extends ChangeListener {
         for(int i = 0;i<isSolid.length;i++)
             isSolid[i]=false;
     }
-
+    //implementacja metody nasłuchującej na naciśnięcie klawisza bomby
     @Override
     public void changed(ChangeEvent event, Actor actor) {
         if(!bombPlanted) {
