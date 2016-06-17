@@ -26,7 +26,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Patryk on 16.05.2016.
  */
 
-public class GameScreen implements Screen {
+public class GameScreen extends ChangeListener implements Screen {
     private Stage stage;
     private float elapsedTime;
     private BombermanView bombermanView;
@@ -66,13 +66,13 @@ public class GameScreen implements Screen {
         camera = new MapCamera(tiledMap.getProperties(),player);
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        bombermanController = new BombermanController(player,tiledMap);
+        bombermanController = new BombermanController(player,bombermanView,tiledMap);
 
         bombController = new BombController(player,bombermanController,tiledMap,camera);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());
-        bombButton.addListener(bombController);
+        bombButton.addListener(this);
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),bombermanView);
         stage.addActor(touchpad);
@@ -117,22 +117,17 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-
+        //wyświetlanie gracza
         bombermanController.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
-
         //bv.setProjectionMatrix(camera.combined);
         //ustawiamy projectionMatrix zeby wspolrzedne gracza byly dobrze renderowane na naszej mapie
-        bombermanView.setProjectionMatrix(camera.combined);
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
+        bombermanController.draw(camera);
 
-        bombermanView.begin();
-        elapsedTime += Gdx.graphics.getDeltaTime();
-
-        bombermanView.drawBomberman(player.getDirection(),elapsedTime,player.getPosition().x,player.getPosition().y);
-        bombermanView.end();
         //bv.setProjectionMatrix(camera.combined);
-        bombController.drawBomb();
+        //bombController.drawBomb();
+        bombController.draw(camera);
         stage.act(elapsedTime);
         stage.draw();
 
@@ -144,4 +139,11 @@ public class GameScreen implements Screen {
     }
 
 
+    @Override
+    public void changed(ChangeEvent event, Actor actor) {
+        if(player.canPlant()) {
+            bombController.addBomb();
+            player.bombPlanted();
+        }
+    }
 }

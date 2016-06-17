@@ -26,7 +26,9 @@ public class BombermanView extends SpriteBatch {
 
     public void drawBomberman(Bomberman.Direction dir, float deltaTime, float x, float y)
     {
+        this.begin();
         this.draw(animations.get(dir).getKeyFrame(deltaTime,true),x,y);
+        this.end();
     }
 
 }

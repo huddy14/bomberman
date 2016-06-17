@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by huddy on 6/17/16.
  */
-public class GlobalMethods {
+public final class GlobalMethods {
 
     public static final ArrayList<Rectangle> getElements(TiledMap map, String layer_name)
     {

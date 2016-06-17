@@ -1,7 +1,5 @@
 package com.bomberman.game.Model;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -11,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Bomberman {
 
     public static final int SIZE = 10;
+    private int availibleBombs = 3;
+    private int bombPlanted = 0;
     Vector2 position = new Vector2();
     float velocity = 3f;
     Rectangle bounds = new Rectangle();
@@ -25,6 +25,31 @@ public class Bomberman {
         this.bounds.width = SIZE;
     }
 
+    public boolean isBombPlanted()
+    {
+        return bombPlanted>0;
+    }
+    public boolean canPlant()
+    {
+        return bombPlanted<availibleBombs;
+    }
+
+    public void addBombCount() {
+        availibleBombs++;
+    }
+
+    public void resestBombCount() {
+        availibleBombs = 1;
+    }
+
+    public void bombPlanted()
+    {
+        bombPlanted++;
+    }
+    public void bombExploded()
+    {
+        bombPlanted--;
+    }
 
     //Możliwe stany gracza
     public enum Status {

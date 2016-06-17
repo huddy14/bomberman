@@ -2,17 +2,16 @@ package com.bomberman.game.Controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bomberman.game.GlobalMethods;
+import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomb;
@@ -25,9 +24,10 @@ import java.util.ArrayList;
 /**
  * Created by huddy on 6/3/16.
  */
-public class BombController extends ChangeListener {
-    //private ArrayList<Bomb> bombList = new ArrayList<>();
-    private Bomb bomb;
+public class BombController implements IController, Bomb.BombListener
+{
+    private ArrayList<Bomb> bombs = new ArrayList<>();
+    //private Bomb bomb;
     private BombermanController bombermanController;
     private BombView bombView;
     private TiledMap map;
@@ -48,9 +48,10 @@ public class BombController extends ChangeListener {
     boolean[] isSolid = new boolean[4];
     private final static float TIME_TO_DETONATE = 3f;
     private final static float EXPLOSION_TIME = 1f;
+    private Bomb bombToDelete = null;
 
     int iter = 0;
-
+    //TODO: usunac kamery, usunac playera(informacje ma pobierac z bombermanController'a)
     public BombController(Bomberman bomberman, BombermanController bombermanController, TiledMap map, MapCamera camera)
     {
         this.player = bomberman;
@@ -60,33 +61,12 @@ public class BombController extends ChangeListener {
         this.bombermanController = bombermanController;
         this.bombView = new BombView();
 
-        getExplodableElements();
-        getSolidElements();
-    }
-
-    private void getExplodableElements()
-    {
         explodableElements = GlobalMethods.getElements(map,Constants.EXPLODING_OBJECT);
-//        mapObjects = map.getLayers().get(Constants.EXPLODING_OBJECT).getObjects();
-//        for(int i=0 ; i < mapObjects.getCount(); i++)
-//        {
-//            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-//            explodableElements.add(obj.getRectangle());
-//        }
+        solidElements = GlobalMethods.getElements(map,Constants.SOLID_OBJECT);
+
     }
 
-    private void getSolidElements()
-    {
-        solidElements = GlobalMethods.getElements(map,Constants.SOLID_OBJECT);
-//        mapObjects = map.getLayers().get(Constants.SOLID_OBJECT).getObjects();
-//        for(int i=0 ; i < mapObjects.getCount(); i++)
-//        {
-//            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-//            solidElements.add(obj.getRectangle());
-//        }
-    }
-    //TODO:usuwanie elementów dopiero w momencie gdy bomba wybuchnie nie wcześniej
-    private void updateExplodableElements()
+    private void updateExplodableElements(Bomb bomb)
     {
         for(int i=0;i<explodableElements.size();i++)
         {
@@ -111,25 +91,22 @@ public class BombController extends ChangeListener {
 
             }
         }
-        iter++;
     }
 
-    public void addBomb(Bomb bomb)
+    public void addBomb()
     {
-        exploded = false;
-        this.bomb = bomb;
+        bombs.add(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this));
         this.flames.clear();
     }
 
 
 
-    //rysowanie bomby przez okreslony czas
-    public void drawBomb()
+    //zmienic na prajwat i rysuje wszystkie bomby
+    public void drawBomb(Bomb bomb,OrthographicCamera camera)
     {
-        if(bombPlanted) {
-            currentBombTime += Gdx.graphics.getDeltaTime();
-            //TODO: jest 3 a powinno byc 3000 bo millisec DZIWNY SZYT
-            if (currentBombTime < TIME_TO_DETONATE) {
+        if(player.isBombPlanted()) {
+            bomb.update(Gdx.graphics.getDeltaTime());
+            if (bomb.getState() == Bomb.State.COUNT_DOWN) {
 
                 bombView.setProjectionMatrix(camera.combined);
                 bombView.drawBomb(bomb.getPosition());
@@ -141,19 +118,7 @@ public class BombController extends ChangeListener {
                 //shapeRenderer.set();
                 shapeRenderer.circle(bomb.getBounds().x, bomb.getBounds().y, bomb.getBounds().radius);
                 shapeRenderer.end();
-            } else {
-
-                currentBombTime = 0;
-                updateExplodableElements();
-                prepareFlames();
-                bombPlanted = false;
-                exploded = true;
             }
-
-        }
-        if(exploded)
-        {
-            drawFlames();
         }
 
     }
@@ -177,7 +142,7 @@ public class BombController extends ChangeListener {
         }
     }
 
-    private void prepareFlames()
+    private void prepareFlames(Bomb bomb)
     {
         //TODO:rozkminic zeby to prosciej zapisac
         negateIsSolid();
@@ -216,12 +181,34 @@ public class BombController extends ChangeListener {
         for(int i = 0;i<isSolid.length;i++)
             isSolid[i]=false;
     }
-    //implementacja metody nasłuchującej na naciśnięcie klawisza bomby
+
+
+
     @Override
-    public void changed(ChangeEvent event, Actor actor) {
-        if(!bombPlanted) {
-            this.addBomb(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y)));
-            bombPlanted = true;
+    public void draw(OrthographicCamera camera) {
+        if(bombToDelete != null)
+        {
+            bombs.remove(bombToDelete);
+            bombToDelete = null;
         }
+        for(Bomb b : bombs)
+        {
+            drawBomb(b,camera);
+        }
+    }
+
+    @Override
+    public void onBombExploded(Bomb bomb) {
+        updateExplodableElements(bomb);
+        //prepareFlames(bomb);
+        //drawFlames();
+        player.bombExploded();
+        bombToDelete = bomb;
+    }
+
+    @Override
+    public void onBombPlanted(Bomb bomb) {
+        //drawBomb(bomb);
+        //player.bombPlanted();
     }
 }

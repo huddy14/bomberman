@@ -1,6 +1,8 @@
 package com.bomberman.game.Controller;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,25 +10,32 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.bomberman.game.Constants;
 import com.bomberman.game.GlobalMethods;
+import com.bomberman.game.Interfaces.IController;
+import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
+import com.bomberman.game.View.BombermanView;
 
 import java.util.ArrayList;
 
 /**
  * Created by Patryk on 15.05.2016.
  */
-public class BombermanController {
+//TODO: to sie cale nadaje do ponownego napisania XD
+public class BombermanController implements IController {
     private Bomberman player;
+    private BombermanView playerView;
     private TiledMap tiledMap;
     private MapObjects mapObjects;
     private ArrayList<Rectangle> collisionElements = new ArrayList<>();
+    private float elapsedTime = 0;
     //private ArrayList<Rectangle> explodingElements = new ArrayList<>();
 
 
-    public BombermanController(Bomberman player, TiledMap tiledMap)
+    public BombermanController(Bomberman player,BombermanView playerView, TiledMap tiledMap)
     {
         this.tiledMap = tiledMap;
         this.player = player;
+        this.playerView = playerView;
         getCollisionLayers();
     }
 
@@ -82,4 +91,15 @@ public class BombermanController {
         collisionElements.remove(obj);
     }
 
+    public Bomberman getPlayer()
+    {
+        return this.player;
+    }
+
+    @Override
+    public void draw(OrthographicCamera camera) {
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        playerView.setProjectionMatrix(camera.combined);
+        playerView.drawBomberman(player.getDirection(),elapsedTime,player.getPosition().x,player.getPosition().y);
+    }
 }

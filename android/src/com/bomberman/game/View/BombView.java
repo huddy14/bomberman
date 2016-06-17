@@ -27,9 +27,9 @@ public class BombView extends SpriteBatch {
     //rysowanie bomby przez okreslony czas
     public void drawBomb(Vector2 position)
     {
-            this.begin();
-            this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(),true),position.x,position.y);
-            this.end();
+        this.begin();
+        this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(),true),position.x,position.y);
+        this.end();
     }
 
 
