@@ -3,6 +3,7 @@ package com.bomberman.game.Model;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.Constants;
 import com.bomberman.game.Controller.BombController;
 import com.bomberman.game.View.BombView;
 import com.bomberman.game.View.BoomView;
@@ -27,8 +28,9 @@ public class Bomb {
     private final static float HEIGHT = 900;
     private State state = State.COUNT_DOWN;
     private float remainingSeconds = 3;
-    private ArrayList<BoomView> flames = new ArrayList<>();
+    private BoomView explosion = new BoomView();
     private ExplosionBounds explosionBounds;
+    private int range = 2;
 
 
     public static enum State {COUNT_DOWN, EXPLODED,EXPLOSION_FINISHED}
@@ -38,34 +40,68 @@ public class Bomb {
         //dodajemy polowe szerkosci i wysokosci komorki, zeby bomba sie dobrze rysowala sie w odpowiedniej komorce
         this.position.x = fixPosition(position.x + CELL_SIZE / 2);
         this.position.y = fixPosition(position.y + CELL_SIZE / 2);
-        bounds = new Circle(this.position.x + 24f, this.position.y + 24f, CELL_SIZE + 15f);
+        bounds = new Circle(this.position.x + 24f, this.position.y + 24f, 2 * CELL_SIZE + 15f);
         mListener = bombController;
         explosionBounds = mListener.onBombPlanted(this);
 
     }
 
+    public int getRange()
+    {
+        return this.range;
+    }
+    public void setRemaningSeconds(float remainingSeconds)
+    {
+        this.remainingSeconds=remainingSeconds;
+    }
+    public float getRemainingSeconds()
+    {
+        return this.remainingSeconds;
+    }
+
     public void update(float deltaTime) {
         this.remainingSeconds -= deltaTime;
-        if (remainingSeconds <= 0) {
+        if (remainingSeconds <= 0 && state != State.EXPLODED && state != State.EXPLOSION_FINISHED) {
             this.state = State.EXPLODED;
             mListener.onBombExploded(this);
         }
-        if(remainingSeconds<=-1) {
+        if(remainingSeconds<=-1 && state != State.EXPLOSION_FINISHED) {
             this.state = State.EXPLOSION_FINISHED;
             mListener.onExplosionFinished(this);
         }
 
     }
 
-    public void setFlames(ArrayList<BoomView> flames)
+    public BoomView getExplosion()
     {
-        this.flames=flames;
+        for(int i = explosionBounds.getX(); i <= explosionBounds.getXmax(); i++)
+        {
+            explosion.drawBoom(tileToPixel(i),tileToPixel(explosionBounds.getY()));
+
+        }
+        for(int i = explosionBounds.getX(); i >= explosionBounds.getXmin(); i--)
+        {
+            explosion.drawBoom(tileToPixel(i),tileToPixel(explosionBounds.getY()));
+
+        }
+        for(int i = explosionBounds.getY(); i <= explosionBounds.getYmax(); i++)
+        {
+            explosion.drawBoom(tileToPixel(explosionBounds.getX()),tileToPixel(i));
+
+        }
+        for(int i = explosionBounds.getY(); i <= explosionBounds.getYmin(); i++)
+        {
+            explosion.drawBoom(tileToPixel(explosionBounds.getX()),tileToPixel(i));
+
+        }
+        return explosion;
     }
 
-    public ArrayList<BoomView> getFlames()
+    private float tileToPixel(int x)
     {
-        return flames;
+        return Constants.TILE_SIZE * x;
     }
+
     public State getState()
     {
         return state;

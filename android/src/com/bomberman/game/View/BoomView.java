@@ -15,17 +15,17 @@ public class BoomView extends SpriteBatch {
     private final static float drawingTime = 1f;
     float x,y;
 
-    public BoomView (float x, float y)
+    public BoomView ()
     {
-        this.x = x * 64f + 16f;
-        this.y = y * 64f + 16f;
         animation = new Animation(1/40f,new TextureAtlas(Constants.BOOM_ANIMATION).getRegions());
     }
 
-    public void drawBoom()
+    public void drawBoom(float x, float y)
     {
+        this.x = x * 64f + 16f;
+        this.y = y * 64f + 16f;
         this.begin();
-        this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(), true), x, y);
+        this.draw(animation.getKeyFrame(Gdx.graphics.getDeltaTime(), true), this.x, this.y);
         this.end();
 
     }

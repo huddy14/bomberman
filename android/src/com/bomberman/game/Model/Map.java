@@ -1,9 +1,12 @@
 package com.bomberman.game.Model;
 
+import android.util.Log;
+
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.bomberman.game.Constants;
@@ -133,6 +136,34 @@ public class Map {
             return false;
 
         }
+        //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
+        public Bomb bombCollision(Bomb b1, ArrayList<Bomb> bombs)
+        {
+            for(Bomb b2 : bombs) {
+//                if(Intersector.overlaps(b1.getBounds(),b2.getBounds())
+//                        &&(calculateTileCord(b1.getBounds().x)==calculateTileCord(b2.getBounds().x)
+//                        || calculateTileCord(b1.getBounds().y)==calculateTileCord(b2.getBounds().y))
+//                        && b2.getState()!=Bomb.State.EXPLODED)
+                ExplosionBounds e1 = b1.getExplosionBounds();
+                ExplosionBounds e2 = b2.getExplosionBounds();
+                //sprawdzamy czy promien razenia jednej bomby nachodzi na promien razenia reszty
+                if (Intersector.overlaps(e1.getHorizontalRectangle(), e2.getHorizontalRectangle())) {
+
+                    if (e1.getX() % 2 != 0 && Math.abs(e1.getX() - e2.getX())<=b1.getRange()) {
+                        b1.setRemaningSeconds(b2.getRemainingSeconds());
+                        return b1;
+                    }
+                }
+                else if(Intersector.overlaps(e1.getVerticalRectangle(), e2.getVerticalRectangle()))
+                {
+                    if (e1.getY() % 2 != 0 && Math.abs(e1.getY() - e2.getY())<=b1.getRange()) {
+                        b1.setRemaningSeconds(b2.getRemainingSeconds());
+                        return b1;
+                    }
+                }
+            }
+            return b1;
+        }
 
         public ExplosionBounds bombExplosionCollision(Bomb bomb) {
             Rectangle[] toDelete = new Rectangle[4];
@@ -143,7 +174,7 @@ public class Map {
             bombY = calculateTileCord(bomb.getY());
             //inicjujemy największe i najmniejsze wartosci wsporzednych dla eksplozji
             //zaincjowane w taki sposob aby najmniejsza wartosc byla mniejsza od najmniejszej mozliwej na planszy, analogicznie max
-            int xmin = -1,xmax = 20 ,ymin = -1 ,ymax = 20;
+            int xmin = bombX - bomb.getRange(),xmax = bombX + bomb.getRange() ,ymin = bombY - bomb.getRange() ,ymax = bombY + bomb.getRange();
 
             //sprawdzamy czy zasieg bomby koliduje z obiektami ktore wybuchają
             for (int i = 0; i < explodableElements.size(); i++) {
@@ -155,35 +186,47 @@ public class Map {
                     int y = calculateTileCord(explodableElements.get(i).y);
 
                     if (bombX == x) {
-                        if(y > bombY && y < ymax)
+                        if(x%2==0)
+                        {
+                            ymax = bombY;
+                            ymin = bombY;
+                        }
+                        else if(y >= bombY && y <= ymax)
                         {
                             ymax = y;
                             toDelete[0]=explodableElements.get(i);
 
                         }
-                        else if(y < bombY && y > ymin)
+                        else if(y <= bombY && y >= ymin)
                         {
                             ymin = y;
-                            toDelete[0]=explodableElements.get(i);
+                            toDelete[1]=explodableElements.get(i);
                         }
 
                     }
                     else if(bombY == y)
                     {
-                        if(x > bombX && x < xmax)
+                        if(y%2==0)
+                        {
+                            xmax = bombX;
+                            xmin = bombX;
+                        }
+                        else if(x >= bombX && x <= xmax)
                         {
                             xmax = x;
-                            toDelete[0]=explodableElements.get(i);
+                            toDelete[2]=explodableElements.get(i);
                         }
-                        else if(x < bombX && x > xmin)
+                        else if(x <= bombX && x >= xmin)
                         {
                             xmin = x;
-                            toDelete[0]=explodableElements.get(i);
+                            toDelete[3]=explodableElements.get(i);
                         }
                     }
 
                 }
             }
+            Log.w("x,y,ymin,ymax,xmin,xmax",""+bombX+" "+bombY+" "+ymin+" "+ymax+" "+xmin+" "+xmax);
+
             return new ExplosionBounds(bombX,bombY,ymin,ymax,xmin,xmax,toDelete);
         }
 

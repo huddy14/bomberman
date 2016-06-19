@@ -1,5 +1,7 @@
 package com.bomberman.game.Controller;
 
+import android.util.Log;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +35,7 @@ public class BombController implements IController, Bomb.BombListener
     private BombermanController bombermanController;
     private BombView bombView;
     private Bomberman player;
+    private BoomView explosion = new BoomView();
     private ArrayList<Rectangle> explodableElements;
     private ArrayList<Rectangle> solidElements;
     private Map map;
@@ -41,7 +44,7 @@ public class BombController implements IController, Bomb.BombListener
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     boolean[] isSolid = new boolean[4];
-    private Bomb bombToDelete = null;
+    private ArrayList<Bomb> bombsToDelete = new ArrayList<>();
 
     public BombController(Bomberman bomberman, BombermanController bombermanController, Map map)
     {
@@ -63,7 +66,10 @@ public class BombController implements IController, Bomb.BombListener
 
     public void addBomb()
     {
-        bombs.add(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this));
+        //Bomb bomb =new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this);
+        //bomb = collisionDetector.bombCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs);
+        bombs.add(collisionDetector.bombCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
+        Log.w("ilosc itemow :","" + bombs.size());
         //this.flames.clear();
     }
 
@@ -72,7 +78,7 @@ public class BombController implements IController, Bomb.BombListener
     //zmienic na prajwat i rysuje wszystkie bomby
     public void drawBomb(Bomb bomb,OrthographicCamera camera)
     {
-        bomb.update(Gdx.graphics.getDeltaTime());
+        //bomb.update(Gdx.graphics.getDeltaTime());
         if(player.isBombPlanted()) {
             if (bomb.getState() == Bomb.State.COUNT_DOWN) {
 
@@ -85,6 +91,15 @@ public class BombController implements IController, Bomb.BombListener
                 shapeRenderer.setColor(Color.WHITE);
                 //shapeRenderer.set();
                 shapeRenderer.circle(bomb.getBounds().x, bomb.getBounds().y, bomb.getBounds().radius);
+                shapeRenderer.rect(bomb.getExplosionBounds().getHorizontalRectangle().x,bomb.getExplosionBounds().getHorizontalRectangle().y,bomb.getExplosionBounds().getHorizontalRectangle().width,
+                        bomb.getExplosionBounds().getHorizontalRectangle().height);
+                shapeRenderer.rect(bomb.getExplosionBounds().getVerticalRectangle().x,bomb.getExplosionBounds().getVerticalRectangle().y,bomb.getExplosionBounds().getVerticalRectangle().width,
+                        bomb.getExplosionBounds().getVerticalRectangle().height);
+//                Log.w("x:",""+bomb.getExplosionBounds().getHorizontalRectangle().x);
+//                Log.w("y",""+bomb.getExplosionBounds().getHorizontalRectangle().y);
+//                Log.w("widht",""+bomb.getExplosionBounds().getHorizontalRectangle().width);
+//                Log.w("height",""+
+//                        bomb.getExplosionBounds().getHorizontalRectangle().height);
                 shapeRenderer.end();
             }
         }
@@ -94,13 +109,39 @@ public class BombController implements IController, Bomb.BombListener
 
     }
 
+    private float tileToPixel(int x)
+    {
+        return Constants.TILE_SIZE * x;
+    }
     private void drawFlames(Bomb bomb, OrthographicCamera camera)
     {
+        ExplosionBounds explosionBounds = bomb.getExplosionBounds();
         if(bomb.getState()!=Bomb.State.EXPLOSION_FINISHED && bomb.getState()!=Bomb.State.EXPLODED )
-            for(BoomView flame : bomb.getFlames())
-            {
-                flame.setProjectionMatrix(camera.combined);
-                flame.drawBoom();
+        {
+            explosion.setProjectionMatrix(camera.combined);
+//            for(int i = explosionBounds.getX(); i <= explosionBounds.getXmax(); i++)
+//            {
+//                explosion.drawBoom(tileToPixel(i),tileToPixel(explosionBounds.getY()));
+//
+//            }
+//            for(int i = explosionBounds.getX(); i >= explosionBounds.getXmin(); i--)
+//            {
+//                explosion.drawBoom(tileToPixel(i),tileToPixel(explosionBounds.getY()));
+//
+//            }
+//            for(int i = explosionBounds.getY(); i <= explosionBounds.getYmax(); i++)
+//            {
+//                explosion.drawBoom(tileToPixel(explosionBounds.getX()),tileToPixel(i));
+//
+//            }
+//            for(int i = explosionBounds.getY(); i <= explosionBounds.getYmin(); i++)
+//            {
+//                explosion.drawBoom(tileToPixel(explosionBounds.getX()),tileToPixel(i));
+//
+//            }
+            explosion.drawBoom(800,540);
+                //flame.setProjectionMatrix(camera.combined);
+                //flame.drawBoom();
             }
 
     }
@@ -150,38 +191,37 @@ public class BombController implements IController, Bomb.BombListener
 
     @Override
     public void draw(OrthographicCamera camera) {
-        if(bombToDelete != null)
-        {
-            bombs.remove(bombToDelete);
-            bombToDelete = null;
-        }
+        bombs.removeAll(bombsToDelete);
+        bombsToDelete.clear();
+
         for(Bomb b : bombs)
         {
-            //b.update(Gdx.graphics.getDeltaTime());
+            b.update(Gdx.graphics.getDeltaTime());
             drawBomb(b,camera);
-          //if(b.getState()!=Bomb.State.EXPLOSION_FINISHED)
-               // drawFlames(b,camera);
+          if(b.getState()!=Bomb.State.EXPLOSION_FINISHED)
+               drawFlames(b,camera);
         }
     }
 
     @Override
     public void onBombExploded(Bomb bomb) {
         map.deleteTiles(bomb.getExplosionBounds());
-        //prepareFlames(bomb);
+        prepareFlames(bomb);
         //drawFlames();
         player.bombExploded();
-        bombToDelete = bomb;
-
-    }
-
-    @Override
-    public void onExplosionFinished(Bomb bomb) {
         //bombToDelete = bomb;
 
     }
 
     @Override
+    public void onExplosionFinished(Bomb bomb) {
+        bombsToDelete.add(bomb);
+
+    }
+
+    @Override
     public ExplosionBounds onBombPlanted(Bomb bomb) {
+        player.bombPlanted();
         return collisionDetector.bombExplosionCollision(bomb);
         //drawBomb(bomb);
         //player.bombPlanted();

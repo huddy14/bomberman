@@ -144,7 +144,6 @@ public class GameScreen extends ChangeListener implements Screen {
     public void changed(ChangeEvent event, Actor actor) {
         if(player.canPlant()) {
             bombController.addBomb();
-            player.bombPlanted();
         }
     }
 }
