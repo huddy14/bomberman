@@ -15,6 +15,8 @@ import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomb;
+import com.bomberman.game.Model.ExplosionBounds;
+import com.bomberman.game.Model.Map;
 import com.bomberman.game.Screen.MapCamera;
 import com.bomberman.game.View.BombView;
 import com.bomberman.game.View.BoomView;
@@ -30,73 +32,39 @@ public class BombController implements IController, Bomb.BombListener
     //private Bomb bomb;
     private BombermanController bombermanController;
     private BombView bombView;
-    private TiledMap map;
     private Bomberman player;
-    private MapObjects mapObjects;
-    private ArrayList<Rectangle> explodableElements = new ArrayList<>();
-    private ArrayList<Rectangle> solidElements = new ArrayList<>();
-
+    private ArrayList<Rectangle> explodableElements;
+    private ArrayList<Rectangle> solidElements;
+    private Map map;
     private TiledMapTileLayer layer;
-    private boolean bombPlanted = false;
-    private boolean exploded = false;
-    private MapCamera camera;
+    private Map.CollisionDetector collisionDetector;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private float currentBombTime = 0;
-    private float currentFlameTime = 0;
-    private ArrayList<BoomView> flames = new ArrayList<>();
 
     boolean[] isSolid = new boolean[4];
-    private final static float TIME_TO_DETONATE = 3f;
-    private final static float EXPLOSION_TIME = 1f;
     private Bomb bombToDelete = null;
 
-    int iter = 0;
-    //TODO: usunac kamery, usunac playera(informacje ma pobierac z bombermanController'a)
-    public BombController(Bomberman bomberman, BombermanController bombermanController, TiledMap map, MapCamera camera)
+    public BombController(Bomberman bomberman, BombermanController bombermanController, Map map)
     {
         this.player = bomberman;
         this.map = map;
-        this.camera = camera;
-        this.layer = (TiledMapTileLayer)map.getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
+        this.collisionDetector = map.getCollisionDetector();
+        this.layer = (TiledMapTileLayer)map.getTiledMap().getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
         this.bombermanController = bombermanController;
         this.bombView = new BombView();
 
-        explodableElements = GlobalMethods.getElements(map,Constants.EXPLODING_OBJECT);
-        solidElements = GlobalMethods.getElements(map,Constants.SOLID_OBJECT);
+        explodableElements = map.getExplodableElements();
+        solidElements = map.getSolidElements();
 
     }
 
     private void updateExplodableElements(Bomb bomb)
     {
-        for(int i=0;i<explodableElements.size();i++)
-        {
-            if(Intersector.overlaps(bomb.getBounds(),explodableElements.get(i)))
-            {
-                int bombX,bombY;
-                //pobieramy wsporzedne bomby sprawdzamy czy element kolidujacy nie znajduje sie na przekatnej
-                bombX = (int)(bomb.getX() - (bomb.getX() % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-                bombY = (int)(bomb.getY() - (bomb.getY() % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-
-                //graficzne usuwanie elementu
-                int x = (int)(explodableElements.get(i).x - (explodableElements.get(i).x % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-                int y = (int)(explodableElements.get(i).y - (explodableElements.get(i).y % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-
-                if(bombX == x || bombY == y)
-                {
-                    layer.getCell(x, y).setTile(null);
-                    //usuwanie elementu z tablicy kolizji
-                    bombermanController.updateCollisionElements(explodableElements.get(i));
-                    explodableElements.remove(i);
-                }
-
-            }
-        }
     }
 
     public void addBomb()
     {
         bombs.add(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this));
-        this.flames.clear();
+        //this.flames.clear();
     }
 
 
@@ -104,8 +72,8 @@ public class BombController implements IController, Bomb.BombListener
     //zmienic na prajwat i rysuje wszystkie bomby
     public void drawBomb(Bomb bomb,OrthographicCamera camera)
     {
+        bomb.update(Gdx.graphics.getDeltaTime());
         if(player.isBombPlanted()) {
-            bomb.update(Gdx.graphics.getDeltaTime());
             if (bomb.getState() == Bomb.State.COUNT_DOWN) {
 
                 bombView.setProjectionMatrix(camera.combined);
@@ -120,59 +88,55 @@ public class BombController implements IController, Bomb.BombListener
                 shapeRenderer.end();
             }
         }
+        if(bomb.getState()!=Bomb.State.EXPLOSION_FINISHED) {
+            drawFlames(bomb,camera);
+        }
 
     }
 
-    private void drawFlames()
+    private void drawFlames(Bomb bomb, OrthographicCamera camera)
     {
-        currentFlameTime += Gdx.graphics.getDeltaTime();
-
-        if(currentFlameTime<EXPLOSION_TIME)
-        {
-            for(BoomView flame : flames)
+        if(bomb.getState()!=Bomb.State.EXPLOSION_FINISHED && bomb.getState()!=Bomb.State.EXPLODED )
+            for(BoomView flame : bomb.getFlames())
             {
                 flame.setProjectionMatrix(camera.combined);
                 flame.drawBoom();
             }
-        }
-        else
-        {
-            exploded = false;
-            currentFlameTime = 0;
-        }
+
     }
 
     private void prepareFlames(Bomb bomb)
     {
-        //TODO:rozkminic zeby to prosciej zapisac
-        negateIsSolid();
-
-        int bombX,bombY;
-        //pobieramy wsporzedne bomby sprawdzamy czy element kolidujacy nie znajduje sie na przekatnej
-        bombX = (int)(bomb.getX() - (bomb.getX() % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-        bombY = (int)(bomb.getY() - (bomb.getY() % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-
-        for(int i=0;i<solidElements.size();i++)
-        {
-
-            if(Intersector.overlaps(bomb.getBounds(),solidElements.get(i)))
-            {
-                int x = (int)(solidElements.get(i).x - (solidElements.get(i).x % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-                int y = (int)(solidElements.get(i).y - (solidElements.get(i).y % Constants.TILE_SIZE))/Constants.TILE_SIZE;
-
-                if(bombX + 1 == x && bombY == y)isSolid[0] = true;
-                else if(bombX - 1 == x && bombY == y)isSolid[1] = true;
-                else if(bombX  == x && bombY == y + 1)isSolid[2] = true;
-                else if(bombX  == x && bombY == y - 1)isSolid[3] = true;
-
-            }
-        }
-
-        if(!isSolid[0])flames.add(new BoomView(bombX + 1, bombY));
-        if(!isSolid[1])flames.add(new BoomView(bombX - 1, bombY));
-        if(!isSolid[2])flames.add(new BoomView(bombX , bombY + 1));
-        if(!isSolid[3])flames.add(new BoomView(bombX , bombY - 1));
-        flames.add(new BoomView(bombX,bombY));
+//        //TODO:rozkminic zeby to prosciej zapisac
+//        negateIsSolid();
+//
+//        int bombX,bombY;
+//        //pobieramy wsporzedne bomby sprawdzamy czy element kolidujacy nie znajduje sie na przekatnej
+//        bombX = (int)(bomb.getX() - (bomb.getX() % Constants.TILE_SIZE))/Constants.TILE_SIZE;
+//        bombY = (int)(bomb.getY() - (bomb.getY() % Constants.TILE_SIZE))/Constants.TILE_SIZE;
+//
+//        for(int i=0;i<solidElements.size();i++)
+//        {
+//
+//            if(Intersector.overlaps(bomb.getBounds(),solidElements.get(i)))
+//            {
+//                int x = (int)(solidElements.get(i).x - (solidElements.get(i).x % Constants.TILE_SIZE))/Constants.TILE_SIZE;
+//                int y = (int)(solidElements.get(i).y - (solidElements.get(i).y % Constants.TILE_SIZE))/Constants.TILE_SIZE;
+//
+//                if(bombX + 1 == x && bombY == y)isSolid[0] = true;
+//                else if(bombX - 1 == x && bombY == y)isSolid[1] = true;
+//                else if(bombX  == x && bombY == y + 1)isSolid[2] = true;
+//                else if(bombX  == x && bombY == y - 1)isSolid[3] = true;
+//
+//            }
+//        }
+//        ArrayList<BoomView>flames = new ArrayList<>();
+//        if(!isSolid[0])flames.add(new BoomView(bombX + 1, bombY));
+//        if(!isSolid[1])flames.add(new BoomView(bombX - 1, bombY));
+//        if(!isSolid[2])flames.add(new BoomView(bombX , bombY + 1));
+//        if(!isSolid[3])flames.add(new BoomView(bombX , bombY - 1));
+//        flames.add(new BoomView(bombX,bombY));
+//        bomb.setFlames(flames);
 
     }
 
@@ -193,21 +157,32 @@ public class BombController implements IController, Bomb.BombListener
         }
         for(Bomb b : bombs)
         {
+            //b.update(Gdx.graphics.getDeltaTime());
             drawBomb(b,camera);
+          //if(b.getState()!=Bomb.State.EXPLOSION_FINISHED)
+               // drawFlames(b,camera);
         }
     }
 
     @Override
     public void onBombExploded(Bomb bomb) {
-        updateExplodableElements(bomb);
+        map.deleteTiles(bomb.getExplosionBounds());
         //prepareFlames(bomb);
         //drawFlames();
         player.bombExploded();
         bombToDelete = bomb;
+
     }
 
     @Override
-    public void onBombPlanted(Bomb bomb) {
+    public void onExplosionFinished(Bomb bomb) {
+        //bombToDelete = bomb;
+
+    }
+
+    @Override
+    public ExplosionBounds onBombPlanted(Bomb bomb) {
+        return collisionDetector.bombExplosionCollision(bomb);
         //drawBomb(bomb);
         //player.bombPlanted();
     }

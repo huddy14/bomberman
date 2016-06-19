@@ -13,6 +13,7 @@ import com.bomberman.game.GlobalMethods;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
+import com.bomberman.game.Model.Map;
 import com.bomberman.game.View.BombermanView;
 
 import java.util.ArrayList;
@@ -20,42 +21,32 @@ import java.util.ArrayList;
 /**
  * Created by Patryk on 15.05.2016.
  */
-//TODO: to sie cale nadaje do ponownego napisania XD
 public class BombermanController implements IController {
     private Bomberman player;
     private BombermanView playerView;
-    private TiledMap tiledMap;
-    private MapObjects mapObjects;
+    private Map map;
     private ArrayList<Rectangle> collisionElements = new ArrayList<>();
     private float elapsedTime = 0;
-    //private ArrayList<Rectangle> explodingElements = new ArrayList<>();
+    private Map.CollisionDetector collisionDetector;
 
 
-    public BombermanController(Bomberman player,BombermanView playerView, TiledMap tiledMap)
+    public BombermanController(Bomberman player,BombermanView playerView, Map map)
     {
-        this.tiledMap = tiledMap;
+        this.map = map;
+        this.collisionDetector = map.getCollisionDetector();
         this.player = player;
         this.playerView = playerView;
-        getCollisionLayers();
+        //collisionElements = map.getCollisionElements();
+        collisionElements.addAll(map.getSolidElements());
+        collisionElements.addAll(map.getExplodableElements());
     }
 
-    private void getCollisionLayers()
-    {
-        collisionElements = GlobalMethods.getElements(tiledMap,Constants.SOLID_OBJECT);
-//        mapObjects = tiledMap.getLayers().get(Constants.SOLID_OBJECT).getObjects();
-//        for(int i = 0 ; i < mapObjects.getCount(); i++)
-//        {
-//            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-//            solidElements.add(obj.getRectangle());
-//        }
-        collisionElements.addAll(GlobalMethods.getElements(tiledMap,Constants.EXPLODING_OBJECT));
-//        mapObjects = tiledMap.getLayers().get(Constants.EXPLODING_OBJECT).getObjects();
-//        for(int i = 0 ; i < mapObjects.getCount(); i++)
-//        {
-//            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-//            solidElements.add(obj.getRectangle());
-//        }
-    }
+//    private void getCollisionLayers()
+//    {
+//        collisionElements.clone(map.getExplodableElements());
+//        collisionElements.addAll(map.getSolidElements());
+//
+//    }
 
     public void update(float x, float y)
     {
@@ -63,37 +54,15 @@ public class BombermanController implements IController {
         float oldY = player.getPosition().y;
 
         player.update(x,y);
-
-        for(int i = 0 ; i < collisionElements.size();i++)
+        //czek if kolizja */
+        if(collisionDetector.playerCollision(player.getRectangle()))
         {
-
-
-            if(Intersector.overlaps(collisionElements.get(i),player.getRectangle()))
-            {
-                player.setStatus(Bomberman.Status.IDLE);
-                player.setX(oldX);
-                player.setY(oldY);
-                player.getPosition();
-                break;
-
-            }
-
+            player.setStatus(Bomberman.Status.IDLE);
+            player.setX(oldX);
+            player.setY(oldY);
+            player.getPosition();
         }
-    }
 
-    public void updateSolidElements(ArrayList<Rectangle>diff)
-    {
-        collisionElements.removeAll(diff);
-    }
-
-    public void updateCollisionElements(Rectangle obj)
-    {
-        collisionElements.remove(obj);
-    }
-
-    public Bomberman getPlayer()
-    {
-        return this.player;
     }
 
     @Override

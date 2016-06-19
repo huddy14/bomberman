@@ -36,6 +36,7 @@ public class GameScreen extends ChangeListener implements Screen {
     private MapCamera camera;
     private Bomberman player;
     private TiledMap tiledMap;
+    private Map map;
     private TiledMapRenderer tiledMapRenderer;
     private BombController bombController;
     float time =0;
@@ -55,9 +56,9 @@ public class GameScreen extends ChangeListener implements Screen {
 
     private void init()
     {
-        //map = new Map();
         tiledMap = new TmxMapLoader().load(Constants.MAP_1);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        map = new Map(tiledMap);
 
         //player = new Bomberman(new Vector2(80,700));
         player = new Bomberman(new Vector2(64,64*10));
@@ -66,9 +67,9 @@ public class GameScreen extends ChangeListener implements Screen {
         camera = new MapCamera(tiledMap.getProperties(),player);
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        bombermanController = new BombermanController(player,bombermanView,tiledMap);
+        bombermanController = new BombermanController(player,bombermanView,map);
 
-        bombController = new BombController(player,bombermanController,tiledMap,camera);
+        bombController = new BombController(player,bombermanController,map);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());

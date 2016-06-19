@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Bomberman {
 
     public static final int SIZE = 10;
-    private int availibleBombs = 3;
+    private int availableBombs = 3;
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
     float velocity = 3f;
@@ -31,15 +31,15 @@ public class Bomberman {
     }
     public boolean canPlant()
     {
-        return bombPlanted<availibleBombs;
+        return bombPlanted< availableBombs;
     }
 
     public void addBombCount() {
-        availibleBombs++;
+        availableBombs++;
     }
 
     public void resestBombCount() {
-        availibleBombs = 1;
+        availableBombs = 1;
     }
 
     public void bombPlanted()
