@@ -31,6 +31,7 @@ public class GameScreen extends ChangeListener implements Screen {
     private float elapsedTime;
     private BombermanView bombermanView;
     private BombermanController bombermanController;
+    private GhostController ghostController;
     private Touchpad touchpad;
     private Button bombButton;
     private MapCamera camera;
@@ -61,7 +62,7 @@ public class GameScreen extends ChangeListener implements Screen {
         map = new Map(tiledMap);
 
         //player = new Bomberman(new Vector2(80,700));
-        player = new Bomberman(new Vector2(64,64*10));
+        player = new Bomberman(new Vector2(64,64*11));
         bombermanView = new BombermanView();
 
         camera = new MapCamera(tiledMap.getProperties(),player);
@@ -70,6 +71,8 @@ public class GameScreen extends ChangeListener implements Screen {
         bombermanController = new BombermanController(player,bombermanView,map);
 
         bombController = new BombController(player,bombermanController,map);
+
+        ghostController = new GhostController(player,map);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());
@@ -125,7 +128,7 @@ public class GameScreen extends ChangeListener implements Screen {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         bombermanController.draw(camera);
-
+        ghostController.draw(camera);
         //bv.setProjectionMatrix(camera.combined);
         //bombController.drawBomb();
         bombController.draw(camera);

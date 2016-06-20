@@ -24,11 +24,16 @@ public class Map {
     private ArrayList<Rectangle> collisionElements = new ArrayList<>();
     private CollisionDetector collisionDetector= new CollisionDetector();
 
+    final int MAP_WIDTH;
+    final int MAP_HEIGHT;
+
     private TiledMapTileLayer layer;
 
 
     public Map(TiledMap map) {
         this.map = map;
+        MAP_WIDTH = map.getProperties().get("width", Integer.class);
+        MAP_HEIGHT = map.getProperties().get("height", Integer.class);
         this.solidElements = getElements(map, Constants.SOLID_OBJECT);
         this.explodableElements = getElements(map, Constants.EXPLODING_OBJECT);
         collisionElements.addAll(explodableElements);
@@ -77,7 +82,7 @@ public class Map {
 
     public CollisionDetector getCollisionDetector()
     {
-        return collisionDetector;
+        return this.collisionDetector;
     }
 
     public void deleteTiles(ExplosionBounds eb)
@@ -227,10 +232,10 @@ public class Map {
                 }
             }
 
-            ymin = MathUtils.clamp(ymin,1,11);
-            ymax = MathUtils.clamp(ymax,1,11);
-            xmin = MathUtils.clamp(xmin,1,13);
-            xmax = MathUtils.clamp(xmax,1,13);
+            ymin = MathUtils.clamp(ymin,1,MAP_HEIGHT - 2);
+            ymax = MathUtils.clamp(ymax,1,MAP_HEIGHT - 2);
+            xmin = MathUtils.clamp(xmin,1,MAP_WIDTH - 2);
+            xmax = MathUtils.clamp(xmax,1,MAP_WIDTH - 2);
             Log.w("x,y,ymin,ymax,xmin,xmax",""+bombX+" "+bombY+" "+ymin+" "+ymax+" "+xmin+" "+xmax);
 
             return new ExplosionBounds(bombX,bombY,ymin,ymax,xmin,xmax,toDelete);

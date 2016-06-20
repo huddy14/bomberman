@@ -8,6 +8,9 @@ public final class Constants {
     public static final String BOMBERMAN_BACK_PACK =  "Bomberman/Back/BombermanBack.pack";
     public static final String BOMBERMAN_SIDE_LEFT_PACK= "Bomberman/SideLeft/BombermanSideLeft.pack" ;
     public static final String BOMBERMAN_SIDE_RIGHT = "Bomberman/Side/BombermanSide.pack" ;
+    public static final String GHOST_SIDE_PACK = "Creep/Side/GhostSide.pack" ;
+    public static final String GHOST_FRONT_PACK = "Creep/Front/GhostFront.pack" ;
+    public static final String GHOST_BACK_PACK = "Creep/Back/GhostBack.pack" ;
     public static final String BOMB_ANIMATION = "Bomb/BombAnimation.pack" ;
     public static final String BOOM_ANIMATION = "Flame/FlameAnimation.pack";
     public static final String BOMB_1 = "Bomb_f01" ;

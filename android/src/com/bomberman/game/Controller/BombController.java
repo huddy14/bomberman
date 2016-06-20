@@ -118,7 +118,6 @@ public class BombController implements IController, Bomb.BombListener
         {
             b.update(Gdx.graphics.getDeltaTime());
             drawBomb(b,camera);
-            //drawExplosion(b,camera);
         }
     }
 

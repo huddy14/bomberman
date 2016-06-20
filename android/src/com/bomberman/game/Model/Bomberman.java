@@ -2,13 +2,14 @@ package com.bomberman.game.Model;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.Interfaces.IMovingModel;
 
 /**
  * Created by Patryk on 15.05.2016.
  */
-public class Bomberman {
+public class Bomberman implements IMovingModel{
 
-    public static final int SIZE = 10;
+    public static final int SIZE = 50;
     private int availableBombs = 3;
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
@@ -21,8 +22,7 @@ public class Bomberman {
 
     public Bomberman(Vector2 position) {
         this.position = position;
-        this.bounds.height = SIZE;
-        this.bounds.width = SIZE;
+
     }
 
     public boolean isBombPlanted()
@@ -51,89 +51,7 @@ public class Bomberman {
         bombPlanted--;
     }
 
-    //Możliwe stany gracza
-    public enum Status {
-        IDLE, MOVE, DEAD
-    }
 
-    //Kierunek
-    public enum Direction {
-        LEFT, RIGHT, UP, DOWN
-    }
-
-
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
-    public Vector2 getPosition() {
-        return position;
-    }
-
-    public void setX(float x)
-    {
-        position.x = x;
-    }
-
-    public void setY(float y)
-    {
-        position.y =y;
-    }
-
-    public float getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(float velocity)
-    {
-        this.velocity=velocity;
-    }
-
-    public void update(double x, double y) {
-
-        if (x == 0 && y == 0)status=Status.IDLE;
-        else status=Status.MOVE;
-        direction = calculateDirection(x,y);
-        if(status.equals(Status.MOVE)) {
-            switch (direction) {
-                case LEFT:
-                    position.x -= velocity;
-                    break;
-                case RIGHT:
-                    position.x += velocity;
-                    break;
-                case UP:
-                    position.y += velocity;
-                    break;
-                case DOWN:
-                    position.y -= velocity;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    }
-
-    public Status getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus(Status status)
-    {
-        this.status = status;
-    }
-
-    public Direction getDirection()
-    {
-        return direction;
-    }
-
-    public void setDirection(Direction direction)
-    {
-        this.direction = direction;
-    }
 
     private Direction calculateDirection(double x, double y)
     {
@@ -150,10 +68,86 @@ public class Bomberman {
 
     }
 
-    public Rectangle getRectangle()
-    {
-        return new Rectangle(position.x,position.y,50,50);
+
+    @Override
+    public Direction getDirection() {
+        return this.direction;
     }
 
+    @Override
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
+    @Override
+    public Vector2 getPosition() {
+        return this.position;
+    }
+
+    @Override
+    public void setX(float x) {
+        this.position.x = x;
+    }
+
+    @Override
+    public void setY(float y) {
+        this.position.y=y;
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(position.x,position.y,SIZE,SIZE);
+    }
+
+    @Override
+    public float getVelocity() {
+        return this.velocity;
+    }
+
+    @Override
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
+    @Override
+    public Status getStatus() {
+        return this.status;
+    }
+
+    @Override
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public void update(float x, float y) {
+        if (x == 0 && y == 0)status=Status.IDLE;
+        else status=Status.MOVE;
+        direction = calculateDirection(x,y);
+        if(status.equals(Status.MOVE)) {
+            move(direction);
+//            switch (direction) {
+//                case LEFT:
+//                    this.position.x -= velocity;
+//                    break;
+//                case RIGHT:
+//                    this.position.x += velocity;
+//                    break;
+//                case UP:
+//                    this.position.y += velocity;
+//                    break;
+//                case DOWN:
+//                    this.position.y -= velocity;
+//                    break;
+//                default:
+//                    break;
+//            }
+        }
+    }
+
+    @Override
+    public void move(Direction direction) {
+        this.position.x += velocity * direction.getX();
+        this.position.y += velocity * direction.getY();
+    }
 }

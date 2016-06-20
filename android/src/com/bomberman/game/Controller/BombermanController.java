@@ -48,7 +48,7 @@ public class BombermanController implements IController {
 
         player.update(x,y);
         //czek if kolizja */
-        if(collisionDetector.playerCollision(player.getRectangle()))
+        if(collisionDetector.playerCollision(player.getBounds()))
         {
             player.setStatus(Bomberman.Status.IDLE);
             player.setX(oldX);
