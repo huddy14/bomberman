@@ -10,10 +10,10 @@ import com.bomberman.game.View.ExplosionView;
  * Created by huddy on 6/3/16.
  */
 public class Bomb {
-    public static interface BombListener {
-        public void onBombExploded(Bomb bomb);
-        public void onExplosionFinished(Bomb bomb);
-        public ExplosionBounds onBombPlanted(Bomb bomb);
+    public interface BombListener {
+        void onBombExploded(Bomb bomb);
+        void onExplosionFinished(Bomb bomb);
+        ExplosionBounds onBombPlanted(Bomb bomb);
     }
 
     private Vector2 position = new Vector2();
@@ -45,6 +45,7 @@ public class Bomb {
     {
         return this.range;
     }
+
     public void setRemaningSeconds(float remainingSeconds)
     {
         this.remainingSeconds=remainingSeconds;
@@ -67,24 +68,6 @@ public class Bomb {
 
     }
 
-    public void getExplosion(OrthographicCamera camera)
-    {
-        explosion.setProjectionMatrix(camera.combined);
-        for(int i = explosionBounds.getXmin(); i <= explosionBounds.getXmax(); i++)
-        {
-            explosion.drawBoom(i,explosionBounds.getY());
-
-        }
-
-        for(int i = explosionBounds.getY(); i <= explosionBounds.getYmin(); i++)
-        {
-            explosion.drawBoom(explosionBounds.getX(),i);
-
-        }
-    }
-
-
-
     public State getState()
     {
         return state;
@@ -99,7 +82,6 @@ public class Bomb {
     {
         float temp = x % CELL_SIZE;
         return x-temp+(CELL_SIZE/8);
-        //return x;
     }
 
     public float getX()

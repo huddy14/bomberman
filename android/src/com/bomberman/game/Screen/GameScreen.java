@@ -40,12 +40,7 @@ public class GameScreen extends ChangeListener implements Screen {
     private Map map;
     private TiledMapRenderer tiledMapRenderer;
     private BombController bombController;
-    float time =0;
-    float x,y;
-    Bomb bomb;
-    //BombView bv = new BombView();
-    boolean bombPlanted = false;
-    private ShapeRenderer shapeRenderer;
+
 
 
     private int width, height;
@@ -69,6 +64,10 @@ public class GameScreen extends ChangeListener implements Screen {
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         ghostController = new GhostController(player, map);
+
+        ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 5*Constants.TILE_SIZE)));
+        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 9*Constants.TILE_SIZE)));
+        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 3*Constants.TILE_SIZE)));
 
         bombermanController = new BombermanController(player,bombermanView,ghostController,map);
 

@@ -121,11 +121,6 @@ public class BombController implements IController, Bomb.BombListener
         onExplosionListeners.add(listener);
     }
 
-//    public void deleteOnExplosionListener(IExplosionListener listener)
-//    {
-//        onExplosionListeners.remove(listener);
-//    }
-
     @Override
     public void draw(OrthographicCamera camera) {
         bombs.removeAll(bombsToDelete);

@@ -2,6 +2,7 @@ package com.bomberman.game.Model;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IMovingModel;
 
 /**
@@ -9,7 +10,7 @@ import com.bomberman.game.Interfaces.IMovingModel;
  */
 public class Bomberman implements IMovingModel{
 
-    public static final int SIZE = 50;
+    public static final int SIZE = 62;
     private int availableBombs = 3;
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
@@ -68,6 +69,10 @@ public class Bomberman implements IMovingModel{
 
     }
 
+    public Rectangle getSmallBounds()
+    {
+        return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+Constants.TILE_SIZE/4,SIZE/2,SIZE/2);
+    }
 
     @Override
     public Direction getDirection() {

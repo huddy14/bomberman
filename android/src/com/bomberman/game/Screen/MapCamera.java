@@ -51,26 +51,29 @@ public class MapCamera extends OrthographicCamera {
         //if player is moving we make sure we aint gonna move through map boundries
         if(player.getStatus().equals(Bomberman.Status.MOVE) || firstCall)//&& !player.isColiding()
         {
-            switch (player.getDirection())
-            {
-                case UP:
-                    //this.position.y = this.position.y + playerVelocity;
+//            switch (player.getDirection())
+//            {
+//                case UP:
+//                    //this.position.y = this.position.y + playerVelocity;
+//
+//                    this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom + halfHeight,mapTop - halfHeight);
+//                    break;
+//                case DOWN:
+//                    this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom+ halfHeight,mapTop-halfHeight);
+//                    break;
+//                case LEFT:
+//                    this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
+//                    break;
+//                case RIGHT:
+//                    this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
+//                    //this.position.x = this.position.x + playerVelocity;
+//
+//                    break;
+//                default:break;
+//            }
+            this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom + halfHeight,mapTop - halfHeight);
+            this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
 
-                    this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom + halfHeight,mapTop - halfHeight);
-                    break;
-                case DOWN:
-                    this.position.y = MathUtils.clamp(player.getPosition().y, mapBottom+ halfHeight,mapTop-halfHeight);
-                    break;
-                case LEFT:
-                    this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
-                    break;
-                case RIGHT:
-                    this.position.x = MathUtils.clamp(player.getPosition().x, mapLeft + halfWidth,mapRight - halfWidth);
-                    //this.position.x = this.position.x + playerVelocity;
-
-                    break;
-                default:break;
-            }
             firstCall = false;
 
         }

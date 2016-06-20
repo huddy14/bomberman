@@ -137,6 +137,7 @@ public class Map {
 //            return tab;
 //        }
 
+        //TODO: generalnie ogarnac nazwy tych funkcji
         private int calculateTileCord(float x)
         {
             return (int)(x - (x % Constants.TILE_SIZE)) / Constants.TILE_SIZE;
@@ -152,11 +153,14 @@ public class Map {
             return false;
         }
 
-        public boolean playerGhostCollision(Rectangle player, Rectangle ghost)
+        public boolean playerGhostsCollision(Rectangle player, ArrayList<Ghost> ghosts)
         {
-            if (Intersector.overlaps(player,ghost))
-                return true;
+            for (Ghost ghost : ghosts) {
+                if (Intersector.overlaps(player, ghost.getBounds()))
+                    return true;
+            }
             return false;
+
         }
         public boolean movingModelBombCollision(IMovingModel model, Bomb bomb)
         {
@@ -164,6 +168,7 @@ public class Map {
                     Intersector.overlaps(model.getBounds(),bomb.getExplosionBounds().getHorizontalRectangle());
         }
         //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
+        //TODO: bobmy wybuchaja razem nawet jesli pomiedzy jest explodable object
         public Bomb bombCollision(Bomb b1, ArrayList<Bomb> bombs)
         {
             for(Bomb b2 : bombs) {
@@ -188,7 +193,7 @@ public class Map {
             }
             return b1;
         }
-
+        //TODO: sprobowac prosciej zapisac
         public ExplosionBounds bombExplosionCollision(Bomb bomb) {
             Rectangle[] toDelete = new Rectangle[4];
             int bombX, bombY;

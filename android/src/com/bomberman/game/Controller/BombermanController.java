@@ -53,77 +53,74 @@ public class BombermanController implements IController,IExplosionListener {
 
     public void update(float x, float y)
     {
-        float oldX = player.getPosition().x;
-        float oldY = player.getPosition().y;
+        //TODO: zredukowac ify jak sie da a jak nie to nie
 
-        player.update(x,y);
-        //czek if kolizja */
-        if(collisionDetector.playerGhostCollision(player.getBounds(),ghostController.getGhost().getBounds()))
-        {
-            player.setStatus(IMovingModel.Status.DEAD);
-        }
-        if(collisionDetector.playerCollision(player.getBounds()))
-        {
-            Rectangle rectangle = map.getRectangle();
-            if(rectangle.getX() == 0 || rectangle.getY() == 0){
-                player.setStatus(Bomberman.Status.IDLE);
-                player.setX(oldX);
-                player.setY(oldY);
-                player.getPosition();
-            }
-            else if(rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.DOWN == player.getDirection()) {
-                //left
-                player.update(-1, 0);
-            }
-            else if(rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.UP == player.getDirection()) {
-                //left
-                player.update(-1, 0);
-            }
-            else if(rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.DOWN == player.getDirection()) {
-                //right
-                player.update(1, 0);
-            }
-            else if(rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.UP == player.getDirection()) {
-                //right
-                player.update(1, 0);
-            }
-            else  if(rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.RIGHT == player.getDirection()) {
-                //up
-                player.update(0, 1);
-            }
-            else  if(rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.LEFT == player.getDirection()) {
-                //up
-                player.update(0, 1);
-            }
-            else  if(rectangle.getY() - player.getPosition().y > approx-5 && Bomberman.Direction.RIGHT == player.getDirection()) {
-                //down
-                player.update(0, -1);
-            }
-            else  if(rectangle.getY() - player.getPosition().y > approx-5 && Bomberman.Direction.LEFT == player.getDirection()) {
-                //down
-                player.update(0, -1);
-            }
-            else {
-                player.setStatus(Bomberman.Status.IDLE);
-                player.setX(oldX);
-                player.setY(oldY);
-                player.getPosition();
-            }
+        if(!player.getStatus().equals(IMovingModel.Status.DEAD)) {
+            float oldX = player.getPosition().x;
+            float oldY = player.getPosition().y;
 
+            player.update(x, y);
+            //czek if kolizja */
+            if (collisionDetector.playerGhostsCollision(player.getSmallBounds(), ghostController.getGhosts())) {
+                player.setStatus(IMovingModel.Status.DEAD);
+                Log.w("s", "" + player.getStatus());
+            }
+            if (collisionDetector.playerCollision(player.getBounds())) {
+                Rectangle rectangle = map.getRectangle();
+                if (rectangle.getX() == 0 || rectangle.getY() == 0) {
+                    player.setStatus(Bomberman.Status.IDLE);
+                    player.setX(oldX);
+                    player.setY(oldY);
+                    player.getPosition();
+                } else if (rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.DOWN == player.getDirection()) {
+                    //left
+                    player.update(-1, 0);
+                } else if (rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.UP == player.getDirection()) {
+                    //left
+                    player.update(-1, 0);
+                } else if (rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.DOWN == player.getDirection()) {
+                    //right
+                    player.update(1, 0);
+                } else if (rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.UP == player.getDirection()) {
+                    //right
+                    player.update(1, 0);
+                } else if (rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.RIGHT == player.getDirection()) {
+                    //up
+                    player.update(0, 1);
+                } else if (rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.LEFT == player.getDirection()) {
+                    //up
+                    player.update(0, 1);
+                } else if (rectangle.getY() - player.getPosition().y > approx - 5 && Bomberman.Direction.RIGHT == player.getDirection()) {
+                    //down
+                    player.update(0, -1);
+                } else if (rectangle.getY() - player.getPosition().y > approx - 5 && Bomberman.Direction.LEFT == player.getDirection()) {
+                    //down
+                    player.update(0, -1);
+                } else {
+                    player.setStatus(Bomberman.Status.IDLE);
+                    player.setX(oldX);
+                    player.setY(oldY);
+                    player.getPosition();
+                }
+
+            }
         }
     }
 
     @Override
     public void draw(OrthographicCamera camera) {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-        playerView.setProjectionMatrix(camera.combined);
-        playerView.drawBomberman(player.getDirection(),elapsedTime,player.getPosition().x,player.getPosition().y);
+        if(!player.getStatus().equals(IMovingModel.Status.DEAD))
+        {
+            elapsedTime += Gdx.graphics.getDeltaTime();
+            playerView.setProjectionMatrix(camera.combined);
+            playerView.drawBomberman(player.getDirection(), elapsedTime, player.getPosition().x, player.getPosition().y);
+        }
     }
 
     @Override
     public void onExplosion(Bomb bomb) {
         if(collisionDetector.movingModelBombCollision(player,bomb))
-            Log.w("kolizja z ziomkiem",""+player.getStatus());
+            player.setStatus(IMovingModel.Status.DEAD);
 
     }
 }

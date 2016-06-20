@@ -25,7 +25,7 @@ public class GhostController implements IController,IExplosionListener {
     private Map map;
     private Bomberman player;
     private ArrayList<Ghost> ghosts = new ArrayList<>();
-    private Ghost ghost = new Ghost(new Vector2(64,64*11));
+    //private Ghost ghost = new Ghost(new Vector2(64,64*11));
     private GhostView ghostView = new GhostView();
     private Map.CollisionDetector collisionDetector;
     private BombController bombController;
@@ -43,41 +43,51 @@ public class GhostController implements IController,IExplosionListener {
 
     }
 
-    public Ghost getGhost()
+    public ArrayList<Ghost> getGhosts()
     {
-        return this.ghost;
+        return this.ghosts;
     }
 
+    public void addGhost(Ghost ghost)
+    {
+        this.ghosts.add(ghost);
+    }
 
     @Override
     public void draw(OrthographicCamera camera)
     {
-        if(!ghost.getStatus().equals(IMovingModel.Status.DEAD)) {
-            update();
-            elapsedTime += Gdx.graphics.getDeltaTime();
-            ghostView.setProjectionMatrix(camera.combined);
-            ghostView.drawGhost(ghost.getDirection(), elapsedTime, ghost.getPosition().x, ghost.getPosition().y);
+        for (Ghost ghost : ghosts) {
+            if (!ghost.getStatus().equals(IMovingModel.Status.DEAD)) {
+                update();
+                elapsedTime += Gdx.graphics.getDeltaTime();
+                ghostView.setProjectionMatrix(camera.combined);
+                ghostView.drawGhost(ghost.getDirection(), elapsedTime, ghost.getPosition().x, ghost.getPosition().y);
+            }
         }
     }
 
     public void update()
     {
-        float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;
-        ghost.move(ghost.getDirection());
+        for (Ghost ghost : ghosts) {
+            float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;
+            ghost.move(ghost.getDirection());
 
-        if (collisionDetector.playerCollision(ghost.getBounds())) {
-            ghost.update(oldX, oldY);
-            directionIndex = randomGenerator.nextInt(IMovingModel.Direction.values().length);
-            ghost.setDirection(IMovingModel.Direction.values()[directionIndex]);
+            if (collisionDetector.playerCollision(ghost.getBounds())) {
+                ghost.update(oldX, oldY);
+                directionIndex = randomGenerator.nextInt(IMovingModel.Direction.values().length);
+                ghost.setDirection(IMovingModel.Direction.values()[directionIndex]);
+            }
         }
 
     }
 
     @Override
     public void onExplosion(Bomb bomb) {
-        if(collisionDetector.movingModelBombCollision(ghost,bomb)) {
-            //Log.w("potwor se wybuch",""+player.getStatus());
-            ghost.setStatus(IMovingModel.Status.DEAD);
+        for (Ghost ghost : ghosts) {
+            if (collisionDetector.movingModelBombCollision(ghost, bomb)) {
+                ghost.setStatus(IMovingModel.Status.DEAD);
+                ghosts.remove(ghost);
+            }
         }
     }
 }
