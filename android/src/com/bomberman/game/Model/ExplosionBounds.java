@@ -16,11 +16,12 @@ public class ExplosionBounds {
         this.x = x;
         this.y = y;
 
-        this.ymin = MathUtils.clamp(ymin,1,11);
-        this.ymax = MathUtils.clamp(ymax,1,11);
+        this.ymin = ymin;
+        this.ymax = ymax;
+        this.xmin = xmin;
+        this.xmax = xmax;
+
         this.toDelete = toDelete;
-        this.xmin = MathUtils.clamp(xmin,1,12);
-        this.xmax = MathUtils.clamp(xmax,1,12);
     }
 
     public int getX()

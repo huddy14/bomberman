@@ -36,17 +36,10 @@ public class BombermanController implements IController {
         this.collisionDetector = map.getCollisionDetector();
         this.player = player;
         this.playerView = playerView;
-        //collisionElements = map.getCollisionElements();
         collisionElements.addAll(map.getSolidElements());
         collisionElements.addAll(map.getExplodableElements());
     }
 
-//    private void getCollisionLayers()
-//    {
-//        collisionElements.clone(map.getExplodableElements());
-//        collisionElements.addAll(map.getSolidElements());
-//
-//    }
 
     public void update(float x, float y)
     {

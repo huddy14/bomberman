@@ -1,14 +1,10 @@
 package com.bomberman.game.Model;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.bomberman.game.Constants;
 import com.bomberman.game.Controller.BombController;
-import com.bomberman.game.View.BombView;
-import com.bomberman.game.View.BoomView;
-
-import java.util.ArrayList;
+import com.bomberman.game.View.ExplosionView;
 
 /**
  * Created by huddy on 6/3/16.
@@ -28,13 +24,12 @@ public class Bomb {
     private final static float HEIGHT = 900;
     private State state = State.COUNT_DOWN;
     private float remainingSeconds = 3;
-    private BoomView explosion = new BoomView();
+    private ExplosionView explosion = new ExplosionView();
     private ExplosionBounds explosionBounds;
     private int range = 2;
 
 
     public static enum State {COUNT_DOWN, EXPLODED,EXPLOSION_FINISHED}
-    //private boolean exploded = false;
 
     public Bomb(Vector2 position, BombController bombController) {
         //dodajemy polowe szerkosci i wysokosci komorki, zeby bomba sie dobrze rysowala sie w odpowiedniej komorce
@@ -61,46 +56,34 @@ public class Bomb {
 
     public void update(float deltaTime) {
         this.remainingSeconds -= deltaTime;
-        if (remainingSeconds <= 0 && state != State.EXPLODED && state != State.EXPLOSION_FINISHED) {
+        if (remainingSeconds <= 0 && state == State.COUNT_DOWN) {
             this.state = State.EXPLODED;
             mListener.onBombExploded(this);
         }
-        if(remainingSeconds<=-1 && state != State.EXPLOSION_FINISHED) {
+        if(remainingSeconds<=-0.5f && state != State.EXPLOSION_FINISHED) {
             this.state = State.EXPLOSION_FINISHED;
             mListener.onExplosionFinished(this);
         }
 
     }
 
-    public BoomView getExplosion()
+    public void getExplosion(OrthographicCamera camera)
     {
-        for(int i = explosionBounds.getX(); i <= explosionBounds.getXmax(); i++)
+        explosion.setProjectionMatrix(camera.combined);
+        for(int i = explosionBounds.getXmin(); i <= explosionBounds.getXmax(); i++)
         {
-            explosion.drawBoom(tileToPixel(i),tileToPixel(explosionBounds.getY()));
+            explosion.drawBoom(i,explosionBounds.getY());
 
         }
-        for(int i = explosionBounds.getX(); i >= explosionBounds.getXmin(); i--)
-        {
-            explosion.drawBoom(tileToPixel(i),tileToPixel(explosionBounds.getY()));
 
-        }
-        for(int i = explosionBounds.getY(); i <= explosionBounds.getYmax(); i++)
-        {
-            explosion.drawBoom(tileToPixel(explosionBounds.getX()),tileToPixel(i));
-
-        }
         for(int i = explosionBounds.getY(); i <= explosionBounds.getYmin(); i++)
         {
-            explosion.drawBoom(tileToPixel(explosionBounds.getX()),tileToPixel(i));
+            explosion.drawBoom(explosionBounds.getX(),i);
 
         }
-        return explosion;
     }
 
-    private float tileToPixel(int x)
-    {
-        return Constants.TILE_SIZE * x;
-    }
+
 
     public State getState()
     {
