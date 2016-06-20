@@ -24,6 +24,7 @@ public class Map {
     private ArrayList<Rectangle> explodableElements = new ArrayList<>();
     private ArrayList<Rectangle> collisionElements = new ArrayList<>();
     private CollisionDetector collisionDetector= new CollisionDetector();
+    private int id;
 
     final int MAP_WIDTH;
     final int MAP_HEIGHT;
@@ -42,6 +43,10 @@ public class Map {
 
         this.layer = (TiledMapTileLayer)map.getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
 
+    }
+
+    public Rectangle getRectangle(){
+        return collisionElements.get(id);
     }
 
     public ArrayList<Rectangle> getSolidElements() {
@@ -140,10 +145,11 @@ public class Map {
         public boolean playerCollision(Rectangle rectangle)
         {
             for (int i = 0; i < collisionElements.size(); i++)
-                if (Intersector.overlaps(collisionElements.get(i), rectangle))
+                if (Intersector.overlaps(collisionElements.get(i), rectangle)) {
+                    id = i;
                     return true;
+                }
             return false;
-
         }
 
         public boolean playerGhostCollision(Rectangle player, Rectangle ghost)
