@@ -68,11 +68,11 @@ public class GameScreen extends ChangeListener implements Screen {
         camera = new MapCamera(tiledMap.getProperties(),player);
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        bombermanController = new BombermanController(player,bombermanView,map);
+        ghostController = new GhostController(player, map);
 
-        bombController = new BombController(player,bombermanController,map);
+        bombermanController = new BombermanController(player,bombermanView,ghostController,map);
 
-        ghostController = new GhostController(player,map);
+        bombController = new BombController(player,bombermanController,ghostController,map);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());

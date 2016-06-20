@@ -12,7 +12,7 @@ import java.util.Random;
 public class Ghost implements IMovingModel{
     public static final int SIZE = 64;
     Vector2 position = new Vector2();
-    float velocity = 1f;
+    float velocity = 0.3f;
     IMovingModel.Status status = IMovingModel.Status.MOVE;
     IMovingModel.Direction direction = IMovingModel.Direction.DOWN;
     private int directionIndex;

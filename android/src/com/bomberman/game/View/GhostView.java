@@ -19,10 +19,10 @@ public class GhostView extends SpriteBatch {
 
     public GhostView()
     {
-        animations.put(Ghost.Direction.DOWN, new Animation(1/10f,new TextureAtlas(Constants.GHOST_FRONT_PACK).getRegions()));
-        animations.put(Ghost.Direction.UP, new Animation(1/10f,new TextureAtlas(Constants.GHOST_BACK_PACK).getRegions()));
-        animations.put(Ghost.Direction.LEFT, new Animation(1/10f,new TextureAtlas(Constants.GHOST_SIDE_PACK).getRegions()));
-        animations.put(Ghost.Direction.RIGHT, new Animation(1/10f,new TextureAtlas(Constants.GHOST_SIDE_PACK).getRegions()));
+        animations.put(Ghost.Direction.DOWN, new Animation(1/5f,new TextureAtlas(Constants.GHOST_FRONT_PACK).getRegions()));
+        animations.put(Ghost.Direction.UP, new Animation(1/5f,new TextureAtlas(Constants.GHOST_BACK_PACK).getRegions()));
+        animations.put(Ghost.Direction.LEFT, new Animation(1/5f,new TextureAtlas(Constants.GHOST_SIDE_PACK).getRegions()));
+        animations.put(Ghost.Direction.RIGHT, new Animation(1/5f,new TextureAtlas(Constants.GHOST_SIDE_PACK).getRegions()));
     }
 
     public void drawGhost(Ghost.Direction dir, float deltaTime, float x, float y)

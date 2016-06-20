@@ -10,6 +10,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Interfaces.IController;
+import com.bomberman.game.Interfaces.IExplosionListener;
+import com.bomberman.game.Interfaces.IMovingModel;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomb;
@@ -28,6 +30,7 @@ public class BombController implements IController, Bomb.BombListener
     private ArrayList<Bomb> bombs = new ArrayList<>();
     private BombermanController bombermanController;
     private BombView bombView;
+    private ArrayList<IExplosionListener> onExplosionListeners = new ArrayList<>();
     private Bomberman player;
     private ExplosionView explosion = new ExplosionView();
     private ArrayList<Rectangle> explodableElements;
@@ -39,13 +42,18 @@ public class BombController implements IController, Bomb.BombListener
 
     private ArrayList<Bomb> bombsToDelete = new ArrayList<>();
 
-    public BombController(Bomberman bomberman, BombermanController bombermanController, Map map)
+    public BombController(Bomberman bomberman, BombermanController bombermanController, GhostController ghostController, Map map)
     {
         this.player = bomberman;
         this.map = map;
         this.collisionDetector = map.getCollisionDetector();
         this.layer = (TiledMapTileLayer)map.getTiledMap().getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
-        this.bombermanController = bombermanController;
+
+        //dodajemy obiekty nasluchujace na wybuch bomby (gracz, potworki)
+
+        addOnExplosionListener(bombermanController);
+        addOnExplosionListener(ghostController);
+
         this.bombView = new BombView();
 
         explodableElements = map.getExplodableElements();
@@ -56,8 +64,7 @@ public class BombController implements IController, Bomb.BombListener
 
     public void addBomb()
     {
-        //Bomb bomb =new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this);
-        //bomb = collisionDetector.bombCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs);
+        //dodajac bombe od razu sprawdzamy jakie stale elementy wybuchną
         bombs.add(collisionDetector.bombCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
         Log.w("ilosc itemow :","" + bombs.size());
     }
@@ -108,6 +115,16 @@ public class BombController implements IController, Bomb.BombListener
 
 
     }
+    //TODO: jak nic sie nie zmienic, to wyjebac i po prostu dodadac do tablicy w tablicy
+    public void addOnExplosionListener(IExplosionListener listener)
+    {
+        onExplosionListeners.add(listener);
+    }
+
+//    public void deleteOnExplosionListener(IExplosionListener listener)
+//    {
+//        onExplosionListeners.remove(listener);
+//    }
 
     @Override
     public void draw(OrthographicCamera camera) {
@@ -123,7 +140,12 @@ public class BombController implements IController, Bomb.BombListener
 
     @Override
     public void onBombExploded(Bomb bomb) {
+        //usuwamy z mapy elementy ktore wybuchly
         map.deleteTiles(bomb.getExplosionBounds());
+        //powiadamiamy obiekty nasłuchujące, że bomby eksplodowała
+        for(IExplosionListener listener : onExplosionListeners)
+            listener.onExplosion(bomb);
+
         player.bombExploded();
 
     }

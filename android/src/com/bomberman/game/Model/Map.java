@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.bomberman.game.Constants;
+import com.bomberman.game.Interfaces.IMovingModel;
 
 import java.util.ArrayList;
 
@@ -143,6 +144,18 @@ public class Map {
                     return true;
             return false;
 
+        }
+
+        public boolean playerGhostCollision(Rectangle player, Rectangle ghost)
+        {
+            if (Intersector.overlaps(player,ghost))
+                return true;
+            return false;
+        }
+        public boolean movingModelBombCollision(IMovingModel model, Bomb bomb)
+        {
+            return Intersector.overlaps(model.getBounds(),bomb.getExplosionBounds().getVerticalRectangle()) ||
+                    Intersector.overlaps(model.getBounds(),bomb.getExplosionBounds().getHorizontalRectangle());
         }
         //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
         public Bomb bombCollision(Bomb b1, ArrayList<Bomb> bombs)
