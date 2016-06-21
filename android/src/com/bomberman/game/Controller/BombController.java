@@ -6,14 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
-import com.bomberman.game.Interfaces.IMovingModel;
 import com.bomberman.game.Model.Bomberman;
-import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.ExplosionBounds;
 import com.bomberman.game.Model.Map;
@@ -55,7 +51,7 @@ public class BombController implements IController, Bomb.BombListener
     public void addBomb()
     {
         //dodajac bombe od razu sprawdzamy jakie stale elementy wybuchną
-        bombs.add(collisionDetector.bombCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
+        bombs.add(collisionDetector.bombsExplosionBoundsCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
         Log.w("ilosc itemow :","" + bombs.size());
     }
 

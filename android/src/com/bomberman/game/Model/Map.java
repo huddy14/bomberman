@@ -62,19 +62,6 @@ public class Map {
         return pE.get(powerupElements.get(idPow));
     }
 
-    public ArrayList<Rectangle> getSolidElements() {
-        return this.solidElements;
-    }
-
-    public ArrayList<Rectangle> getExplodableElements() {
-        return this.explodableElements;
-    }
-
-    public void updateExplodableElements(Rectangle toDelete)
-    {
-        this.explodableElements.remove(toDelete);
-    }
-
     private java.util.Map<Rectangle, String> getPowerProp(TiledMap map, String layer_name)
     {
         java.util.Map<Rectangle, String> pair = new HashMap<>();
@@ -108,13 +95,6 @@ public class Map {
         }
         return elements;
     }
-
-    public TiledMap getTiledMap()
-    {
-        return this.map;
-    }
-
-
 
     public ArrayList<Rectangle>getCollisionElements()
     {
@@ -152,25 +132,6 @@ public class Map {
 
 
     public class CollisionDetector {
-//        private int[][] solidElementsCoords = new int[solidElements.size()][2];
-//        private int[][] explodingElements;
-//
-//        public CollisionDetector()
-//        {
-//             solidElementsCoords = fillCoordsTable(solidElements,solidElementsCoords);
-//        }
-
-//        private int[][] fillCoordsTable(ArrayList<Rectangle>list, int[][]tab)
-//        {
-//            for(int i = 0 ; i<list.size(); i++)
-//            {
-//
-//                tab[i][0] = calculateTileCord(list.get(i).getX());
-//                tab[i][1] = calculateTileCord(list.get(i).getY());
-//
-//            }
-//            return tab;
-//        }
 
         //TODO: generalnie ogarnac nazwy tych funkcji
         private int calculateTileCord(float x)
@@ -178,7 +139,7 @@ public class Map {
             return (int)(x - (x % Constants.TILE_SIZE)) / Constants.TILE_SIZE;
         }
 
-        public boolean playerCollision(Rectangle rectangle)
+        public boolean terrainCollision(Rectangle rectangle)
         {
             for (int i = 0; i < collisionElements.size(); i++)
                 if (Intersector.overlaps(collisionElements.get(i), rectangle)) {
@@ -222,14 +183,17 @@ public class Map {
             return false;
 
         }
-        public boolean movingModelBombCollision(IMovingModel model, Bomb bomb)
+
+        public boolean movingModelExplosionBoundsCollision(IMovingModel model, Bomb bomb)
         {
             return Intersector.overlaps(model.getSmallBounds(),bomb.getExplosionBounds().getVerticalRectangle()) ||
                     Intersector.overlaps(model.getSmallBounds(),bomb.getExplosionBounds().getHorizontalRectangle());
         }
+
         //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
         //TODO: bobmy wybuchaja razem nawet jesli pomiedzy jest explodable object
-        public Bomb bombCollision(Bomb b1, ArrayList<Bomb> bombs)
+
+        public Bomb bombsExplosionBoundsCollision(Bomb b1, ArrayList<Bomb> bombs)
         {
             for(Bomb b2 : bombs) {
                 ExplosionBounds e1 = b1.getExplosionBounds();
@@ -253,7 +217,9 @@ public class Map {
             }
             return b1;
         }
-        //TODO: sprobowac prosciej zapisac
+
+        //TODO: sprobowac prosciej zapisac, zrobic testy
+
         public ExplosionBounds bombExplosionCollision(Bomb bomb) {
             Rectangle[] toDelete = new Rectangle[4];
             int bombX, bombY;
@@ -320,7 +286,6 @@ public class Map {
             ymax = MathUtils.clamp(ymax,1,MAP_HEIGHT - 2);
             xmin = MathUtils.clamp(xmin,1,MAP_WIDTH - 2);
             xmax = MathUtils.clamp(xmax,1,MAP_WIDTH - 2);
-            Log.w("x,y,ymin,ymax,xmin,xmax",""+bombX+" "+bombY+" "+ymin+" "+ymax+" "+xmin+" "+xmax);
 
             return new ExplosionBounds(bombX,bombY,ymin,ymax,xmin,xmax,toDelete);
         }

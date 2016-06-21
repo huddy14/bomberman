@@ -16,8 +16,6 @@ public class Ghost implements IMovingModel{
     float velocity = 0.3f;
     IMovingModel.Status status = IMovingModel.Status.MOVE;
     IMovingModel.Direction direction = IMovingModel.Direction.DOWN;
-    private int directionIndex;
-    private Random randomGenerator = new Random();
 
     public Ghost(Vector2 position)
     {
@@ -80,7 +78,6 @@ public class Ghost implements IMovingModel{
 
     @Override
     public void update(float x, float y) {
-        //TODO: drunkards movement
         this.position.x = x;
         this.position.y = y;
     }

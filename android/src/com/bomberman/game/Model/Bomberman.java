@@ -15,11 +15,10 @@ public class Bomberman implements IMovingModel{
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
     float velocity = 3f;
-    Rectangle bounds = new Rectangle();
+    int lifes = 3;
     Status status = Status.IDLE;
     Direction direction = Direction.DOWN;
     private static final double pi = Math.PI;
-    boolean collision;
 
     public Bomberman(Vector2 position) {
         this.position = position;
@@ -52,7 +51,15 @@ public class Bomberman implements IMovingModel{
         bombPlanted--;
     }
 
+    public int getLifes()
+    {
+        return this.lifes;
+    }
 
+    public void deleteLife()
+    {
+        this.lifes --;
+    }
 
     private Direction calculateDirection(double x, double y)
     {
@@ -131,22 +138,6 @@ public class Bomberman implements IMovingModel{
         direction = calculateDirection(x,y);
         if(status.equals(Status.MOVE)) {
             move(direction);
-//            switch (direction) {
-//                case LEFT:
-//                    this.position.x -= velocity;
-//                    break;
-//                case RIGHT:
-//                    this.position.x += velocity;
-//                    break;
-//                case UP:
-//                    this.position.y += velocity;
-//                    break;
-//                case DOWN:
-//                    this.position.y -= velocity;
-//                    break;
-//                default:
-//                    break;
-//            }
         }
     }
 

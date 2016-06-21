@@ -20,16 +20,13 @@ public class Bomb {
     private Circle bounds;
     private BombListener mListener;
     private final static float CELL_SIZE = 64;
-    private final static float WIDHT = 900;
-    private final static float HEIGHT = 900;
     private State state = State.COUNT_DOWN;
     private float remainingSeconds = 3;
-    private ExplosionView explosion = new ExplosionView();
     private ExplosionBounds explosionBounds;
     private int range = 1;
 
 
-    public static enum State {COUNT_DOWN, EXPLODED,EXPLOSION_FINISHED}
+    public enum State {COUNT_DOWN, EXPLODED,EXPLOSION_FINISHED}
 
     public Bomb(Vector2 position, BombController bombController) {
         //dodajemy polowe szerkosci i wysokosci komorki, zeby bomba sie dobrze rysowala sie w odpowiedniej komorce

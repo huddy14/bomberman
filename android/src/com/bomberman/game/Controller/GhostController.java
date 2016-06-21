@@ -1,10 +1,7 @@
 package com.bomberman.game.Controller;
 
-import android.util.Log;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
 import com.bomberman.game.Interfaces.IMovingModel;
@@ -22,15 +19,12 @@ import java.util.Random;
  */
 public class GhostController implements IController,IExplosionListener {
 
-    private Map map;
     private Bomberman player;
     private ArrayList<Ghost> ghosts = new ArrayList<>();
     private ArrayList<Ghost> ghostsToDelete = new ArrayList<>();
 
-    //private Ghost ghost = new Ghost(new Vector2(64,64*11));
     private GhostView ghostView = new GhostView();
     private Map.CollisionDetector collisionDetector;
-    private BombController bombController;
     private int directionIndex;
     private Random randomGenerator = new Random();
     private float elapsedTime = 0;
@@ -38,10 +32,7 @@ public class GhostController implements IController,IExplosionListener {
 
     public GhostController(Map map)
     {
-        this.map = map;
         this.collisionDetector = map.getCollisionDetector();
-        //roboczo
-
     }
 
     public void setPlayer(Bomberman player)
@@ -81,8 +72,8 @@ public class GhostController implements IController,IExplosionListener {
     {
         float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;
         ghost.move(ghost.getDirection());
-
-        if (collisionDetector.playerCollision(ghost.getBounds())) {
+        //sprawdzamy czy nastepuje kolizja, jesli tak przypisujemy potworkowi stare wspolrzedne i losowo zmieniamy kierunek
+        if (collisionDetector.terrainCollision(ghost.getBounds())) {
             ghost.update(oldX, oldY);
             directionIndex = randomGenerator.nextInt(IMovingModel.Direction.values().length);
             ghost.setDirection(IMovingModel.Direction.values()[directionIndex]);
@@ -91,8 +82,10 @@ public class GhostController implements IController,IExplosionListener {
 
     @Override
     public void onExplosion(Bomb bomb) {
+        //sprawdzenie czy eksplozja zabija ktoregos z potworkow
         for (Ghost ghost : ghosts) {
-            if (collisionDetector.movingModelBombCollision(ghost, bomb)) {
+            if (collisionDetector.movingModelExplosionBoundsCollision(ghost, bomb)) {
+                //jesli tak dodajemy go do tablicy potworkow do usuniecia i przy nastepnym wywolaniu draw usuwamy je z tablicy potworkow
                 ghost.setStatus(IMovingModel.Status.DEAD);
                 ghostsToDelete.add(ghost);
             }

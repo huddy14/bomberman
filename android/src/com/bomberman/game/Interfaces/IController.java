@@ -6,6 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  * Created by huddy on 6/17/16.
  */
 public interface IController {
-    public void draw(OrthographicCamera camera);
+    void draw(OrthographicCamera camera);
 
 }
