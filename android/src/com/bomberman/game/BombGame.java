@@ -2,18 +2,19 @@ package com.bomberman.game;
 
 import com.badlogic.gdx.Game;
 import com.bomberman.game.Screen.GameScreen;
+import com.bomberman.game.Screen.SplashScreen;
 
 /**
  * Created by Patryk on 15.05.2016.
  */
 public class BombGame extends Game {
 
-    public GameScreen game;
+    public SplashScreen game;
 
     //Utworzenie obiektu ekranu
     @Override
     public void create() {
-        game = new GameScreen();
+        game = new SplashScreen(this);
         setScreen(game);
     }
 

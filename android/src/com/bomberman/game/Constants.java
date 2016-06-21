@@ -19,6 +19,7 @@ public final class Constants {
     public static final String MAP_1 = "Maps/Bomber.tmx";
     public static final String TOUCHPAD_BACKGROUND = "Touchpad/touchBackground.png"  ;
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
+    public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
     public static final String SOLID_OBJECT = "Solid";
     public static final String EXPLODING_OBJECT = "Exploding";
     public static final String SOLID_LAYER = "SOLID_LAYER";
