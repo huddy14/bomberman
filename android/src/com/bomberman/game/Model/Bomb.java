@@ -26,7 +26,7 @@ public class Bomb {
     private float remainingSeconds = 3;
     private ExplosionView explosion = new ExplosionView();
     private ExplosionBounds explosionBounds;
-    private int range = 2;
+    private int range = 1;
 
 
     public static enum State {COUNT_DOWN, EXPLODED,EXPLOSION_FINISHED}
@@ -35,16 +35,13 @@ public class Bomb {
         //dodajemy polowe szerkosci i wysokosci komorki, zeby bomba sie dobrze rysowala sie w odpowiedniej komorce
         this.position.x = fixPosition(position.x + CELL_SIZE / 2);
         this.position.y = fixPosition(position.y + CELL_SIZE / 2);
-        bounds = new Circle(this.position.x + 24f, this.position.y + 24f, 2 * CELL_SIZE + 15f);
+        this.range = bombController.getRange();
+        bounds = new Circle(this.position.x + 24f, this.position.y + 24f, range * CELL_SIZE );
         mListener = bombController;
         explosionBounds = mListener.onBombPlanted(this);
 
     }
 
-    public int getRange()
-    {
-        return this.range;
-    }
     public void setRemaningSeconds(float remainingSeconds)
     {
         this.remainingSeconds=remainingSeconds;
@@ -67,6 +64,10 @@ public class Bomb {
 
     }
 
+    public int getRange()
+    {
+        return this.range;
+    }
     public State getState()
     {
         return state;

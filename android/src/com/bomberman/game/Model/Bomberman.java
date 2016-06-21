@@ -11,7 +11,7 @@ import com.bomberman.game.Interfaces.IMovingModel;
 public class Bomberman implements IMovingModel{
 
     public static final int SIZE = 62;
-    private int availableBombs = 3;
+    private int availableBombs = 1;
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
     float velocity = 3f;

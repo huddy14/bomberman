@@ -25,6 +25,8 @@ public class GhostController implements IController,IExplosionListener {
     private Map map;
     private Bomberman player;
     private ArrayList<Ghost> ghosts = new ArrayList<>();
+    private ArrayList<Ghost> ghostsToDelete = new ArrayList<>();
+
     //private Ghost ghost = new Ghost(new Vector2(64,64*11));
     private GhostView ghostView = new GhostView();
     private Map.CollisionDetector collisionDetector;
@@ -56,9 +58,14 @@ public class GhostController implements IController,IExplosionListener {
     @Override
     public void draw(OrthographicCamera camera)
     {
+        if(ghostsToDelete.size()>0)
+        {
+            ghosts.removeAll(ghostsToDelete);
+            ghostsToDelete.clear();
+        }
         for (Ghost ghost : ghosts) {
             if (!ghost.getStatus().equals(IMovingModel.Status.DEAD)) {
-                update();
+                update(ghost);
                 elapsedTime += Gdx.graphics.getDeltaTime();
                 ghostView.setProjectionMatrix(camera.combined);
                 ghostView.drawGhost(ghost.getDirection(), elapsedTime, ghost.getPosition().x, ghost.getPosition().y);
@@ -66,19 +73,16 @@ public class GhostController implements IController,IExplosionListener {
         }
     }
 
-    public void update()
+    public void update(Ghost ghost)
     {
-        for (Ghost ghost : ghosts) {
-            float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;
-            ghost.move(ghost.getDirection());
+        float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;
+        ghost.move(ghost.getDirection());
 
-            if (collisionDetector.playerCollision(ghost.getBounds())) {
-                ghost.update(oldX, oldY);
-                directionIndex = randomGenerator.nextInt(IMovingModel.Direction.values().length);
-                ghost.setDirection(IMovingModel.Direction.values()[directionIndex]);
-            }
+        if (collisionDetector.playerCollision(ghost.getBounds())) {
+            ghost.update(oldX, oldY);
+            directionIndex = randomGenerator.nextInt(IMovingModel.Direction.values().length);
+            ghost.setDirection(IMovingModel.Direction.values()[directionIndex]);
         }
-
     }
 
     @Override
@@ -86,7 +90,7 @@ public class GhostController implements IController,IExplosionListener {
         for (Ghost ghost : ghosts) {
             if (collisionDetector.movingModelBombCollision(ghost, bomb)) {
                 ghost.setStatus(IMovingModel.Status.DEAD);
-                ghosts.remove(ghost);
+                ghostsToDelete.add(ghost);
             }
         }
     }

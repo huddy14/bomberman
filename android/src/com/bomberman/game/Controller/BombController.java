@@ -39,7 +39,7 @@ public class BombController implements IController, Bomb.BombListener
     private TiledMapTileLayer layer;
     private Map.CollisionDetector collisionDetector;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private int range = 2;
+    private int range = 1;
 
     private ArrayList<Bomb> bombsToDelete = new ArrayList<>();
 
