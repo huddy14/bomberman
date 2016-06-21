@@ -224,8 +224,8 @@ public class Map {
         }
         public boolean movingModelBombCollision(IMovingModel model, Bomb bomb)
         {
-            return Intersector.overlaps(model.getBounds(),bomb.getExplosionBounds().getVerticalRectangle()) ||
-                    Intersector.overlaps(model.getBounds(),bomb.getExplosionBounds().getHorizontalRectangle());
+            return Intersector.overlaps(model.getSmallBounds(),bomb.getExplosionBounds().getVerticalRectangle()) ||
+                    Intersector.overlaps(model.getSmallBounds(),bomb.getExplosionBounds().getHorizontalRectangle());
         }
         //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
         //TODO: bobmy wybuchaja razem nawet jesli pomiedzy jest explodable object

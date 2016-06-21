@@ -19,12 +19,13 @@ public class SplashScreen implements Screen {
     private SpriteBatch batch = new SpriteBatch();
     private Texture texture = new Texture(Constants.SPLASH_SCREEN);
     private boolean timerIsOn = false;
-    private GameScreen gameScreen = new GameScreen();
+    private GameScreen gameScreen;
     private BombGame game;
 
     public SplashScreen(BombGame game)
     {
         this.game = game;
+        gameScreen = new GameScreen(game);
         //Gdx.input.setInputProcessor(this);
 
     }

@@ -33,6 +33,7 @@ public interface IMovingModel {
     void setX(float x);
     void setY(float y);
     Rectangle getBounds();
+    Rectangle getSmallBounds();
     float getVelocity();
     void setVelocity(float velocity);
 

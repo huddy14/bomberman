@@ -36,13 +36,17 @@ public class GhostController implements IController,IExplosionListener {
     private float elapsedTime = 0;
 
 
-    public GhostController(Bomberman player, Map map)
+    public GhostController(Map map)
     {
         this.map = map;
-        this.player = player;
         this.collisionDetector = map.getCollisionDetector();
         //roboczo
 
+    }
+
+    public void setPlayer(Bomberman player)
+    {
+        this.player = player;
     }
 
     public ArrayList<Ghost> getGhosts()

@@ -28,38 +28,22 @@ import java.util.ArrayList;
 public class BombController implements IController, Bomb.BombListener
 {
     private ArrayList<Bomb> bombs = new ArrayList<>();
-    private BombermanController bombermanController;
     private BombView bombView;
     private ArrayList<IExplosionListener> onExplosionListeners = new ArrayList<>();
     private Bomberman player;
     private ExplosionView explosion = new ExplosionView();
-    private ArrayList<Rectangle> explodableElements;
-    private ArrayList<Rectangle> solidElements;
     private Map map;
-    private TiledMapTileLayer layer;
     private Map.CollisionDetector collisionDetector;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private int range = 1;
 
     private ArrayList<Bomb> bombsToDelete = new ArrayList<>();
 
-    public BombController(Bomberman bomberman, BombermanController bombermanController, GhostController ghostController, Map map)
+    public BombController(Map map)
     {
-        this.player = bomberman;
         this.map = map;
         this.collisionDetector = map.getCollisionDetector();
-        this.layer = (TiledMapTileLayer)map.getTiledMap().getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
-
-        //dodajemy obiekty nasluchujace na wybuch bomby (gracz, potworki)
-
-        addOnExplosionListener(bombermanController);
-        addOnExplosionListener(ghostController);
-
         this.bombView = new BombView();
-
-        explodableElements = map.getExplodableElements();
-        solidElements = map.getSolidElements();
-
     }
 
     public int getRange()
@@ -74,7 +58,6 @@ public class BombController implements IController, Bomb.BombListener
         bombs.add(collisionDetector.bombCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
         Log.w("ilosc itemow :","" + bombs.size());
     }
-
 
 
     //zmienic na prajwat i rysuje wszystkie bomby
@@ -121,6 +104,9 @@ public class BombController implements IController, Bomb.BombListener
 
 
     }
+    public void setPlayer(Bomberman player) {
+        this.player = player;
+    }
     //TODO: jak nic sie nie zmienic, to wyjebac i po prostu dodadac do tablicy w tablicy
     public void addOnExplosionListener(IExplosionListener listener)
     {
@@ -148,7 +134,6 @@ public class BombController implements IController, Bomb.BombListener
             listener.onExplosion(bomb);
 
         player.bombExploded();
-
     }
 
     @Override

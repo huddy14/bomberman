@@ -1,5 +1,6 @@
 package com.bomberman.game.Screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -15,7 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bomberman.game.BombGame;
 import com.bomberman.game.Constants;
+import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Model.*;
 import com.bomberman.game.View.*;
 import com.bomberman.game.Controller.*;
@@ -26,23 +29,30 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Patryk on 16.05.2016.
  */
 
-public class GameScreen extends ChangeListener implements Screen {
+public class GameScreen extends ChangeListener implements Screen, IGameStatus {
     private Stage stage;
     private float elapsedTime;
-    private BombermanView bombermanView;
-    private BombermanController bombermanController;
-    private GhostController ghostController;
+//    private BombermanView bombermanView;
+//    private BombermanController bombermanController;
+//    private GhostController ghostController;
+    private Controllers controller;
     private Touchpad touchpad;
     private Button bombButton;
     private MapCamera camera;
-    private Bomberman player;
+//    private Bomberman player;
     private TiledMap tiledMap;
     private Map map;
     private TiledMapRenderer tiledMapRenderer;
-    private BombController bombController;
+    private GameStatus gameStatus = GameStatus.PLAYING;
+    private BombGame game;
+
+//    private BombController bombController;
 
 
-
+    public GameScreen(BombGame game )
+    {
+        this.game = game;
+    }
     private int width, height;
 
     @Override
@@ -57,27 +67,30 @@ public class GameScreen extends ChangeListener implements Screen {
         map = new Map(tiledMap);
 
         //player = new Bomberman(new Vector2(80,700));
-        player = new Bomberman(new Vector2(64,64*11));
-        bombermanView = new BombermanView();
+//        player = new Bomberman(new Vector2(64,64*11));
+//        bombermanView = new BombermanView();
+        controller = new Controllers(map);
+        //ustawiamy te klase jako sluchacza zmiany stanu gry
+        controller.bomberman().setOnGameStatusChangeListener(this);
 
-        camera = new MapCamera(tiledMap.getProperties(),player);
+        camera = new MapCamera(tiledMap.getProperties(),controller.bomberman().getPlayer());
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        ghostController = new GhostController(player, map);
-
-        ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 5*Constants.TILE_SIZE)));
-        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 9*Constants.TILE_SIZE)));
-        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 3*Constants.TILE_SIZE)));
-
-        bombermanController = new BombermanController(player,bombermanView,ghostController,map);
-
-        bombController = new BombController(player,bombermanController,ghostController,map);
+//        ghostController = new GhostController(player, map);
+//
+//        ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 5*Constants.TILE_SIZE)));
+//        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 9*Constants.TILE_SIZE)));
+//        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 3*Constants.TILE_SIZE)));
+//
+//        bombermanController = new BombermanController(player,bombermanView,ghostController,map);
+//
+//        bombController = new BombController(player,bombermanController,ghostController,map);
 
         touchpad = (new TouchpadView(10,new Touchpad.TouchpadStyle()));
         bombButton = (new BombButton());
         bombButton.addListener(this);
 
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),bombermanView);
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),controller.bomberman().getView());
         stage.addActor(touchpad);
         stage.addActor(bombButton);
 
@@ -121,16 +134,12 @@ public class GameScreen extends ChangeListener implements Screen {
         camera.update();
 
         //wyświetlanie gracza
-        bombermanController.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
+        controller.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
         //bv.setProjectionMatrix(camera.combined);
         //ustawiamy projectionMatrix zeby wspolrzedne gracza byly dobrze renderowane na naszej mapie
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-        bombermanController.draw(camera);
-        ghostController.draw(camera);
-        //bv.setProjectionMatrix(camera.combined);
-        //bombController.drawBomb();
-        bombController.draw(camera);
+        controller.draw(camera);
         stage.act(elapsedTime);
         stage.draw();
 
@@ -144,8 +153,18 @@ public class GameScreen extends ChangeListener implements Screen {
 
     @Override
     public void changed(ChangeEvent event, Actor actor) {
-        if(player.canPlant()) {
-            bombController.addBomb();
+        if(controller.bomberman().getPlayer().canPlant()) {
+            controller.bomb().addBomb();
         }
+    }
+
+    @Override
+    public void onGameStatusChange(GameStatus gameStatus) {
+        if(gameStatus.equals(GameStatus.LOSE))
+        {
+            game.setScreen(new SplashScreen(game));
+            this.dispose();
+        }
+
     }
 }

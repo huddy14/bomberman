@@ -4,16 +4,20 @@ package com.bomberman.game.Controller;
 import android.util.Log;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Constants;
 import com.bomberman.game.GlobalMethods;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
+import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Interfaces.IMovingModel;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
@@ -32,27 +36,48 @@ public class BombermanController implements IController,IExplosionListener {
     private GhostController ghostController;
     private BombController bombController;
     private Map map;
-    private ArrayList<Rectangle> collisionElements = new ArrayList<>();
     private float elapsedTime = 0;
     private Map.CollisionDetector collisionDetector;
     private int approx;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private IGameStatus onGameStatusChangeListener;
 
 
-    public BombermanController(Bomberman player, BombermanView playerView, GhostController ghostController,Map map)
+    public BombermanController(Map map)
     {
         this.map = map;
         this.collisionDetector = map.getCollisionDetector();
-        this.player = player;
-        this.playerView = playerView;
+        this.player = new Bomberman(new Vector2(64,64*11));;
+        this.playerView = new BombermanView();
         this.approx = (int) player.getBounds().height/2;
-        this.ghostController = ghostController;
-        collisionElements.addAll(map.getSolidElements());
-        collisionElements.addAll(map.getExplodableElements());
     }
 
+    public void setControllers(BombController bombController,GhostController ghostController)
+    {
+        this.bombController = bombController;
+        this.ghostController = ghostController;
+    }
+
+    public void setOnGameStatusChangeListener(IGameStatus listener)
+    {
+        this.onGameStatusChangeListener = listener;
+    }
+
+    public Bomberman getPlayer()
+    {
+        return this.player;
+    }
+
+    public BombermanView getView()
+    {
+        return this.playerView;
+    }
 
     public void update(float x, float y)
     {
+        //TODO:SYF JAK CHUJ TU JEST XD
+        if(player.getStatus().equals(IMovingModel.Status.DEAD))
+             onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.LOSE);
         //TODO: zredukowac ify jak sie da a jak nie to nie
         if(!player.getStatus().equals(IMovingModel.Status.DEAD)) {
             float oldX = player.getPosition().x;
@@ -81,8 +106,12 @@ public class BombermanController implements IController,IExplosionListener {
                 map.deletePower();
             }
             //TODO: WIN
-            else if (ghostController.getGhosts().size() == 0 && collisionDetector.portalCollison(player.getBounds()))
+            else if (ghostController.getGhosts().size() == 0 && collisionDetector.portalCollison(player.getBounds())) {
                 Log.w("XXX", "WIN");
+                onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.WIN);
+            }
+
+
             if (collisionDetector.playerCollision(player.getBounds())) {
                 Rectangle rectangle = map.getRectangle();
                 if (rectangle.getX() == 0 || rectangle.getY() == 0) {
@@ -127,11 +156,21 @@ public class BombermanController implements IController,IExplosionListener {
 
     @Override
     public void draw(OrthographicCamera camera) {
+
         if(!player.getStatus().equals(IMovingModel.Status.DEAD))
         {
             elapsedTime += Gdx.graphics.getDeltaTime();
             playerView.setProjectionMatrix(camera.combined);
             playerView.drawBomberman(player.getDirection(), elapsedTime, player.getPosition().x, player.getPosition().y);
+
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.WHITE);
+
+            Rectangle rect = player.getSmallBounds();
+            shapeRenderer.rect(rect.getX(),rect.getY(),rect.getWidth(),rect.getHeight());
+
+            shapeRenderer.end();
         }
     }
 
@@ -141,4 +180,5 @@ public class BombermanController implements IController,IExplosionListener {
             player.setStatus(IMovingModel.Status.DEAD);
 
     }
+
 }
