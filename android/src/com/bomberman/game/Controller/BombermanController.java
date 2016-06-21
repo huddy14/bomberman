@@ -54,7 +54,6 @@ public class BombermanController implements IController,IExplosionListener {
     public void update(float x, float y)
     {
         //TODO: zredukowac ify jak sie da a jak nie to nie
-
         if(!player.getStatus().equals(IMovingModel.Status.DEAD)) {
             float oldX = player.getPosition().x;
             float oldY = player.getPosition().y;
@@ -81,6 +80,9 @@ public class BombermanController implements IController,IExplosionListener {
                 }
                 map.deletePower();
             }
+            //TODO: WIN
+            else if (ghostController.getGhosts().size() == 0 && collisionDetector.portalCollison(player.getBounds()))
+                Log.w("XXX", "WIN");
             if (collisionDetector.playerCollision(player.getBounds())) {
                 Rectangle rectangle = map.getRectangle();
                 if (rectangle.getX() == 0 || rectangle.getY() == 0) {

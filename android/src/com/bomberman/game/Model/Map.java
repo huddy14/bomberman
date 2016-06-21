@@ -27,6 +27,7 @@ public class Map {
     private ArrayList<Rectangle> powerupElements = new ArrayList<>();
     private java.util.Map<Rectangle, String> pE;
     private CollisionDetector collisionDetector= new CollisionDetector();
+    private Rectangle portal = new Rectangle();
     private int idCol, idPow;
 
     final int MAP_WIDTH;
@@ -44,6 +45,7 @@ public class Map {
         this.explodableElements = getElements(map, Constants.EXPLODING_OBJECT);
         this.powerupElements = getElements(map, Constants.POWER_OBJECT);
         this.pE = getPowerProp(map, Constants.POWER_OBJECT);
+        this.portal = getElements(map, Constants.PORTAL_OBJECT).get(0);
         collisionElements.addAll(explodableElements);
         collisionElements.addAll(solidElements);
 
@@ -183,6 +185,17 @@ public class Map {
                     idCol = i;
                     return true;
                 }
+            return false;
+        }
+
+        public boolean portalCollison(Rectangle rectangle)
+        {
+            rectangle.width -= 10;
+            rectangle.height -= 10;
+            rectangle.setX(rectangle.getX()+5);
+            rectangle.setY(rectangle.getY()+5);
+            if (Intersector.overlaps(portal, rectangle))
+                return true;
             return false;
         }
 

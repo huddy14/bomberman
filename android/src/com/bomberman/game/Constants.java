@@ -22,7 +22,7 @@ public final class Constants {
     public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
     public static final String SOLID_OBJECT = "Solid";
     public static final String POWER_OBJECT = "Power";
-    public static final String PORTAL_OBJECT = "Portal";
+    public static final String PORTAL_OBJECT = "Exit";
     public static final String BOMB_UP = "bomb";
     public static final String FLAME_UP = "flame";
     public static final String SPEED_UP = "speed";
