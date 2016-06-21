@@ -21,9 +21,15 @@ public final class Constants {
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
     public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
     public static final String SOLID_OBJECT = "Solid";
+    public static final String POWER_OBJECT = "Power";
+    public static final String PORTAL_OBJECT = "Portal";
+    public static final String BOMB_UP = "bomb";
+    public static final String FLAME_UP = "flame";
+    public static final String SPEED_UP = "speed";
     public static final String EXPLODING_OBJECT = "Exploding";
     public static final String SOLID_LAYER = "SOLID_LAYER";
     public static final String EXPLODING_LAYER = "EXPLODING_LAYER";
+    public static final String POWER_LAYER = "POWER_LAYER";
     public static final String BACKGROUND_LAYER = "BACKGROUND_LAYER";
     public static final int TILE_SIZE = 64;
 

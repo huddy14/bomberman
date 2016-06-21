@@ -45,7 +45,6 @@ public class Bomb {
     {
         return this.range;
     }
-
     public void setRemaningSeconds(float remainingSeconds)
     {
         this.remainingSeconds=remainingSeconds;

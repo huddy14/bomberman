@@ -14,6 +14,7 @@ import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IMovingModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Patryk on 15.05.2016.
@@ -23,13 +24,16 @@ public class Map {
     private ArrayList<Rectangle> solidElements = new ArrayList<>();
     private ArrayList<Rectangle> explodableElements = new ArrayList<>();
     private ArrayList<Rectangle> collisionElements = new ArrayList<>();
+    private ArrayList<Rectangle> powerupElements = new ArrayList<>();
+    private java.util.Map<Rectangle, String> pE;
     private CollisionDetector collisionDetector= new CollisionDetector();
-    private int id;
+    private int idCol, idPow;
 
     final int MAP_WIDTH;
     final int MAP_HEIGHT;
 
     private TiledMapTileLayer layer;
+    private TiledMapTileLayer powerLayer;
 
 
     public Map(TiledMap map) {
@@ -38,15 +42,22 @@ public class Map {
         MAP_HEIGHT = map.getProperties().get("height", Integer.class);
         this.solidElements = getElements(map, Constants.SOLID_OBJECT);
         this.explodableElements = getElements(map, Constants.EXPLODING_OBJECT);
+        this.powerupElements = getElements(map, Constants.POWER_OBJECT);
+        this.pE = getPowerProp(map, Constants.POWER_OBJECT);
         collisionElements.addAll(explodableElements);
         collisionElements.addAll(solidElements);
 
         this.layer = (TiledMapTileLayer)map.getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
+        this.powerLayer = (TiledMapTileLayer)map.getLayers().get(Constants.POWER_LAYER);
 
     }
 
     public Rectangle getRectangle(){
-        return collisionElements.get(id);
+        return collisionElements.get(idCol);
+    }
+
+    public String getPowerType() {
+        return pE.get(powerupElements.get(idPow));
     }
 
     public ArrayList<Rectangle> getSolidElements() {
@@ -60,6 +71,28 @@ public class Map {
     public void updateExplodableElements(Rectangle toDelete)
     {
         this.explodableElements.remove(toDelete);
+    }
+
+    private java.util.Map<Rectangle, String> getPowerProp(TiledMap map, String layer_name)
+    {
+        java.util.Map<Rectangle, String> pair = new HashMap<>();
+        MapObjects mapObjects = map.getLayers().get(layer_name).getObjects();
+        for(int i=0 ; i < mapObjects.getCount(); i++)
+        {
+            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
+            String type = (String) map.getLayers().get(layer_name).getObjects().get(i).getProperties().get("type");
+            pair.put(obj.getRectangle(), type);
+        }
+        return pair;
+    }
+
+    public void deletePower()
+    {
+        int x = (int) powerupElements.get(idPow).getX();
+        int y = (int) powerupElements.get(idPow).getY();
+        if(powerLayer.getCell(x/64,y/64)!=null)
+            powerLayer.getCell(x/64,y/64).setTile(null);
+        powerupElements.remove(idPow);
     }
 
     private static final ArrayList<Rectangle> getElements(TiledMap map, String layer_name)
@@ -147,7 +180,21 @@ public class Map {
         {
             for (int i = 0; i < collisionElements.size(); i++)
                 if (Intersector.overlaps(collisionElements.get(i), rectangle)) {
-                    id = i;
+                    idCol = i;
+                    return true;
+                }
+            return false;
+        }
+
+        public boolean powerCollision(Rectangle rectangle)
+        {
+            rectangle.width -= 10;
+            rectangle.height -= 10;
+            rectangle.setX(rectangle.getX()+5);
+            rectangle.setY(rectangle.getY()+5);
+            for (int i = 0; i < powerupElements.size(); i++)
+                if (Intersector.overlaps(powerupElements.get(i), rectangle)) {
+                     idPow = i;
                     return true;
                 }
             return false;

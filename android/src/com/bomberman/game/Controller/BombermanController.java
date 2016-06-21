@@ -65,6 +65,22 @@ public class BombermanController implements IController,IExplosionListener {
                 player.setStatus(IMovingModel.Status.DEAD);
                 Log.w("s", "" + player.getStatus());
             }
+            else if (collisionDetector.powerCollision(player.getBounds())){
+                String type = map.getPowerType();
+                switch (type) {
+                    case Constants.BOMB_UP:
+                        player.addBombCount();
+                        break;
+                    case Constants.FLAME_UP:
+                        //TODO: NIE DZIALA
+                        bombController.setRange(bombController.getRange()+1);
+                        break;
+                    case Constants.SPEED_UP:
+                        player.setVelocity(player.getVelocity() + 1f);
+                        break;
+                }
+                map.deletePower();
+            }
             if (collisionDetector.playerCollision(player.getBounds())) {
                 Rectangle rectangle = map.getRectangle();
                 if (rectangle.getX() == 0 || rectangle.getY() == 0) {
