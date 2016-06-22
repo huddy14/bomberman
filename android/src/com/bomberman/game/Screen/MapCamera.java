@@ -3,6 +3,7 @@ package com.bomberman.game.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
+import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomberman;
 
 /**
@@ -17,6 +18,7 @@ public class MapCamera extends OrthographicCamera {
     private int mapLeft,mapRight,mapTop,mapBottom;
 
     float playerVelocity;
+    int mapWidth, mapHeight;
 
     boolean firstCall = true;
 
@@ -27,9 +29,8 @@ public class MapCamera extends OrthographicCamera {
         super();
         this.player = player;
         this.map = map;
-
-        int mapWidth = map.get("width", Integer.class);
-        int mapHeight = map.get("height", Integer.class);
+        mapWidth = map.get("width", Integer.class);
+        mapHeight = map.get("height", Integer.class);
         int tilePixelWidth = map.get("tilewidth", Integer.class);
         int tilePixelHeight = map.get("tileheight", Integer.class);
         playerVelocity = player.getVelocity();
@@ -40,6 +41,13 @@ public class MapCamera extends OrthographicCamera {
 
     }
 
+    public int getMapWidth(){
+        return mapWidth * Constants.TILE_SIZE;
+    }
+
+    public int getMapHeight(){
+        return mapHeight * Constants.TILE_SIZE;
+    }
 
 
     @Override

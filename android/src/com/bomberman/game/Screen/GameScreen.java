@@ -74,7 +74,10 @@ public class GameScreen extends ChangeListener implements Screen, IGameStatus {
         controller.bomberman().setOnGameStatusChangeListener(this);
 
         camera = new MapCamera(tiledMap.getProperties(),controller.bomberman().getPlayer());
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        if(camera.getMapHeight() > Gdx.graphics.getHeight() || camera.getMapWidth() > Gdx.graphics.getWidth())
+            camera.setToOrtho(false,camera.getMapWidth(), camera.getMapHeight());
+        else
+            camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
 //        ghostController = new GhostController(player, map);
 //
