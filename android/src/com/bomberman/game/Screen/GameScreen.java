@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bomberman.game.BombGame;
+import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Model.*;
@@ -111,10 +112,24 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     public void onGameStatusChange(GameStatus gameStatus) {
         if(gameStatus.equals(GameStatus.LOSE))
         {
+            savePreferances();
             ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
         }
-        if(gameStatus.equals(GameStatus.WIN))
+        if(gameStatus.equals(GameStatus.WIN)) {
+            savePreferances();
             ScreenManager.getInstance().showScreen(ScreenEnum.LEVEL_SELECTION);
+        }
 
+    }
+
+    private void savePreferances()
+    {
+        Bomberman player =controller.bomberman().getPlayer();
+        BombermanPreferances bp = BombermanPreferances.getInstance();
+        bp.setBombRange(controller.bomb().getRange());
+        bp.setBombsCount(player.getBombCount());
+        bp.setVelocity(player.getVelocity());
+        //TODO: zmienic to pozniej
+        bp.setMaxMapIndex(2);
     }
 }

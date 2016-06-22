@@ -2,6 +2,7 @@ package com.bomberman.game.Controller;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Model.Ghost;
@@ -45,6 +46,9 @@ public class Controllers implements IController{
         ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 5*Constants.TILE_SIZE)));
         ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 9*Constants.TILE_SIZE)));
         ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 3*Constants.TILE_SIZE)));
+
+        //ładujemy zapisane informacje o graczu ilosc bomb, zasieg etc..
+        loadPreferances();
     }
 
     public BombController bomb() {
@@ -70,5 +74,13 @@ public class Controllers implements IController{
         bombController.draw(camera);
         ghostController.draw(camera);
         bombermanController.draw(camera);
+    }
+
+    public void loadPreferances()
+    {
+        BombermanPreferances bp = BombermanPreferances.getInstance();
+        bombermanController.getPlayer().setVelocity(bp.getVelocity());
+        bombController.setRange(bp.getBombRange());
+        bombermanController.getPlayer().setAvailableBombs(bp.getBombCount());
     }
 }

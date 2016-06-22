@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
 import com.bomberman.game.Screen.ScreenManagment.UIFactory;
@@ -44,18 +45,24 @@ public class LevelSelection extends AbstractScreen {
         //TODO: warunek jesli mapa odblokowana to tworzymy listener i nie rysujemy klodki
         //TODO: musi wczytac z preferencji ile map jest odblokowanych
         float x = getWidth()/10, y = getHeight()/10;
+        BombermanPreferances.getInstance();
         for(int i = 0; i<buttons.length; i++)
         {
             buttons[i] = UIFactory.createButton(textureMap);
             addActor(buttons[i]);
             buttons[i].setBounds( x , y , miniMapWidth , miniMapHeight );
-            buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME,1));
+            int b = BombermanPreferances.getInstance().getMaxMapIndex();
+            if(i>b-1) {
 
-            //rysowanie klodek
-            lockImage = new Image(lock);
-            lockImage.setBounds(x,y,lockHeight,lockHeight);
-            addActor(lockImage);
-            //locks.add(lockImage);
+                //rysowanie klodek
+                lockImage = new Image(lock);
+                lockImage.setBounds(x, y, lockHeight, lockHeight);
+                addActor(lockImage);
+                //locks.add(lockImage);
+            }
+            else
+                buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME, 1));
+
 
             x+= getWidth()*3/10;
             if(i%3==0 && i!=0)

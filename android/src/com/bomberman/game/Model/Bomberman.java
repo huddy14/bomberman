@@ -41,6 +41,15 @@ public class Bomberman implements IMovingModel{
     public void resestBombCount() {
         availableBombs = 1;
     }
+    public int getBombCount()
+    {
+        return this.availableBombs;
+    }
+
+    public void setAvailableBombs(int availableBombs)
+    {
+        this.availableBombs = availableBombs;
+    }
 
     public void bombPlanted()
     {
