@@ -17,28 +17,23 @@ import java.util.ArrayList;
 /**
  * Created by huddy on 6/22/16.
  */
-public class LevelSelection extends Stage implements Screen {
+public class LevelSelection extends AbstractScreen {
     private Texture textureBg;
     private Texture textureExit;
     private Texture textureMap;
     private Texture lock;
     private Image lockImage;
     private Button[] buttons = new Button[12];
-//TODO: stworzyc tablice tekstur w constants, gdzie przechowywane będą obrazki dla kazdej mapy i w pozmieniac w buildStage
+//libTODO: stworzyc tablice tekstur w constants, gdzie przechowywane będą obrazki dla kazdej mapy i w pozmieniac w buildStage
     public LevelSelection()
     {
         super();
         buildStage();
-        Gdx.input.setInputProcessor(this);
 
     }
+
     @Override
-    public void show() {
-
-    }
-
-    private void buildStage()
-    {
+    public void buildStage() {
         textureMap = new Texture(Constants.LEVEL_SELECTION_MAP1);
         lock = new Texture(Constants.LEVEL_SELECTION_LOCK);
 
@@ -69,36 +64,7 @@ public class LevelSelection extends Stage implements Screen {
                 y += getHeight()*3/10;
             }
         }
-
-
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        super.act(delta);
-        super.draw();
-    }
 
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-        Gdx.input.setInputProcessor(null);
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
 }

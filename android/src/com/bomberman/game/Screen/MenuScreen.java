@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
@@ -19,18 +20,29 @@ import com.bomberman.game.Screen.ScreenManagment.UIFactory;
 /**
  * Created by huddy on 6/22/16.
  */
-public class MenuScreen extends Stage implements Screen {
+public class MenuScreen extends AbstractScreen {
 
     private Texture textureBg;
     private Texture textureExit;
     private Texture texturePlay;
     private SpriteBatch batch = new SpriteBatch();
 
-
-    public void buildStage()
+    public MenuScreen()
     {
-//        Image bg = new Image(textureBg);
-//        addActor(bg);
+        super();
+        textureBg = new Texture(Constants.BACKGROUND_MENU);
+        textureExit = new Texture(Constants.STOP_BUTTON_MENU);
+        texturePlay = new Texture(Constants.PLAY_BUTTON_MENU);
+
+        buildStage();
+    }
+
+    @Override
+    public void buildStage() {
+       Image bg = new Image(textureBg);
+        bg.setBounds(0,0,getWidth(),getHeight());
+        bg.setFillParent(true);
+       addActor(bg);
         float x = getWidth() ;
         float y = getHeight();
         Button btnPlay = UIFactory.createButton(texturePlay);
@@ -55,62 +67,7 @@ public class MenuScreen extends Stage implements Screen {
         btnPlay.addListener(UIFactory.createListener(ScreenEnum.LEVEL_SELECTION));
 
         //Log.w("H: ",""+bg.getHeight()+" W: "+bg.getWidth());
-
     }
 
-    public MenuScreen()
-    {
-        super( new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), new OrthographicCamera()));
 
-        textureBg = new Texture(Constants.BACKGROUND_MENU);
-        textureExit = new Texture(Constants.STOP_BUTTON_MENU);
-        texturePlay = new Texture(Constants.PLAY_BUTTON_MENU);
-
-        buildStage();
-        Gdx.input.setInputProcessor(this);
-
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-        // Clear screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Calling to Stage methods
-        batch.begin();
-        batch.draw(textureBg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
-        super.act(delta);
-        super.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }
