@@ -1,6 +1,7 @@
 package com.bomberman.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -37,12 +38,14 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     private TiledMap tiledMap;
     private Map map;
     private TiledMapRenderer tiledMapRenderer;
+    private int level;
 
 
 //TODO: implementacja pozycji gracza i ghostow przy wczytywaniu mapy
     public GameScreen(int level )
     {
         super();
+        this.level=level;
         buildStage();
     }
 
@@ -62,6 +65,13 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         this.addActor(touchpad);
         this.addActor(bombButton);
 
+    }
+
+    @Override
+    public void onBackButtonPressed() {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            ScreenManager.getInstance().showScreen(ScreenEnum.LEVEL_SELECTION);
+        }
     }
 
     @Override
@@ -112,17 +122,18 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     public void onGameStatusChange(GameStatus gameStatus) {
         if(gameStatus.equals(GameStatus.LOSE))
         {
-            savePreferances();
+            resetStats();
+            savePreferances(0);
             ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
         }
         if(gameStatus.equals(GameStatus.WIN)) {
-            savePreferances();
+            savePreferances(1);
             ScreenManager.getInstance().showScreen(ScreenEnum.LEVEL_SELECTION);
         }
 
     }
 
-    private void savePreferances()
+    private void savePreferances(int i)
     {
         Bomberman player =controller.bomberman().getPlayer();
         BombermanPreferances bp = BombermanPreferances.getInstance();
@@ -130,7 +141,12 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         bp.setBombsCount(player.getBombCount());
         bp.setVelocity(player.getVelocity());
         bp.setLifes(player.getLifes());
-        //TODO: zmienic to pozniej
-        bp.setMaxMapIndex(2);
+        bp.setMaxMapIndex(level+i);
+    }
+    private void resetStats() {
+        controller.bomberman().getPlayer().setAvailableBombs(1);
+        controller.bomberman().getPlayer().setLifes(3);
+        controller.bomberman().getPlayer().setVelocity(3);
+        controller.bomb().setRange(1);
     }
 }

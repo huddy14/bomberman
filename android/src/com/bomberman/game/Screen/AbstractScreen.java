@@ -1,9 +1,12 @@
 package com.bomberman.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.bomberman.game.Interfaces.IController;
 
 /**
  * Created by huddy on 6/22/16.
@@ -14,10 +17,14 @@ public abstract class AbstractScreen extends Stage implements Screen{
     {
         super();
         Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchBackKey(true);
+
 
     }
 
     public abstract void buildStage();
+
+    public abstract void onBackButtonPressed();
 
 
     @Override
@@ -34,6 +41,8 @@ public abstract class AbstractScreen extends Stage implements Screen{
         // wywołanie aktorów
         super.act(delta);
         super.draw();
+
+        onBackButtonPressed();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bomberman.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,14 +36,11 @@ public class SplashScreen extends AbstractScreen {
 
 
     @Override
-    public void render(float delta) {
-        super.render(delta);
-        onScreenTouch();
-    }
-
-    private void onScreenTouch() {
-        if (Gdx.input.justTouched()) {
+    public void onBackButtonPressed() {
+        if(Gdx.input.justTouched())
             ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
+        else if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            Gdx.app.exit();
         }
     }
 }

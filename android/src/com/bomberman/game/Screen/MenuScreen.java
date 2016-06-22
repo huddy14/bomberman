@@ -2,6 +2,7 @@ package com.bomberman.game.Screen;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
+import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 import com.bomberman.game.Screen.ScreenManagment.UIFactory;
 
 /**
@@ -67,6 +69,13 @@ public class MenuScreen extends AbstractScreen {
         btnPlay.addListener(UIFactory.createListener(ScreenEnum.LEVEL_SELECTION));
 
         //Log.w("H: ",""+bg.getHeight()+" W: "+bg.getWidth());
+    }
+
+    @Override
+    public void onBackButtonPressed() {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            Gdx.app.exit();
+        }
     }
 
 

@@ -36,7 +36,7 @@ public class Bomberman implements IMovingModel{
     }
 
     public void addBombCount() {
-        availableBombs = MathUtils.clamp(availableBombs++,1,5);
+        availableBombs = MathUtils.clamp(availableBombs+1,1,5);
     }
 
     public void resestBombCount() {

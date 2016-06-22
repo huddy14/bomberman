@@ -1,6 +1,7 @@
 package com.bomberman.game.Screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
+import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 import com.bomberman.game.Screen.ScreenManagment.UIFactory;
 
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class LevelSelection extends AbstractScreen {
                 //locks.add(lockImage);
             }
             else
-                buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME, 1));
+                buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME, i+1));
 
 
             x+= getWidth()*3/10;
@@ -73,5 +75,16 @@ public class LevelSelection extends AbstractScreen {
         }
     }
 
+    @Override
+    public void onBackButtonPressed() {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
+        }
+    }
 
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+    }
 }

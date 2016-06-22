@@ -22,7 +22,6 @@ import com.bomberman.game.View.BombermanView;
 /**
  * Created by Patryk on 15.05.2016.
  */
-//TODO: zaimplementować preferencje, przy tworzeniu instancji Controllera wszystkie zapisane ustawienia muszą się wczytac zasieg bomby, ilosc bomb, dostepne mapy etc
 public class BombermanController implements IController,IExplosionListener {
     private Bomberman player;
     private BombermanView playerView;
@@ -76,9 +75,10 @@ public class BombermanController implements IController,IExplosionListener {
                 player.setX(64f);
                 player.setY(64f * 11f);
                 player.setStatus(IMovingModel.Status.IDLE);
-            } else
-            //w przeciwnym wypadku gra jest przegrana
+            } else {
+                //w przeciwnym wypadku gra jest przegrana
                 onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.LOSE);
+            }
         }
         //jesli gracz zyje wykonujemy update jego pozycji z uwzglednieniem kolizji
         else
@@ -105,6 +105,8 @@ public class BombermanController implements IController,IExplosionListener {
 
         }
     }
+
+
     private void setPowerUp()
     {
         String type = map.getPowerType();
@@ -121,6 +123,7 @@ public class BombermanController implements IController,IExplosionListener {
         }
         map.deletePower();
     }
+    //TODO: fix potrzebny, przy wiekszej predkosci gracza zaczyna odpierdalac ;c
     private void smoothPlayerMovement(float oldX, float oldY)
     {
         Rectangle rectangle = map.getRectangle();
