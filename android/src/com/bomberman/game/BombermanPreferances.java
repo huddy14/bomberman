@@ -28,6 +28,8 @@ public class BombermanPreferances {
 
     public int getBombCount()
     {
+        if(!prefs.contains("BOMBS_COUNT"))
+            setBombsCount(1);
         return prefs.getInteger("BOMBS_COUNT");
 
     }
@@ -41,6 +43,8 @@ public class BombermanPreferances {
 
     public int getBombRange()
     {
+        if(!prefs.contains("BOMB_RANGE"))
+            setBombRange(1);
         return prefs.getInteger("BOMB_RANGE");
     }
 
@@ -53,6 +57,8 @@ public class BombermanPreferances {
 
     public float getVelocity()
     {
+        if(!prefs.contains("VELOCITY"))
+            setVelocity(2f);
         return prefs.getFloat("VELOCITY");
     }
 

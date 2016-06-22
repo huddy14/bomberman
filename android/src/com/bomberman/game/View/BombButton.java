@@ -13,6 +13,7 @@ import com.bomberman.game.Constants;
 /**
  * Created by huddy on 6/2/16.
  */
+//TODO: powiekszyc przyicsk kuns3k
 public class BombButton  extends Button{
     private Skin buttonSkin;
     private ButtonStyle buttonStyle;

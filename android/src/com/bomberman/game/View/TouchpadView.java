@@ -12,6 +12,7 @@ import com.bomberman.game.Constants;
 /**
  * Created by huddy on 6/1/16.
  */
+//TODO: taczpad przezroczysty musi byc
 public class TouchpadView extends Touchpad
 {
     private Skin touchpadSkin;

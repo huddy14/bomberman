@@ -26,6 +26,7 @@ public class LevelSelection extends AbstractScreen {
     private Texture textureMap;
     private Texture lock;
     private Image lockImage;
+    private Image background;
     private Button[] buttons = new Button[12];
 //libTODO: stworzyc tablice tekstur w constants, gdzie przechowywane będą obrazki dla kazdej mapy i w pozmieniac w buildStage
     public LevelSelection()
@@ -39,6 +40,13 @@ public class LevelSelection extends AbstractScreen {
     public void buildStage() {
         textureMap = new Texture(Constants.LEVEL_SELECTION_MAP1);
         lock = new Texture(Constants.LEVEL_SELECTION_LOCK);
+        textureBg = new Texture(Constants.LEVEL_SELECTION_BACKGROUND);
+
+        background = new Image(textureBg);
+        background.setBounds(0,0,getWidth(),getHeight());
+        background.setFillParent(true);
+
+        addActor(background);
 
         float miniMapWidth = getWidth()/5;
         float miniMapHeight = getHeight()/5;
