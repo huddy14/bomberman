@@ -71,4 +71,19 @@ public class BombermanPreferances {
 
         return prefs.getInteger("MAP_INDEX");
     }
+
+    public void setLifes(int lifes)
+    {
+        prefs.putInteger("LIFES",lifes);
+        prefs.flush();
+    }
+    public int getLifes()
+    {
+        if(!prefs.contains("LIFES")) {
+            prefs.putInteger("LIFES", 3);
+            prefs.flush();
+        }
+
+        return prefs.getInteger("LIFES");
+    }
 }

@@ -1,5 +1,6 @@
 package com.bomberman.game.Model;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Constants;
@@ -35,7 +36,7 @@ public class Bomberman implements IMovingModel{
     }
 
     public void addBombCount() {
-        availableBombs++;
+        availableBombs = MathUtils.clamp(availableBombs++,1,5);
     }
 
     public void resestBombCount() {
@@ -63,6 +64,9 @@ public class Bomberman implements IMovingModel{
     public int getLifes()
     {
         return this.lifes;
+    }
+    public void setLifes(int lifes) {
+        this.lifes = MathUtils.clamp(lifes,0,3);
     }
 
     public void deleteLife()
@@ -127,7 +131,7 @@ public class Bomberman implements IMovingModel{
 
     @Override
     public void setVelocity(float velocity) {
-        this.velocity = velocity;
+        this.velocity = MathUtils.clamp(velocity,1,3.5f);
     }
 
     @Override
@@ -155,4 +159,6 @@ public class Bomberman implements IMovingModel{
         this.position.x += velocity * direction.getX();
         this.position.y += velocity * direction.getY();
     }
+
+
 }

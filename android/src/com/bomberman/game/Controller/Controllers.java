@@ -82,5 +82,6 @@ public class Controllers implements IController{
         bombermanController.getPlayer().setVelocity(bp.getVelocity());
         bombController.setRange(bp.getBombRange());
         bombermanController.getPlayer().setAvailableBombs(bp.getBombCount());
+        bombermanController.getPlayer().setLifes(bp.getLifes());
     }
 }

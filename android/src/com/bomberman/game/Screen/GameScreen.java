@@ -129,6 +129,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         bp.setBombRange(controller.bomb().getRange());
         bp.setBombsCount(player.getBombCount());
         bp.setVelocity(player.getVelocity());
+        bp.setLifes(player.getLifes());
         //TODO: zmienic to pozniej
         bp.setMaxMapIndex(2);
     }

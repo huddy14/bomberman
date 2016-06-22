@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
@@ -46,7 +47,7 @@ public class BombController implements IController, Bomb.BombListener
     {
         return this.range;
     }
-    public void setRange(int range) { this.range = range;}
+    public void setRange(int range) { this.range = MathUtils.clamp(range,1,3);}
 
     public void addBomb()
     {
