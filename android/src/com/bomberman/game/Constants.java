@@ -26,6 +26,8 @@ public final class Constants {
     public static final String STOP_BUTTON_MENU = "Screens/MainMenu/stopButton.png";
 
     public static final String LEVEL_SELECTION_MAP1 = "Screens/LevelSelection/map1.png";
+    public static final String LEVEL_SELECTION_LOCK = "Screens/LevelSelection/Lock.png";
+
 
 
     public static final String BACKGROUND_MENU = "Screens/MainMenu/background.png";

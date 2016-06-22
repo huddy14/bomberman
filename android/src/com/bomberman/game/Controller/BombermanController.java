@@ -87,7 +87,6 @@ public class BombermanController implements IController,IExplosionListener {
             float oldY = player.getPosition().y;
 
             player.update(x, y);
-            //TODO: WIN
             if (ghostController.getGhosts().size() == 0 && collisionDetector.portalCollison(player.getBounds())) {
                 onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.WIN);
             }
@@ -114,7 +113,6 @@ public class BombermanController implements IController,IExplosionListener {
                 player.addBombCount();
                 break;
             case Constants.FLAME_UP:
-                //TODO: NIE DZIALA
                 bombController.setRange(bombController.getRange()+1);
                 break;
             case Constants.SPEED_UP:
