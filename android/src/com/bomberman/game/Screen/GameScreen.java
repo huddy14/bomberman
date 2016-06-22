@@ -1,15 +1,11 @@
 package com.bomberman.game.Screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -20,6 +16,9 @@ import com.bomberman.game.BombGame;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Model.*;
+import com.bomberman.game.Screen.CameraManagment.MapCamera;
+import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
+import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 import com.bomberman.game.View.*;
 import com.bomberman.game.Controller.*;
 
@@ -49,7 +48,7 @@ public class GameScreen extends ChangeListener implements Screen, IGameStatus {
 //    private BombController bombController;
 
 
-    public GameScreen(BombGame game )
+    public GameScreen(int level )
     {
         this.game = game;
     }
@@ -165,7 +164,7 @@ public class GameScreen extends ChangeListener implements Screen, IGameStatus {
     public void onGameStatusChange(GameStatus gameStatus) {
         if(gameStatus.equals(GameStatus.LOSE))
         {
-            game.setScreen(new SplashScreen(game));
+            ScreenManager.getInstance().showScreen(ScreenEnum.SPLASH);
             this.dispose();
         }
 

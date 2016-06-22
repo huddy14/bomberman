@@ -1,4 +1,4 @@
-package com.bomberman.game.Screen;
+package com.bomberman.game.Screen.CameraManagment;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;

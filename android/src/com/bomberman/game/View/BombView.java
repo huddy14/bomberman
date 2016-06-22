@@ -2,13 +2,10 @@ package com.bomberman.game.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Constants;
-import com.bomberman.game.Screen.MapCamera;
 
 /**
  * Created by huddy on 6/3/16.

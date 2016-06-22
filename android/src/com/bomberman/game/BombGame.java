@@ -1,7 +1,8 @@
 package com.bomberman.game;
 
 import com.badlogic.gdx.Game;
-import com.bomberman.game.Screen.GameScreen;
+import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
+import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 import com.bomberman.game.Screen.SplashScreen;
 
 /**
@@ -14,8 +15,8 @@ public class BombGame extends Game {
     //Utworzenie obiektu ekranu
     @Override
     public void create() {
-        game = new SplashScreen(this);
-        setScreen(game);
+        ScreenManager.getInstance().initialize(this);
+        ScreenManager.getInstance().showScreen(ScreenEnum.SPLASH);
     }
 
     @Override

@@ -22,6 +22,11 @@ public final class Constants {
     public static final String TOUCHPAD_BACKGROUND = "Touchpad/touchBackground.png"  ;
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
     public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
+    public static final String PLAY_BUTTON_MENU = "Screens/MainMenu/playButton.png";
+    public static final String STOP_BUTTON_MENU = "Screens/MainMenu/stopButton.png";
+
+    public static final String BACKGROUND_MENU = "Screens/MainMenu/background.png";
+
     public static final String SOLID_OBJECT = "Solid";
     public static final String POWER_OBJECT = "Power";
     public static final String PORTAL_OBJECT = "Exit";

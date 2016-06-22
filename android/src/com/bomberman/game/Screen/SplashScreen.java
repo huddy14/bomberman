@@ -2,13 +2,12 @@ package com.bomberman.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.BooleanArray;
-import com.badlogic.gdx.utils.Timer;
 import com.bomberman.game.BombGame;
 import com.bomberman.game.Constants;
+import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
+import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -22,10 +21,10 @@ public class SplashScreen implements Screen {
     private GameScreen gameScreen;
     private BombGame game;
 
-    public SplashScreen(BombGame game)
+    public SplashScreen()
     {
         this.game = game;
-        gameScreen = new GameScreen(game);
+        //gameScreen = new GameScreen(game);
         //Gdx.input.setInputProcessor(this);
 
     }
@@ -50,7 +49,7 @@ public class SplashScreen implements Screen {
     {
         if(Gdx.input.justTouched())
         {
-            game.setScreen(gameScreen);
+            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
         }
     }
     @Override
