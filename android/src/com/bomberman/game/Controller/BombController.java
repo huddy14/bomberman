@@ -103,7 +103,7 @@ public class BombController implements IController, Bomb.BombListener
     public void setPlayer(Bomberman player) {
         this.player = player;
     }
-    //TODO: jak nic sie nie zmienic, to wyjebac i po prostu dodadac do tablicy w tablicy
+    //TODO: jak nic sie nie zmieni, to wyjebac i po prostu dodadac do tablicy w tablicy
     public void addOnExplosionListener(IExplosionListener listener)
     {
         onExplosionListeners.add(listener);

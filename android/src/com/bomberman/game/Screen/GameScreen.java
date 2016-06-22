@@ -47,6 +47,10 @@ public class GameScreen extends ChangeListener implements Screen, IGameStatus {
 
 //    private BombController bombController;
 
+//TODO: zroic jedna klase abstrakcyjna dziedziczaca po screen, tak zeby wszystkie Screeny gry po niej dziedziczyly
+    //TODO: zrobic tylko jedna instancje SpriteBatcha, która będzie wszystko rysować, generalnie wyjebać te wszystkie view i stworzyc coś ala assetManager gdzie będą wszystkie tekstury i animacje statyczne, dostepne globalnie
+    //TODO: ewentualnie te wszystkie klasy view zamienic na singletony i zeby nie dziedziczyły po niczym a po prostu używały globalnego SpriteBatch'a
+    //TODO: po przejsciu levela ma sie wyswietlac ekran LevelSelection i jesli odblokowal sie nowy poziom musi byc dostepny KURWA CO JA TU ZA ELABORATY PISZE ;c
 
     public GameScreen(int level )
     {
@@ -68,7 +72,8 @@ public class GameScreen extends ChangeListener implements Screen, IGameStatus {
         //player = new Bomberman(new Vector2(80,700));
 //        player = new Bomberman(new Vector2(64,64*11));
 //        bombermanView = new BombermanView();
-        controller = new Controllers(map);
+        controller = Controllers.getInstance();
+        controller.initializeControllers(map);
         //ustawiamy te klase jako sluchacza zmiany stanu gry
         controller.bomberman().setOnGameStatusChangeListener(this);
 
@@ -164,9 +169,11 @@ public class GameScreen extends ChangeListener implements Screen, IGameStatus {
     public void onGameStatusChange(GameStatus gameStatus) {
         if(gameStatus.equals(GameStatus.LOSE))
         {
-            ScreenManager.getInstance().showScreen(ScreenEnum.SPLASH);
+            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
             this.dispose();
         }
+        if(gameStatus.equals(GameStatus.WIN))
+            ScreenManager.getInstance().showScreen(ScreenEnum.LEVEL_SELECTION);
 
     }
 }

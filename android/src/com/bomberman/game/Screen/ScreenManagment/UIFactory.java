@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
@@ -16,9 +17,9 @@ import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
  */
 public class UIFactory {
 
-    public static ImageButton createButton(Texture texture)
+    public static Button createButton(Texture texture)
     {
-        return new ImageButton(
+        return new Button(
                 new TextureRegionDrawable(
                         new TextureRegion(texture)
                 )

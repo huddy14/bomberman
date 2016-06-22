@@ -16,7 +16,7 @@ public enum ScreenEnum {
         }
     },
 
-    LEVEL_SELECT {
+    LEVEL_SELECTION {
         public Screen getScreen(Object... params) {
             return new LevelSelection();
         }

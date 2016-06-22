@@ -22,6 +22,7 @@ import com.bomberman.game.View.BombermanView;
 /**
  * Created by Patryk on 15.05.2016.
  */
+//TODO: zaimplementować preferencje, przy tworzeniu instancji Controllera wszystkie zapisane ustawienia muszą się wczytac zasieg bomby, ilosc bomb, dostepne mapy etc
 public class BombermanController implements IController,IExplosionListener {
     private Bomberman player;
     private BombermanView playerView;

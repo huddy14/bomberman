@@ -14,6 +14,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by huddy on 6/21/16.
  */
+//TODO:splash jakby sie animowal bylby sztos, a jak nie to niech sie sam wylaczy po 3 sekundach jak nikt nie kliknie nic
 public class SplashScreen implements Screen {
     private SpriteBatch batch = new SpriteBatch();
     private Texture texture = new Texture(Constants.SPLASH_SCREEN);

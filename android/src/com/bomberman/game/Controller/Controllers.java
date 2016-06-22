@@ -11,15 +11,22 @@ import com.bomberman.game.Model.Map;
  * Created by huddy on 6/21/16.
  */
 public class Controllers implements IController{
+    private static Controllers instance;
     private BombController bombController;
     private BombermanController bombermanController;
     private GhostController ghostController;
 
-    public Controllers(Map map) {
-        initializeControllers(map);
+    private Controllers() { super(); }
+
+    public static Controllers getInstance()
+    {
+        if(instance==null)
+            instance = new Controllers();
+        return instance;
     }
 
-    private void initializeControllers(Map map) {
+    //TODO: dla kazdej mapy beda inne wsporzedne playera i ghostow, tez stworzyc tablice gdzie bedziemy to trzymac
+    public void initializeControllers(Map map) {
         //inicjalizujemy kontrollery
 
         bombController = new BombController(map);
