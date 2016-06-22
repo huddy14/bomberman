@@ -26,7 +26,7 @@ public final class Constants {
     public static final String POWER_OBJECT = "Power";
     public static final String PORTAL_OBJECT = "Exit";
     public static final String BOMB_UP = "bomb";
-    public static final String FLAME_UP = "flame";
+    public static final String FLAME_UP = "firesy";
     public static final String SPEED_UP = "speed";
     public static final String EXPLODING_OBJECT = "Exploding";
     public static final String SOLID_LAYER = "SOLID_LAYER";
