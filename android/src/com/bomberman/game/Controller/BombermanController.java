@@ -17,6 +17,7 @@ import com.bomberman.game.Interfaces.IMovingModel;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Model.Map;
+import com.bomberman.game.Screen.GameScreen;
 import com.bomberman.game.View.BombermanView;
 
 /**
@@ -171,7 +172,7 @@ public class BombermanController implements IController,IExplosionListener {
             shapeRenderer.setColor(Color.WHITE);
 
             Rectangle rect = player.getSmallBounds();
-            shapeRenderer.rect(rect.getX(),rect.getY(),rect.getWidth(),rect.getHeight());
+            shapeRenderer.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 
             shapeRenderer.end();
         }

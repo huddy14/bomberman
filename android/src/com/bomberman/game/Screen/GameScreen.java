@@ -1,8 +1,12 @@
 package com.bomberman.game.Screen;
 
+import android.graphics.Color;
+import android.util.Log;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -37,6 +41,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     private MapCamera camera;
     private TiledMap tiledMap;
     private Map map;
+    private TopBarView hud;
     private TiledMapRenderer tiledMapRenderer;
     private int level;
 
@@ -46,6 +51,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     {
         super();
         this.level=level;
+        hud = new TopBarView();
         buildStage();
     }
 
@@ -91,24 +97,23 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         //ustawiamy te klase jako sluchacza zmiany stanu gry
 
         controller.bomberman().setOnGameStatusChangeListener(this);
-
         camera = new MapCamera(tiledMap.getProperties(),controller.bomberman().getPlayer());
         if(camera.getMapWidth() < Gdx.graphics.getWidth())
             camera.setToOrtho(false,camera.getMapWidth() ,Gdx.graphics.getHeight());
         else
             camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
     }
-
-
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        hud.draw();
+        hud.update(level+1, controller.bomberman().getPlayer().getLifes(),
+                controller.bomberman().getPlayer().getBombCount(), controller.bomb().getRange(),
+                (int)controller.bomberman().getPlayer().getVelocity()-1, delta);
 
         camera.update();
-
-        controller.update(touchpad.getKnobPercentX(),touchpad.getKnobPercentY());
+        controller.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
 
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
@@ -116,7 +121,6 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         this.act(delta);
         this.draw();
     }
-
 
     @Override
     public void onGameStatusChange(GameStatus gameStatus) {
