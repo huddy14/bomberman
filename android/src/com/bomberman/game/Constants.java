@@ -18,14 +18,14 @@ public final class Constants {
     public static final String BOMB_1 = "Bomb_f01" ;
     public static final String BOMB_2 = "Bomb_f02" ;
     public static final String BOMB_3 = "Bomb_f03" ;
-    public static final String MAP_1 = "Maps/Bomber.tmx";
+    public static final String[] MAPS = {"Maps/Bomber.tmx","Maps/map2.tmx"};
     public static final String TOUCHPAD_BACKGROUND = "Touchpad/touchBackground.png"  ;
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
     public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
     public static final String PLAY_BUTTON_MENU = "Screens/MainMenu/playButton.png";
     public static final String STOP_BUTTON_MENU = "Screens/MainMenu/stopButton.png";
 
-    public static final String LEVEL_SELECTION_MAP1 = "Screens/LevelSelection/map1.png";
+    public static final String[] LEVEL_SELECTION_MAP = {"Screens/LevelSelection/map1.png","Screens/LevelSelection/map2.png"};
     public static final String LEVEL_SELECTION_LOCK = "Screens/LevelSelection/Lock.png";
     public static final String LEVEL_SELECTION_BACKGROUND = "Screens/LevelSelection/background.png";
 
