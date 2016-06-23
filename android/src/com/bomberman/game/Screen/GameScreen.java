@@ -107,7 +107,6 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     @Override
     public void render(float delta) {
         super.render(delta);
-        hud.draw();
         hud.update(level+1, controller.bomberman().getPlayer().getLifes(),
                 controller.bomberman().getPlayer().getBombCount(), controller.bomb().getRange(),
                 (int)controller.bomberman().getPlayer().getVelocity()-1, delta);
@@ -118,6 +117,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         controller.draw(camera);
+        hud.draw();
         this.act(delta);
         this.draw();
     }
