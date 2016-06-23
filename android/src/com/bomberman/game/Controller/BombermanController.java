@@ -126,6 +126,7 @@ public class BombermanController implements IController,IExplosionListener {
     //TODO: fix potrzebny, przy wiekszej predkosci gracza zaczyna odpierdalac ;c
     private void smoothPlayerMovement(float oldX, float oldY)
     {
+        //TODO: Fix zrobiony, ale te warunki to sztos xD
         Rectangle rectangle = map.getRectangle();
         if (rectangle.getX() == 0 || rectangle.getY() == 0) {
             player.setStatus(Bomberman.Status.IDLE);
@@ -133,29 +134,21 @@ public class BombermanController implements IController,IExplosionListener {
             player.setY(oldY);
             player.getPosition();
         } else if (rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.DOWN == player.getDirection()) {
-            //left
-            player.update(-1, 0);
+            player.moveOb(IMovingModel.Direction.LEFT);
         } else if (rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.UP == player.getDirection()) {
-            //left
-            player.update(-1, 0);
+            player.moveOb(IMovingModel.Direction.LEFT);
         } else if (rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.DOWN == player.getDirection()) {
-            //right
-            player.update(1, 0);
+            player.moveOb(IMovingModel.Direction.RIGHT);
         } else if (rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.UP == player.getDirection()) {
-            //right
-            player.update(1, 0);
+            player.moveOb(IMovingModel.Direction.RIGHT);
         } else if (rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.RIGHT == player.getDirection()) {
-            //up
-            player.update(0, 1);
+            player.moveOb(IMovingModel.Direction.UP);
         } else if (rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.LEFT == player.getDirection()) {
-            //up
-            player.update(0, 1);
+            player.moveOb(IMovingModel.Direction.UP);
         } else if (rectangle.getY() - player.getPosition().y > approx - 5 && Bomberman.Direction.RIGHT == player.getDirection()) {
-            //down
-            player.update(0, -1);
+            player.moveOb(IMovingModel.Direction.DOWN);
         } else if (rectangle.getY() - player.getPosition().y > approx - 5 && Bomberman.Direction.LEFT == player.getDirection()) {
-            //down
-            player.update(0, -1);
+            player.moveOb(IMovingModel.Direction.DOWN);
         } else {
             player.setStatus(Bomberman.Status.IDLE);
             player.setX(oldX);

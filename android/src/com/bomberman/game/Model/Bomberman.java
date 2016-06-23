@@ -156,8 +156,14 @@ public class Bomberman implements IMovingModel{
 
     @Override
     public void move(Direction direction) {
+        velocity = 3f;
         this.position.x += velocity * direction.getX();
         this.position.y += velocity * direction.getY();
+    }
+
+    public void moveOb(Direction direction) {
+        this.position.x += direction.getX();
+        this.position.y += direction.getY();
     }
 
 
