@@ -101,8 +101,6 @@ public class BombermanController implements IController,IExplosionListener {
             if (collisionDetector.terrainCollision(player.getBounds()))
                 smoothPlayerMovement(oldX, oldY);
 
-
-
         }
     }
 

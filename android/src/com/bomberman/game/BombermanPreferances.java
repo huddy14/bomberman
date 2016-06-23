@@ -74,7 +74,7 @@ public class BombermanPreferances {
     public int getMaxMapIndex()
     {
         if(!prefs.contains("MAP_INDEX"))
-            prefs.putInteger("MAP_INDEX",1);
+            prefs.putInteger("MAP_INDEX",0);
         prefs.flush();
 
         return prefs.getInteger("MAP_INDEX");

@@ -81,7 +81,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
 
     private void init()
     {
-        tiledMap = new TmxMapLoader().load(Constants.MAP_1);
+        tiledMap = new TmxMapLoader().load(Constants.MAPS[level]);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         map = new Map(tiledMap);
 

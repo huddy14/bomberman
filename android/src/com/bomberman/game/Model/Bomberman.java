@@ -1,5 +1,7 @@
 package com.bomberman.game.Model;
 
+import android.util.Log;
+
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -148,10 +150,13 @@ public class Bomberman implements IMovingModel{
     public void update(float x, float y) {
         if (x == 0 && y == 0)status=Status.IDLE;
         else status=Status.MOVE;
-        direction = calculateDirection(x,y);
+
+        direction = calculateDirection(x, y);
+
         if(status.equals(Status.MOVE)) {
             move(direction);
         }
+
     }
 
     @Override

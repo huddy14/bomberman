@@ -27,8 +27,8 @@ public class LevelSelection extends AbstractScreen {
     private Texture lock;
     private Image lockImage;
     private Image background;
-    private Button[] buttons = new Button[12];
-//libTODO: stworzyc tablice tekstur w constants, gdzie przechowywane będą obrazki dla kazdej mapy i w pozmieniac w buildStage
+    private Button[] buttons = new Button[Constants.MAPS.length];
+//TODO: stworzyc tablice tekstur w constants, gdzie przechowywane będą obrazki dla kazdej mapy i w pozmieniac w buildStage
     public LevelSelection()
     {
         super();
@@ -38,7 +38,6 @@ public class LevelSelection extends AbstractScreen {
 
     @Override
     public void buildStage() {
-        textureMap = new Texture(Constants.LEVEL_SELECTION_MAP1);
         lock = new Texture(Constants.LEVEL_SELECTION_LOCK);
         textureBg = new Texture(Constants.LEVEL_SELECTION_BACKGROUND);
 
@@ -58,11 +57,13 @@ public class LevelSelection extends AbstractScreen {
         BombermanPreferances.getInstance();
         for(int i = 0; i<buttons.length; i++)
         {
+            textureMap = new Texture(Constants.LEVEL_SELECTION_MAP[i]);
+
             buttons[i] = UIFactory.createButton(textureMap);
             addActor(buttons[i]);
             buttons[i].setBounds( x , y , miniMapWidth , miniMapHeight );
             int b = BombermanPreferances.getInstance().getMaxMapIndex();
-            if(i>b-1) {
+            if(i>b) {
 
                 //rysowanie klodek
                 lockImage = new Image(lock);
@@ -71,7 +72,7 @@ public class LevelSelection extends AbstractScreen {
                 //locks.add(lockImage);
             }
             else
-                buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME, i+1));
+                buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME, i));
 
 
             x+= getWidth()*3/10;
