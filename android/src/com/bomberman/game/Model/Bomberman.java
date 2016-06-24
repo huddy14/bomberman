@@ -2,6 +2,7 @@ package com.bomberman.game.Model;
 
 import android.util.Log;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -13,8 +14,8 @@ import com.bomberman.game.Interfaces.IMovingModel;
  */
 public class Bomberman implements IMovingModel{
 
-    public static final int SIZE = 62;
-    private int availableBombs = 1;
+    public static final int SIZE = Constants.TILE_SIZE;
+    private int bombsCount = 1;
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
     float velocity = 3f;
@@ -34,24 +35,29 @@ public class Bomberman implements IMovingModel{
     }
     public boolean canPlant()
     {
-        return bombPlanted< availableBombs;
+        return bombPlanted< bombsCount;
     }
 
     public void addBombCount() {
-        availableBombs = MathUtils.clamp(availableBombs+1,1,5);
+        bombsCount = MathUtils.clamp(bombsCount +1,1,5);
     }
 
     public void resestBombCount() {
-        availableBombs = 1;
+        bombsCount = 1;
     }
     public int getBombCount()
     {
-        return this.availableBombs;
+        return this.bombsCount;
     }
 
-    public void setAvailableBombs(int availableBombs)
+    public void setBombsCount(int bombsCount)
     {
-        this.availableBombs = availableBombs;
+        this.bombsCount = bombsCount;
+    }
+
+    public int getAvalibleBombs()
+    {
+        return bombsCount - bombPlanted;
     }
 
     public void bombPlanted()
@@ -96,6 +102,10 @@ public class Bomberman implements IMovingModel{
         return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+Constants.TILE_SIZE/4,SIZE/2,SIZE/2);
     }
 
+    public Circle getCollisionCircle()
+    {
+        return new Circle(position.x + Constants.TILE_SIZE/2, position.y + Constants.TILE_SIZE/2, Constants.TILE_SIZE/2);
+    }
     @Override
     public Direction getDirection() {
         return this.direction;
@@ -161,13 +171,24 @@ public class Bomberman implements IMovingModel{
 
     @Override
     public void move(Direction direction) {
+        velocity = 10;
         this.position.x += velocity * direction.getX();
         this.position.y += velocity * direction.getY();
     }
 
-    public void moveOb(Direction direction) {
-        this.position.x += direction.getX();
-        this.position.y += direction.getY();
+    public void moveOb(float x, float y, Direction direction) {
+        //TODO: w miare poprawione jebie sie tylko w lewym gornym rogu czasami, ogarnac łaj
+        velocity = 10;
+        float a = x + direction.getX() * velocity;
+        float b = y + direction.getY() * velocity;
+        float c = x % 64;
+        float d = y % 64;
+        position.x = x;
+        position.y = y;
+        move(direction);
+        if(position.x % 64 < velocity)position.x = position.x - position.x %64;
+        if(position.y % 64 < velocity)position.y = position.y - position.y %64;
+        Log.w("x: ",position.x + " y: " + position.y);
     }
 
 

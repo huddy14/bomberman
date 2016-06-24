@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IController;
+import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.Ghost;
 import com.bomberman.game.Model.Map;
 
@@ -81,7 +82,13 @@ public class Controllers implements IController{
         BombermanPreferances bp = BombermanPreferances.getInstance();
         bombermanController.getPlayer().setVelocity(bp.getVelocity());
         bombController.setRange(bp.getBombRange());
-        bombermanController.getPlayer().setAvailableBombs(bp.getBombCount());
+        bombermanController.getPlayer().setBombsCount(bp.getBombCount());
         bombermanController.getPlayer().setLifes(bp.getLifes());
+    }
+
+    public void setStatsListeners(IStatsChangeListener listener)
+    {
+        bombermanController.setStatsListener(listener);
+        bombController.setStatsListener(listener);
     }
 }

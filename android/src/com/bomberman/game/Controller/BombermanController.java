@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Constants;
@@ -14,6 +15,7 @@ import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
 import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Interfaces.IMovingModel;
+import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Model.Map;
@@ -31,9 +33,10 @@ public class BombermanController implements IController,IExplosionListener {
     private Map map;
     private float elapsedTime = 0;
     private Map.CollisionDetector collisionDetector;
-    private int approx;
+    private float approx;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private IGameStatus onGameStatusChangeListener;
+    private IStatsChangeListener statsListener;
 
 
     public BombermanController(Map map)
@@ -42,13 +45,18 @@ public class BombermanController implements IController,IExplosionListener {
         this.collisionDetector = map.getCollisionDetector();
         this.player = new Bomberman(new Vector2(64,64*11));;
         this.playerView = new BombermanView();
-        this.approx = (int) player.getBounds().height/2;
+        this.approx = (int) Constants.TILE_SIZE/1.5f;
     }
 
     public void setControllers(BombController bombController,GhostController ghostController)
     {
         this.bombController = bombController;
         this.ghostController = ghostController;
+    }
+
+    public void setStatsListener(IStatsChangeListener statsListener)
+    {
+        this.statsListener = statsListener;
     }
 
     public void setOnGameStatusChangeListener(IGameStatus listener)
@@ -71,6 +79,7 @@ public class BombermanController implements IController,IExplosionListener {
         //Sprawdzenie czy player nie zginal
         if(player.getStatus().equals(IMovingModel.Status.DEAD)) {
             player.deleteLife();
+            statsListener.onLifeCountChange(player.getLifes());
             //jelis zginal ale mial jeszcze kilka zyc to ressetujemy jego pozycje i zmieniamy status
             if (player.getLifes() > 0) {
                 player.setX(64f);
@@ -112,12 +121,15 @@ public class BombermanController implements IController,IExplosionListener {
         switch (type) {
             case Constants.BOMB_UP:
                 player.addBombCount();
+                statsListener.onBombCountChange(player.getBombCount());
                 break;
             case Constants.FLAME_UP:
                 bombController.setRange(bombController.getRange()+1);
+                statsListener.onBombRangeChange(bombController.getRange());
                 break;
             case Constants.SPEED_UP:
                 player.setVelocity(player.getVelocity() + 1f);
+                statsListener.onSpeedChange(player.getVelocity());
                 break;
         }
         map.deletePower();
@@ -133,21 +145,21 @@ public class BombermanController implements IController,IExplosionListener {
             player.setY(oldY);
             player.getPosition();
         } else if (rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.DOWN == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.LEFT);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.LEFT);
         } else if (rectangle.getX() - player.getPosition().x > approx && Bomberman.Direction.UP == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.LEFT);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.LEFT);
         } else if (rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.DOWN == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.RIGHT);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.RIGHT);
         } else if (rectangle.getX() - player.getPosition().x < -approx && Bomberman.Direction.UP == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.RIGHT);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.RIGHT);
         } else if (rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.RIGHT == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.UP);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.UP);
         } else if (rectangle.getY() - player.getPosition().y < -approx && Bomberman.Direction.LEFT == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.UP);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.UP);
         } else if (rectangle.getY() - player.getPosition().y > approx - 5 && Bomberman.Direction.RIGHT == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.DOWN);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.DOWN);
         } else if (rectangle.getY() - player.getPosition().y > approx - 5 && Bomberman.Direction.LEFT == player.getDirection()) {
-            player.moveOb(IMovingModel.Direction.DOWN);
+            player.moveOb(oldX,oldY,IMovingModel.Direction.DOWN);
         } else {
             player.setStatus(Bomberman.Status.IDLE);
             player.setX(oldX);
@@ -171,8 +183,8 @@ public class BombermanController implements IController,IExplosionListener {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.WHITE);
 
-            Rectangle rect = player.getSmallBounds();
-            shapeRenderer.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+            Circle rect = player.getCollisionCircle();
+            shapeRenderer.circle(rect.x,rect.y,rect.radius);
 
             shapeRenderer.end();
         }

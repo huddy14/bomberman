@@ -148,6 +148,15 @@ public class Map {
                 }
             return false;
         }
+        public boolean terrainCollision(Circle circle)
+        {
+            for (int i = 0; i < collisionElements.size(); i++)
+                if (Intersector.overlaps(circle,collisionElements.get(i))) {
+                    idCol = i;
+                    return true;
+                }
+            return false;
+        }
 
         public boolean portalCollison(Rectangle rectangle)
         {

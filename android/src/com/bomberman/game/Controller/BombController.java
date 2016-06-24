@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
+import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.ExplosionBounds;
@@ -33,6 +34,7 @@ public class BombController implements IController, Bomb.BombListener
     private Map.CollisionDetector collisionDetector;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private int range = 1;
+    private IStatsChangeListener statsListener;
 
     private ArrayList<Bomb> bombsToDelete = new ArrayList<>();
 
@@ -54,6 +56,11 @@ public class BombController implements IController, Bomb.BombListener
         //dodajac bombe od razu sprawdzamy jakie stale elementy wybuchną
         bombs.add(collisionDetector.bombsExplosionBoundsCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
         Log.w("ilosc itemow :","" + bombs.size());
+    }
+
+    public void setStatsListener(IStatsChangeListener statsListener)
+    {
+        this.statsListener = statsListener;
     }
 
 
@@ -131,6 +138,7 @@ public class BombController implements IController, Bomb.BombListener
             listener.onExplosion(bomb);
 
         player.bombExploded();
+        statsListener.onBombCountChange(player.getAvalibleBombs());
     }
 
     @Override
@@ -142,6 +150,7 @@ public class BombController implements IController, Bomb.BombListener
     @Override
     public ExplosionBounds onBombPlanted(Bomb bomb) {
         player.bombPlanted();
+        statsListener.onBombCountChange(player.getAvalibleBombs());
         return collisionDetector.bombExplosionCollision(bomb);
     }
 }

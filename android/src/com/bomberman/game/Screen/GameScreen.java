@@ -1,12 +1,11 @@
 package com.bomberman.game.Screen;
 
-import android.graphics.Color;
-import android.util.Log;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,21 +13,23 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.bomberman.game.BombGame;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IGameStatus;
+import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.*;
 import com.bomberman.game.Screen.CameraManagment.MapCamera;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
 import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 import com.bomberman.game.View.*;
 import com.bomberman.game.Controller.*;
-
-import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by Patryk on 16.05.2016.
@@ -71,6 +72,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         this.addActor(touchpad);
         this.addActor(bombButton);
 
+
     }
 
     @Override
@@ -102,14 +104,14 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
             camera.setToOrtho(false,camera.getMapWidth() ,Gdx.graphics.getHeight());
         else
             camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
+        controller.setStatsListeners(hud);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-        hud.update(level+1, controller.bomberman().getPlayer().getLifes(),
-                controller.bomberman().getPlayer().getBombCount(), controller.bomb().getRange(),
-                (int)controller.bomberman().getPlayer().getVelocity()-1, delta);
+        hud.update(delta);
 
         camera.update();
         controller.update(touchpad.getKnobPercentX(), touchpad.getKnobPercentY());
@@ -117,7 +119,6 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         controller.draw(camera);
-        hud.draw();
         this.act(delta);
         this.draw();
     }
@@ -148,9 +149,115 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         bp.setMaxMapIndex(level+i);
     }
     private void resetStats() {
-        controller.bomberman().getPlayer().setAvailableBombs(1);
+        controller.bomberman().getPlayer().setBombsCount(1);
         controller.bomberman().getPlayer().setLifes(3);
         controller.bomberman().getPlayer().setVelocity(3);
         controller.bomb().setRange(1);
+    }
+
+    private class TopBarView implements IStatsChangeListener {
+        private int elapsedTime;
+        private float timeCount;
+
+        private Label _rangeLabel;
+        private Label _bombLabel;
+        private Label _speedLabel;
+        private Label _levelLabel;
+        private Label _timeLabel;
+        private Label _lifeLabel;
+
+
+        private final int TIME_TO_SCORE_UPDATE = 1;
+        private final int MAX_TIME = 300;
+
+
+        public TopBarView(){
+            timeCount = 0;
+            elapsedTime = 0;
+            setElements();
+        }
+
+        private void setElements(){
+            Table table = new Table();
+            table.top();
+            table.left();
+            table.setFillParent(true);
+            BitmapFont font = new BitmapFont();
+            font.getData().setScale(1.5f);
+            Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
+            _levelLabel = new Label("Level: 1", labelStyle);
+            _bombLabel = new Label("Bombs: 1", labelStyle);
+            _rangeLabel = new Label("Range: 1", labelStyle);
+            _speedLabel = new Label("Speed: 1", labelStyle);
+            _timeLabel  = new Label("Time: 0", labelStyle);
+            _lifeLabel  = new Label("Lifes: 3", labelStyle);
+            table.row();
+            table.add(_levelLabel).expandX();
+            table.add(_lifeLabel).expandX();
+            table.add(_bombLabel).expandX();
+            table.add(_rangeLabel).expandX();
+            table.add(_speedLabel).expandX();
+            table.add(_timeLabel).expandX();
+            addActor(table);
+
+            initValues();
+
+        }
+
+        private void initValues()
+        {
+            BombermanPreferances bp = BombermanPreferances.getInstance();
+            onLevelChange(level+1);
+            _lifeLabel.setText("Lifes: " + bp.getLifes());
+            _bombLabel.setText("Bombs: " + bp.getBombCount());
+            _rangeLabel.setText("Range: " + bp.getBombRange());
+            _speedLabel.setText("Speed: " + bp.getVelocity());
+        }
+
+        public void update(float dt)
+        {
+            timeCount += dt;
+            if(timeCount >= TIME_TO_SCORE_UPDATE) //aktualizacja wyniku co 1 sekunde
+            {
+                elapsedTime++;
+                _timeLabel.setText("Time: " + String.format("%d:%d",(MAX_TIME - elapsedTime)/60,(MAX_TIME - elapsedTime) % 60));
+                timeCount = 0;
+            }
+            else
+                //jeśli czas upłynie to koniec, sorry vinetu
+                onGameStatusChange(GameStatus.LOSE);
+        }
+
+
+        @Override
+        public void onLevelChange(int level) {
+            _levelLabel.setText("Level: " + level);
+
+        }
+
+        @Override
+        public void onLifeCountChange(int lifes) {
+            _lifeLabel.setText("Lifes: " + lifes);
+
+        }
+
+        @Override
+        public void onBombCountChange(int bombs) {
+            _bombLabel.setText("Bombs: " + bombs);
+
+        }
+
+        @Override
+        public void onBombRangeChange(int range) {
+            _rangeLabel.setText("Range: " + range);
+
+        }
+
+        @Override
+        public void onSpeedChange(float velocity) {
+            _speedLabel.setText("Speed: " + velocity);
+
+        }
+
     }
 }
