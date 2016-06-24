@@ -3,7 +3,7 @@ package com.bomberman.game.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.bomberman.game.Constants;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Interfaces.ISoundEffects;
 
 /**
@@ -12,11 +12,11 @@ import com.bomberman.game.Interfaces.ISoundEffects;
 public class AudioManager implements ISoundEffects {
     private static AudioManager ourInstance;
 
-    private final Sound bonus = Gdx.audio.newSound(Gdx.files.internal(Constants.AUDIO_BONUS));
-    private final Sound explosion = Gdx.audio.newSound(Gdx.files.internal(Constants.AUDIO_EXPLOSION));
-    private final Sound death = Gdx.audio.newSound(Gdx.files.internal(Constants.AUDIO_GAME_OVER));
-    private final Sound victory = Gdx.audio.newSound(Gdx.files.internal(Constants.AUDIO_BONUS));
-    private final Music soundtrack = Gdx.audio.newMusic(Gdx.files.internal(Constants.AUDIO_SOUNDTRACK));
+    private final Sound bonus = Gdx.audio.newSound(Gdx.files.internal(AssetsPaths.AUDIO_BONUS));
+    private final Sound explosion = Gdx.audio.newSound(Gdx.files.internal(AssetsPaths.AUDIO_EXPLOSION));
+    private final Sound death = Gdx.audio.newSound(Gdx.files.internal(AssetsPaths.AUDIO_GAME_OVER));
+    private final Sound victory = Gdx.audio.newSound(Gdx.files.internal(AssetsPaths.AUDIO_BONUS));
+    private final Music soundtrack = Gdx.audio.newMusic(Gdx.files.internal(AssetsPaths.AUDIO_SOUNDTRACK));
 
 
 

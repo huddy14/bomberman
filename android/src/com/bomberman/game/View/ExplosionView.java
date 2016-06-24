@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 
 /**
@@ -17,7 +18,7 @@ public class ExplosionView extends SpriteBatch {
 
     public ExplosionView()
     {
-        animation = new Animation(1/40f,new TextureAtlas(Constants.BOOM_ANIMATION).getRegions());
+        animation = new Animation(1/40f,new TextureAtlas(AssetsPaths.BOOM_ANIMATION).getRegions());
     }
 
     public void drawBoom(float x, float y)

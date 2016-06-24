@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.bomberman.game.Constants;
+import com.bomberman.game.AssetsPaths;
 
 /**
  * Created by huddy on 6/3/16.
@@ -17,7 +17,7 @@ public class BombView extends SpriteBatch {
 
     public BombView()
     {
-        animation = new Animation(1/10f,new TextureAtlas(Constants.BOMB_ANIMATION).getRegions());
+        animation = new Animation(1/10f,new TextureAtlas(AssetsPaths.BOMB_ANIMATION).getRegions());
     }
 
 

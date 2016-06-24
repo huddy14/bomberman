@@ -1,7 +1,7 @@
 package com.bomberman.game.Model;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 
 /**
@@ -56,12 +56,12 @@ public class ExplosionBounds {
 
     public Rectangle getVerticalRectangle()
     {
-        return new Rectangle(x*Constants.TILE_SIZE,ymin*Constants.TILE_SIZE, Constants.TILE_SIZE,(ymax-ymin+1) * Constants.TILE_SIZE);
+        return new Rectangle(x* Constants.TILE_SIZE,ymin* Constants.TILE_SIZE, Constants.TILE_SIZE,(ymax-ymin+1) * Constants.TILE_SIZE);
     }
 
     public Rectangle getHorizontalRectangle()
     {
-        return new Rectangle(xmin*Constants.TILE_SIZE,y*Constants.TILE_SIZE, (xmax-xmin+1) * Constants.TILE_SIZE,Constants.TILE_SIZE);
+        return new Rectangle(xmin* Constants.TILE_SIZE,y* Constants.TILE_SIZE, (xmax-xmin+1) * Constants.TILE_SIZE, Constants.TILE_SIZE);
 
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IMovingModel;
 
@@ -43,18 +44,18 @@ public class Map {
         this.map = map;
         MAP_WIDTH = map.getProperties().get("width", Integer.class);
         MAP_HEIGHT = map.getProperties().get("height", Integer.class);
-        this.solidElements = getElements(map, Constants.SOLID_OBJECT);
-        this.explodableElements = getElements(map, Constants.EXPLODING_OBJECT);
-        this.powerupElements = getElements(map, Constants.POWER_OBJECT);
-        this.pE = getPowerProp(map, Constants.POWER_OBJECT);
-        this.portal = getElements(map, Constants.PORTAL_OBJECT).get(0);
+        this.solidElements = getElements(map, AssetsPaths.SOLID_OBJECT);
+        this.explodableElements = getElements(map, AssetsPaths.EXPLODING_OBJECT);
+        this.powerupElements = getElements(map, AssetsPaths.POWER_OBJECT);
+        this.pE = getPowerProp(map, AssetsPaths.POWER_OBJECT);
+        this.portal = getElements(map, AssetsPaths.PORTAL_OBJECT).get(0);
         collisionElements.addAll(explodableElements);
         collisionElements.addAll(solidElements);
-        //getCollisionElements(Constants.EXPLODING_OBJECT);
-        getCollisionElements(Constants.SOLID_OBJECT,Constants.EXPLODING_OBJECT);
+        //getCollisionElements(AssetsPaths.EXPLODING_OBJECT);
+        getCollisionElements(AssetsPaths.SOLID_OBJECT, AssetsPaths.EXPLODING_OBJECT);
 
-        this.layer = (TiledMapTileLayer)map.getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
-        this.powerLayer = (TiledMapTileLayer)map.getLayers().get(Constants.POWER_LAYER);
+        this.layer = (TiledMapTileLayer)map.getLayers().get(AssetsPaths.EXPLODING_LAYER);//tile layer explodin
+        this.powerLayer = (TiledMapTileLayer)map.getLayers().get(AssetsPaths.POWER_LAYER);
 
     }
 
@@ -83,8 +84,8 @@ public class Map {
     {
         int x = (int) powerupElements.get(idPow).getX();
         int y = (int) powerupElements.get(idPow).getY();
-        if(powerLayer.getCell(x/Constants.TILE_SIZE,y/Constants.TILE_SIZE)!=null)
-            powerLayer.getCell(x/Constants.TILE_SIZE,y/Constants.TILE_SIZE).setTile(null);
+        if(powerLayer.getCell(x/ Constants.TILE_SIZE,y/ Constants.TILE_SIZE)!=null)
+            powerLayer.getCell(x/ Constants.TILE_SIZE,y/ Constants.TILE_SIZE).setTile(null);
         powerupElements.remove(idPow);
     }
 
@@ -117,14 +118,14 @@ public class Map {
         {
             RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
             Rectangle rect = obj.getRectangle();
-            _CollisionElements.put(new Pair<>((int)rect.getX()/Constants.TILE_SIZE,(int)rect.getY()/Constants.TILE_SIZE),rect);
+            _CollisionElements.put(new Pair<>((int)rect.getX()/ Constants.TILE_SIZE,(int)rect.getY()/ Constants.TILE_SIZE),rect);
         }
         mapObjects =  map.getLayers().get(layer_name1).getObjects();
         for(int i=0 ; i < mapObjects.getCount(); i++)
         {
             RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
             Rectangle rect = obj.getRectangle();
-            _CollisionElements.put(new Pair<>((int)rect.getX()/Constants.TILE_SIZE,(int)rect.getY()/Constants.TILE_SIZE),rect);
+            _CollisionElements.put(new Pair<>((int)rect.getX()/ Constants.TILE_SIZE,(int)rect.getY()/ Constants.TILE_SIZE),rect);
         }
 
     }

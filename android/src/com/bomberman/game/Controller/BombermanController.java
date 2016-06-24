@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Audio.AudioManager;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IController;
@@ -20,7 +21,6 @@ import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Model.Map;
-import com.bomberman.game.Screen.GameScreen;
 import com.bomberman.game.View.BombermanView;
 
 /**
@@ -92,7 +92,7 @@ public class BombermanController implements IController,IExplosionListener {
             if (player.getLifes() > 0) {
                 player.setX(Constants.TILE_SIZE);
                 player.setY(Constants.TILE_SIZE * (HEIGHT - 2));
-                player.setStatus(IMovingModel.Status.IDLE);
+                player.setStatus(IMovingModel.Status.MOVE);
             } else {
                 //w przeciwnym wypadku gra jest przegrana
                 onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.LOSE);
@@ -128,26 +128,24 @@ public class BombermanController implements IController,IExplosionListener {
     {
         String type = map.getPowerType();
         switch (type) {
-            case Constants.BOMB_UP:
+            case AssetsPaths.BOMB_UP:
                 player.addBombCount();
                 statsListener.onBombCountChange(player.getBombCount());
                 break;
-            case Constants.FLAME_UP:
+            case AssetsPaths.FLAME_UP:
                 bombController.setRange(bombController.getRange()+1);
                 statsListener.onBombRangeChange(bombController.getRange());
                 break;
-            case Constants.SPEED_UP:
-                player.setVelocity(player.getVelocity() + 1f);
+            case AssetsPaths.SPEED_UP:
+                player.setVelocity(player.getVelocity() + 0.5f);
                 statsListener.onSpeedChange(player.getVelocity());
                 break;
         }
         map.deletePower();
         AudioManager.getInstance().onBonusTake();
     }
-    //TODO: fix potrzebny, przy wiekszej predkosci gracza zaczyna odpierdalac ;c
     private void smoothPlayerMovement(float oldX, float oldY)
     {
-        //TODO: Fix zrobiony, ale te warunki to sztos xD
         Rectangle rectangle = map.getRectangle();
         if (rectangle.getX() == 0 || rectangle.getY() == 0) {
             player.setStatus(Bomberman.Status.IDLE);

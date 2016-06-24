@@ -6,13 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Touchpad.*;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 
 /**
  * Created by huddy on 6/1/16.
  */
-//TODO: taczpad przezroczysty musi byc
 public class TouchpadView extends Touchpad
 {
     private Skin touchpadSkin;
@@ -22,9 +21,9 @@ public class TouchpadView extends Touchpad
         super(deadzoneRadius, style);
         touchpadSkin = new Skin();
         //Set background image
-        touchpadSkin.add("touchBackground", new Texture(Constants.TOUCHPAD_BACKGROUND));
+        touchpadSkin.add("touchBackground", new Texture(AssetsPaths.TOUCHPAD_BACKGROUND));
         //Set knob image
-        touchpadSkin.add("touchKnob", new Texture(Constants.TOUCHPAD_KNOB));
+        touchpadSkin.add("touchKnob", new Texture(AssetsPaths.TOUCHPAD_KNOB));
         //Create Drawable's from TouchPad skin
         touchBackground = touchpadSkin.getDrawable("touchBackground");
         touchKnob = touchpadSkin.getDrawable("touchKnob");
@@ -32,7 +31,7 @@ public class TouchpadView extends Touchpad
         style.background = touchBackground;
         style.knob = touchKnob;
         //Create new TouchPad with the created style
-        this.setBounds(Gdx.graphics.getHeight()/10f, Gdx.graphics.getHeight()/10f,
+        this.setBounds(touchBackground.getRightWidth()/2 + Constants.TILE_SIZE / 4,touchBackground.getRightWidth()/2 + Constants.TILE_SIZE/4,
                 Gdx.graphics.getWidth()/6.5f,
                 Gdx.graphics.getWidth()/6.5f);
     }

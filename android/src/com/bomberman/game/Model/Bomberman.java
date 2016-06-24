@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IMovingModel;
 
@@ -18,7 +19,7 @@ public class Bomberman implements IMovingModel{
     private int bombsCount = 1;
     private int bombPlanted = 0;
     Vector2 position = new Vector2();
-    float velocity = 3f;
+    float velocity = 2f;
     int lifes = 3;
     Status status = Status.IDLE;
     Direction direction = Direction.DOWN;
@@ -105,7 +106,7 @@ public class Bomberman implements IMovingModel{
     }
     public Rectangle getSmallBounds()
     {
-        return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+Constants.TILE_SIZE/4,SIZE/2,SIZE/2);
+        return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+ Constants.TILE_SIZE/4,SIZE/2,SIZE/2);
     }
 
     public Circle getCollisionCircle()
@@ -182,21 +183,15 @@ public class Bomberman implements IMovingModel{
     }
 
     public void moveOb(float x, float y, Direction direction) {
-        //TODO: w miare poprawione jebie sie tylko w lewym gornym rogu czasami, ogarnac łaj
-        Direction dir = direction;
-        float a = x + direction.getX() * velocity;
-        float b = y + direction.getY() * velocity;
-        float c = x % 64;
-        float d = y % 64;
+
         position.x = x;
         position.y = y;
         move(direction);
         if(position.x % 64 < velocity)position.x = position.x - position.x %64;
         if(position.y % 64 < velocity)position.y = position.y - position.y %64;
 
-        position.x = MathUtils.clamp(position.x,Constants.TILE_SIZE,Constants.TILE_SIZE * (WIDTH -1));
-        position.y = MathUtils.clamp(position.y,Constants.TILE_SIZE,Constants.TILE_SIZE * (HEIGHT-1));
-        Log.w("x: ",position.x + " y: " + position.y);
+        position.x = MathUtils.clamp(position.x, Constants.TILE_SIZE, Constants.TILE_SIZE * (WIDTH -1));
+        position.y = MathUtils.clamp(position.y, Constants.TILE_SIZE, Constants.TILE_SIZE * (HEIGHT-1));
     }
 
 

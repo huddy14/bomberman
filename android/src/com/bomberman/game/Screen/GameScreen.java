@@ -4,25 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bomberman.game.Audio.AudioManager;
 import com.bomberman.game.BombermanPreferances;
-import com.bomberman.game.Constants;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.*;
@@ -94,7 +89,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
 
     private void init()
     {
-        tiledMap = new TmxMapLoader().load(Constants.MAPS[level]);
+        tiledMap = new TmxMapLoader().load(AssetsPaths.MAPS[level]);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         map = new Map(tiledMap);
 
@@ -156,7 +151,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     private void resetStats() {
         controller.bomberman().getPlayer().setBombsCount(1);
         controller.bomberman().getPlayer().setLifes(3);
-        controller.bomberman().getPlayer().setVelocity(3);
+        controller.bomberman().getPlayer().setVelocity(2f);
         controller.bomb().setRange(1);
     }
 

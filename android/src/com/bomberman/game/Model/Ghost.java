@@ -2,10 +2,9 @@ package com.bomberman.game.Model;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IMovingModel;
-
-import java.util.Random;
 
 /**
  * Created by huddy on 6/20/16.
@@ -53,7 +52,7 @@ public class Ghost implements IMovingModel{
 
     @Override
     public Rectangle getSmallBounds() {
-        return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+Constants.TILE_SIZE/4,SIZE/1.5f,SIZE/1.5f);
+        return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+ Constants.TILE_SIZE/4,SIZE/1.5f,SIZE/1.5f);
     }
 
     @Override

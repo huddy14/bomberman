@@ -3,6 +3,7 @@ package com.bomberman.game.Screen.CameraManagment;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
+import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Model.Bomberman;
 
