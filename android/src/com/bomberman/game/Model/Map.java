@@ -83,8 +83,8 @@ public class Map {
     {
         int x = (int) powerupElements.get(idPow).getX();
         int y = (int) powerupElements.get(idPow).getY();
-        if(powerLayer.getCell(x/64,y/64)!=null)
-            powerLayer.getCell(x/64,y/64).setTile(null);
+        if(powerLayer.getCell(x/Constants.TILE_SIZE,y/Constants.TILE_SIZE)!=null)
+            powerLayer.getCell(x/Constants.TILE_SIZE,y/Constants.TILE_SIZE).setTile(null);
         powerupElements.remove(idPow);
     }
 

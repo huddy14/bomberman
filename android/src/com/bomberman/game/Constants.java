@@ -29,6 +29,13 @@ public final class Constants {
     public static final String LEVEL_SELECTION_LOCK = "Screens/LevelSelection/Lock.png";
     public static final String LEVEL_SELECTION_BACKGROUND = "Screens/LevelSelection/background.png";
 
+    public static final String AUDIO_BONUS = "Audio/bonus.wav";
+    public static final String AUDIO_EXPLOSION = "Audio/explosion.wav";
+    public static final String AUDIO_GAME_OVER = "Audio/gameOver.wav";
+    public static final String AUDIO_SOUNDTRACK = "Audio/soundtrack.mp3";
+
+
+
 
 
 

@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bomberman.game.Audio.AudioManager;
 import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IGameStatus;
@@ -45,6 +46,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     private TopBarView hud;
     private TiledMapRenderer tiledMapRenderer;
     private int level;
+    private AudioManager audioManager;
 
 
 //TODO: implementacja pozycji gracza i ghostow przy wczytywaniu mapy
@@ -54,6 +56,9 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         this.level=level;
         hud = new TopBarView();
         buildStage();
+        audioManager = AudioManager.getInstance();
+        audioManager.playSoundtrack();
+
     }
 
     @Override
@@ -153,6 +158,12 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         controller.bomberman().getPlayer().setLifes(3);
         controller.bomberman().getPlayer().setVelocity(3);
         controller.bomb().setRange(1);
+    }
+
+    @Override
+    public void dispose() {
+        audioManager.stopSoundtrack();
+        super.dispose();
     }
 
     private class TopBarView implements IStatsChangeListener {

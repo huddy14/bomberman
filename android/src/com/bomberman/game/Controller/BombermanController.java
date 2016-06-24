@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.bomberman.game.Audio.AudioManager;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
@@ -86,6 +87,7 @@ public class BombermanController implements IController,IExplosionListener {
         if(player.getStatus().equals(IMovingModel.Status.DEAD)) {
             player.deleteLife();
             statsListener.onLifeCountChange(player.getLifes());
+            AudioManager.getInstance().onPlayerDeath();
             //jelis zginal ale mial jeszcze kilka zyc to ressetujemy jego pozycje i zmieniamy status
             if (player.getLifes() > 0) {
                 player.setX(Constants.TILE_SIZE);
@@ -105,6 +107,7 @@ public class BombermanController implements IController,IExplosionListener {
             player.update(x, y);
             if (ghostController.getGhosts().size() == 0 && collisionDetector.portalCollison(player.getBounds())) {
                 onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.WIN);
+                AudioManager.getInstance().onPlayerVicotry();
             }
             else if (collisionDetector.playerGhostsCollision(player.getSmallBounds(), ghostController.getGhosts())) {
                 player.setStatus(IMovingModel.Status.DEAD);
@@ -139,6 +142,7 @@ public class BombermanController implements IController,IExplosionListener {
                 break;
         }
         map.deletePower();
+        AudioManager.getInstance().onBonusTake();
     }
     //TODO: fix potrzebny, przy wiekszej predkosci gracza zaczyna odpierdalac ;c
     private void smoothPlayerMovement(float oldX, float oldY)
@@ -198,6 +202,7 @@ public class BombermanController implements IController,IExplosionListener {
 
     @Override
     public void onExplosion(Bomb bomb) {
+        AudioManager.getInstance().onBombEplosion();
         //sprawdzenie czy wybuch bomby nie zabil gracza
         if(collisionDetector.movingModelExplosionBoundsCollision(player,bomb))
             player.setStatus(IMovingModel.Status.DEAD);

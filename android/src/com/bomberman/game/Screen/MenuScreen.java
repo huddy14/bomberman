@@ -71,6 +71,7 @@ public class MenuScreen extends AbstractScreen {
         //Log.w("H: ",""+bg.getHeight()+" W: "+bg.getWidth());
     }
 
+
     @Override
     public void onBackButtonPressed() {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
