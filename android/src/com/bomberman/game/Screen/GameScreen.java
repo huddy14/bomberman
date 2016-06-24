@@ -220,12 +220,12 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
             if(timeCount >= TIME_TO_SCORE_UPDATE) //aktualizacja wyniku co 1 sekunde
             {
                 elapsedTime++;
-                _timeLabel.setText("Time: " + String.format("%d:%d",(MAX_TIME - elapsedTime)/60,(MAX_TIME - elapsedTime) % 60));
+                _timeLabel.setText("Time: " + String.format("%02d:%02d",(MAX_TIME - elapsedTime)/60,(MAX_TIME - elapsedTime) % 60));
                 timeCount = 0;
             }
-            else{}
+            if(MAX_TIME-elapsedTime == 0)
                 //jeśli czas upłynie to koniec, sorry vinetu
-                //onGameStatusChange(GameStatus.LOSE);
+                onGameStatusChange(GameStatus.LOSE);
         }
 
 

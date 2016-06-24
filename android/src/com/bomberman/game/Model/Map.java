@@ -1,6 +1,7 @@
 package com.bomberman.game.Model;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -27,6 +28,7 @@ public class Map {
     private ArrayList<Rectangle> powerupElements = new ArrayList<>();
     private java.util.Map<Rectangle, String> pE;
     private CollisionDetector collisionDetector= new CollisionDetector();
+    private java.util.Map<Pair<Integer,Integer>,Rectangle> _CollisionElements = new HashMap<>();
     private Rectangle portal = new Rectangle();
     private int idCol, idPow;
 
@@ -48,6 +50,8 @@ public class Map {
         this.portal = getElements(map, Constants.PORTAL_OBJECT).get(0);
         collisionElements.addAll(explodableElements);
         collisionElements.addAll(solidElements);
+        //getCollisionElements(Constants.EXPLODING_OBJECT);
+        getCollisionElements(Constants.SOLID_OBJECT,Constants.EXPLODING_OBJECT);
 
         this.layer = (TiledMapTileLayer)map.getLayers().get(Constants.EXPLODING_LAYER);//tile layer explodin
         this.powerLayer = (TiledMapTileLayer)map.getLayers().get(Constants.POWER_LAYER);
@@ -106,9 +110,23 @@ public class Map {
         return this.MAP_HEIGHT;
     }
 
-    public ArrayList<Rectangle>getCollisionElements()
+    public void getCollisionElements(String layer_name, String layer_name1)
     {
-        return this.collisionElements;
+        MapObjects mapObjects = map.getLayers().get(layer_name).getObjects();
+        for(int i=0 ; i < mapObjects.getCount(); i++)
+        {
+            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
+            Rectangle rect = obj.getRectangle();
+            _CollisionElements.put(new Pair<>((int)rect.getX()/Constants.TILE_SIZE,(int)rect.getY()/Constants.TILE_SIZE),rect);
+        }
+        mapObjects =  map.getLayers().get(layer_name1).getObjects();
+        for(int i=0 ; i < mapObjects.getCount(); i++)
+        {
+            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
+            Rectangle rect = obj.getRectangle();
+            _CollisionElements.put(new Pair<>((int)rect.getX()/Constants.TILE_SIZE,(int)rect.getY()/Constants.TILE_SIZE),rect);
+        }
+
     }
 
     public CollisionDetector getCollisionDetector()
@@ -129,9 +147,6 @@ public class Map {
         setTileToNull(eb.getX(),eb.getYmin());
 
         Log.w("collision:",""+collisionElements.size()+" Explodable elements: "+explodableElements.size());
-
-
-
     }
 
     private void setTileToNull(int x, int y)
@@ -221,14 +236,14 @@ public class Map {
                 //sprawdzamy czy promien razenia jednej bomby nachodzi na promien razenia reszty
                 if (Intersector.overlaps(e1.getHorizontalRectangle(), e2.getHorizontalRectangle())) {
 
-                    if ((e1.getY() % 2 != 0 && e2.getY()%2 != 0) && Math.abs(e1.getX() - e2.getX())<=b1.getRange()) {
+                    if ((e1.getY() % 2 != 0 && e2.getY()%2 != 0) && Math.abs(e1.getX() - e2.getX())<=b1.getRange() && Math.min(e1.getXmax(),e2.getXmax())!=Math.max(e1.getXmin(),e2.getXmin())) {
                         b1.setRemaningSeconds(b2.getRemainingSeconds());
                         return b1;
                     }
                 }
                 else if(Intersector.overlaps(e1.getVerticalRectangle(), e2.getVerticalRectangle()))
                 {
-                    if ((e1.getX() % 2 != 0 && e2.getX()%2 != 0) && Math.abs(e1.getY() - e2.getY())<=b1.getRange()) {
+                    if ((e1.getX() % 2 != 0 && e2.getX()%2 != 0) && Math.abs(e1.getY() - e2.getY())<=b1.getRange() && Math.min(e1.getYmax(),e2.getYmax())!=Math.max(e1.getYmin(),e2.getYmin())) {
                         b1.setRemaningSeconds(b2.getRemainingSeconds());
                         return b1;
                     }
