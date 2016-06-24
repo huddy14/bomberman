@@ -96,6 +96,16 @@ public class Map {
         return elements;
     }
 
+    public int MAP_WIDTH()
+    {
+        return this.MAP_WIDTH;
+    }
+
+    public int MAP_HEIGHT()
+    {
+        return this.MAP_HEIGHT;
+    }
+
     public ArrayList<Rectangle>getCollisionElements()
     {
         return this.collisionElements;

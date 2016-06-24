@@ -23,6 +23,7 @@ public class Bomberman implements IMovingModel{
     Status status = Status.IDLE;
     Direction direction = Direction.DOWN;
     private static final double pi = Math.PI;
+    private int HEIGHT,WIDTH;
 
     public Bomberman(Vector2 position) {
         this.position = position;
@@ -97,6 +98,11 @@ public class Bomberman implements IMovingModel{
 
     }
 
+    public void setMapBounds(int w, int h)
+    {
+        this.HEIGHT = h;
+        this.WIDTH = w;
+    }
     public Rectangle getSmallBounds()
     {
         return new Rectangle(position.x+ Constants.TILE_SIZE/4,position.y+Constants.TILE_SIZE/4,SIZE/2,SIZE/2);
@@ -171,14 +177,13 @@ public class Bomberman implements IMovingModel{
 
     @Override
     public void move(Direction direction) {
-        velocity = 10;
         this.position.x += velocity * direction.getX();
         this.position.y += velocity * direction.getY();
     }
 
     public void moveOb(float x, float y, Direction direction) {
         //TODO: w miare poprawione jebie sie tylko w lewym gornym rogu czasami, ogarnac łaj
-        velocity = 10;
+        Direction dir = direction;
         float a = x + direction.getX() * velocity;
         float b = y + direction.getY() * velocity;
         float c = x % 64;
@@ -188,6 +193,9 @@ public class Bomberman implements IMovingModel{
         move(direction);
         if(position.x % 64 < velocity)position.x = position.x - position.x %64;
         if(position.y % 64 < velocity)position.y = position.y - position.y %64;
+
+        position.x = MathUtils.clamp(position.x,Constants.TILE_SIZE,Constants.TILE_SIZE * (WIDTH -1));
+        position.y = MathUtils.clamp(position.y,Constants.TILE_SIZE,Constants.TILE_SIZE * (HEIGHT-1));
         Log.w("x: ",position.x + " y: " + position.y);
     }
 

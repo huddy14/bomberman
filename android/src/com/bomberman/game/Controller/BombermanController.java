@@ -37,6 +37,7 @@ public class BombermanController implements IController,IExplosionListener {
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private IGameStatus onGameStatusChangeListener;
     private IStatsChangeListener statsListener;
+    private int HEIGHT,WIDTH;
 
 
     public BombermanController(Map map)
@@ -44,6 +45,9 @@ public class BombermanController implements IController,IExplosionListener {
         this.map = map;
         this.collisionDetector = map.getCollisionDetector();
         this.player = new Bomberman(new Vector2(64,64*11));;
+        this.HEIGHT = map.MAP_HEIGHT();
+        this.WIDTH = map.MAP_WIDTH();
+        this.player.setMapBounds(WIDTH,HEIGHT);
         this.playerView = new BombermanView();
         this.approx = (int) Constants.TILE_SIZE/1.5f;
     }
@@ -53,6 +57,8 @@ public class BombermanController implements IController,IExplosionListener {
         this.bombController = bombController;
         this.ghostController = ghostController;
     }
+
+
 
     public void setStatsListener(IStatsChangeListener statsListener)
     {
@@ -82,8 +88,8 @@ public class BombermanController implements IController,IExplosionListener {
             statsListener.onLifeCountChange(player.getLifes());
             //jelis zginal ale mial jeszcze kilka zyc to ressetujemy jego pozycje i zmieniamy status
             if (player.getLifes() > 0) {
-                player.setX(64f);
-                player.setY(64f * 11f);
+                player.setX(Constants.TILE_SIZE);
+                player.setY(Constants.TILE_SIZE * (HEIGHT - 2));
                 player.setStatus(IMovingModel.Status.IDLE);
             } else {
                 //w przeciwnym wypadku gra jest przegrana

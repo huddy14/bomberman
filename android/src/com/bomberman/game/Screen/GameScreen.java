@@ -223,9 +223,9 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
                 _timeLabel.setText("Time: " + String.format("%d:%d",(MAX_TIME - elapsedTime)/60,(MAX_TIME - elapsedTime) % 60));
                 timeCount = 0;
             }
-            else
+            else{}
                 //jeśli czas upłynie to koniec, sorry vinetu
-                onGameStatusChange(GameStatus.LOSE);
+                //onGameStatusChange(GameStatus.LOSE);
         }
 
 
