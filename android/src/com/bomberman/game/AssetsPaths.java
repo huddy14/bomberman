@@ -19,14 +19,14 @@ public final class AssetsPaths {
     public static final String BOMB_1 = "Bomb_f01" ;
     public static final String BOMB_2 = "Bomb_f02" ;
     public static final String BOMB_3 = "Bomb_f03" ;
-    public static final String[] MAPS = {"Maps/Bomber.tmx","Maps/map2.tmx"};
+    public static final String[] MAPS = {"Maps/Bomber.tmx","Maps/Lvl2.tmx","Maps/Lvl3.tmx","Maps/Lvl4.tmx","Maps/Lvl5.tmx","Maps/Lvl6.tmx"};
     public static final String TOUCHPAD_BACKGROUND = "Touchpad/touchBackground.png"  ;
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
     public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
     public static final String PLAY_BUTTON_MENU = "Screens/MainMenu/playButton.png";
     public static final String STOP_BUTTON_MENU = "Screens/MainMenu/stopButton.png";
 
-    public static final String[] LEVEL_SELECTION_MAP = {"Screens/LevelSelection/map1.png","Screens/LevelSelection/map2.png"};
+    public static final String[] LEVEL_SELECTION_MAP = {"Screens/LevelSelection/map1.png","Screens/LevelSelection/map2.png","Screens/LevelSelection/map3.png","Screens/LevelSelection/map4.png","Screens/LevelSelection/map5.png","Screens/LevelSelection/map6.png"};
     public static final String LEVEL_SELECTION_LOCK = "Screens/LevelSelection/Lock.png";
     public static final String LEVEL_SELECTION_BACKGROUND = "Screens/LevelSelection/background.png";
 

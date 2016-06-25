@@ -42,7 +42,7 @@ public class LevelSelection extends AbstractScreen {
         addActor(background);
 
         float miniMapWidth = getWidth()/5;
-        float miniMapHeight = getHeight()/5;
+        float miniMapHeight = getHeight()/3;
         float lockWidth = miniMapWidth/2;
         float lockHeight = miniMapHeight/2;
         float x = getWidth()/10, y = getHeight()/10;
@@ -70,10 +70,10 @@ public class LevelSelection extends AbstractScreen {
 
 
             x+= getWidth()*3/10;
-            if(i%3==0 && i!=0)
+            if((i+1)%3==0 && i!=0)
             {
                 x = getWidth()/10;
-                y += getHeight()*3/10;
+                y += getHeight()*5/10;
             }
         }
     }

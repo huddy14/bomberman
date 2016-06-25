@@ -38,34 +38,34 @@
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
 </data>
  </layer>
- <layer name="POWER_LAYER" width="15" height="13" visible="0">
+ <layer name="POWER_LAYER" width="15" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,
-0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,
+0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="EXIT_LAYER" width="15" height="13" visible="0">
+ <layer name="EXIT_LAYER" width="15" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -106,7 +106,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="Solid" visible="0">
+ <objectgroup name="Solid">
   <properties>
    <property name="destroyable" type="bool" value="false"/>
   </properties>
@@ -229,24 +229,19 @@
   <object id="198" x="576" y="384" width="64" height="64"/>
   <object id="200" x="576" y="128" width="64" height="64"/>
  </objectgroup>
- <objectgroup name="Power" visible="0">
-  <object id="203" x="192" y="320" width="64" height="64">
+ <objectgroup name="Power">
+  <object id="203" x="383" y="448" width="64" height="64">
    <properties>
     <property name="type" value="bomb"/>
    </properties>
   </object>
-  <object id="204" x="576" y="256" width="64" height="64">
-   <properties>
-    <property name="type" value="speed"/>
-   </properties>
-  </object>
-  <object id="206" x="448" y="576" width="64" height="64">
+  <object id="206" x="704" y="192" width="64" height="64">
    <properties>
     <property name="type" value="fire"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="Exit" visible="0">
-  <object id="208" x="704" y="512" width="64" height="64"/>
+ <objectgroup name="Exit">
+  <object id="208" x="448" y="128" width="64" height="64"/>
  </objectgroup>
 </map>

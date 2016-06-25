@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="15" height="13" tilewidth="64" tileheight="64" nextobjectid="209">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="15" height="13" tilewidth="64" tileheight="64" nextobjectid="217">
  <tileset firstgid="1" name="Solid Block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
   <image source="Sprites/Blocks/SolidBlock.png" width="64" height="64"/>
  </tileset>
@@ -38,34 +38,34 @@
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
 </data>
  </layer>
- <layer name="POWER_LAYER" width="15" height="13" visible="0">
+ <layer name="POWER_LAYER" width="15" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,
-0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="EXIT_LAYER" width="15" height="13" visible="0">
+ <layer name="EXIT_LAYER" width="15" height="13">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -92,21 +92,21 @@
  <layer name="EXPLODING_LAYER" width="15" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,
-0,0,0,2,0,2,0,2,0,2,0,0,0,0,0,
-0,2,2,0,0,2,2,2,2,2,0,2,2,2,0,
-0,2,0,0,0,2,0,2,0,2,0,2,0,2,0,
-0,0,2,0,2,0,0,2,0,0,0,2,0,2,0,
-0,0,0,0,0,2,0,2,0,2,0,2,0,2,0,
-0,2,2,2,2,0,2,2,0,0,2,2,0,0,0,
-0,2,0,2,0,2,0,2,0,0,0,0,0,2,0,
-0,2,2,2,2,2,2,2,0,0,2,2,2,2,0,
-0,2,0,2,0,2,0,2,0,2,0,0,0,0,0,
 0,0,0,2,2,2,2,2,2,2,2,2,2,2,0,
+0,0,0,2,0,2,0,2,0,2,0,2,0,2,0,
+0,2,2,2,2,2,2,2,2,2,2,2,2,2,0,
+0,2,0,2,0,2,0,2,0,2,0,2,0,2,0,
+0,2,2,2,2,2,2,2,2,0,0,0,0,2,0,
+0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,
+0,2,2,2,2,2,2,2,0,0,0,0,0,2,0,
+0,2,0,0,0,0,0,2,0,0,0,0,0,2,0,
+0,2,2,2,0,0,0,2,2,2,2,2,2,2,0,
+0,2,0,2,0,0,0,0,0,0,0,2,0,2,0,
+0,2,2,2,0,0,2,2,2,2,2,2,2,2,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="Solid" visible="0">
+ <objectgroup name="Solid">
   <properties>
    <property name="destroyable" type="bool" value="false"/>
   </properties>
@@ -154,21 +154,21 @@
   <object id="81" x="128" y="448" width="64" height="64"/>
   <object id="82" x="128" y="576" width="64" height="64"/>
   <object id="83" x="128" y="320" width="64" height="64"/>
-  <object id="85" x="320" y="640" width="64" height="64"/>
-  <object id="86" x="448" y="640" width="64" height="64"/>
+  <object id="85" x="192" y="192" width="64" height="64"/>
+  <object id="86" x="128" y="704" width="64" height="64"/>
   <object id="87" x="640" y="576" width="64" height="64"/>
   <object id="93" x="256" y="320" width="64" height="64"/>
   <object id="94" x="384" y="192" width="64" height="64"/>
-  <object id="95" x="320" y="512" width="64" height="64"/>
+  <object id="95" x="320" y="320" width="64" height="64"/>
   <object id="96" x="448" y="128" width="64" height="64"/>
   <object id="97" x="448" y="512" width="64" height="64"/>
   <object id="98" x="512" y="192" width="64" height="64"/>
   <object id="99" x="704" y="256" width="64" height="64"/>
   <object id="100" x="384" y="448" width="64" height="64"/>
   <object id="101" x="704" y="192" width="64" height="64"/>
-  <object id="104" x="640" y="448" width="64" height="64"/>
+  <object id="104" x="512" y="576" width="64" height="64"/>
   <object id="105" x="768" y="192" width="64" height="64"/>
-  <object id="106" x="704" y="320" width="64" height="64"/>
+  <object id="106" x="64" y="320" width="64" height="64"/>
   <object id="107" x="768" y="576" width="64" height="64"/>
   <object id="108" x="320" y="64" width="64" height="64"/>
   <object id="109" x="384" y="64" width="64" height="64"/>
@@ -186,10 +186,10 @@
   <object id="124" x="832" y="576" width="64" height="64"/>
   <object id="126" x="832" y="704" width="64" height="64"/>
   <object id="145" x="704" y="704" width="64" height="64"/>
-  <object id="146" x="320" y="704" width="64" height="64"/>
+  <object id="146" x="320" y="192" width="64" height="64"/>
   <object id="147" x="640" y="704" width="64" height="64"/>
   <object id="148" x="512" y="704" width="64" height="64"/>
-  <object id="149" x="256" y="704" width="64" height="64"/>
+  <object id="149" x="64" y="704" width="64" height="64"/>
   <object id="150" x="576" y="704" width="64" height="64"/>
   <object id="151" x="768" y="704" width="64" height="64"/>
   <object id="152" x="448" y="704" width="64" height="64"/>
@@ -198,7 +198,7 @@
   <object id="155" x="256" y="448" width="64" height="64"/>
   <object id="156" x="192" y="448" width="64" height="64"/>
   <object id="158" x="192" y="576" width="64" height="64"/>
-  <object id="159" x="192" y="512" width="64" height="64"/>
+  <object id="159" x="192" y="64" width="64" height="64"/>
   <object id="163" x="192" y="640" width="64" height="64"/>
   <object id="164" x="192" y="128" width="64" height="64"/>
   <object id="165" x="64" y="448" width="64" height="64"/>
@@ -208,45 +208,46 @@
   <object id="170" x="64" y="512" width="64" height="64"/>
   <object id="171" x="64" y="192" width="64" height="64"/>
   <object id="172" x="448" y="576" width="64" height="64"/>
-  <object id="173" x="384" y="576" width="64" height="64"/>
-  <object id="174" x="576" y="640" width="64" height="64"/>
-  <object id="175" x="320" y="576" width="64" height="64"/>
-  <object id="176" x="256" y="576" width="64" height="64"/>
+  <object id="173" x="384" y="320" width="64" height="64"/>
+  <object id="174" x="576" y="576" width="64" height="64"/>
+  <object id="175" x="320" y="448" width="64" height="64"/>
+  <object id="176" x="256" y="192" width="64" height="64"/>
   <object id="177" x="704" y="576" width="64" height="64"/>
-  <object id="178" x="704" y="448" width="64" height="64"/>
-  <object id="179" x="704" y="384" width="64" height="64"/>
+  <object id="178" x="192" y="256" width="64" height="64"/>
+  <object id="179" x="192" y="320" width="64" height="64"/>
   <object id="180" x="448" y="384" width="64" height="64"/>
   <object id="181" x="448" y="320" width="64" height="64"/>
   <object id="182" x="448" y="256" width="64" height="64"/>
   <object id="183" x="320" y="384" width="64" height="64"/>
   <object id="184" x="320" y="256" width="64" height="64"/>
   <object id="185" x="320" y="128" width="64" height="64"/>
-  <object id="186" x="320" y="192" width="64" height="64"/>
   <object id="194" x="448" y="448" width="64" height="64"/>
   <object id="195" x="576" y="256" width="64" height="64"/>
   <object id="196" x="448" y="192" width="64" height="64"/>
   <object id="197" x="576" y="192" width="64" height="64"/>
-  <object id="198" x="576" y="384" width="64" height="64"/>
+  <object id="198" x="512" y="320" width="64" height="64"/>
   <object id="200" x="576" y="128" width="64" height="64"/>
+  <object id="209" x="832" y="64" width="64" height="64"/>
+  <object id="211" x="832" y="128" width="64" height="64"/>
+  <object id="212" x="704" y="128" width="64" height="64"/>
+  <object id="213" x="640" y="192" width="64" height="64"/>
+  <object id="214" x="832" y="448" width="64" height="64"/>
+  <object id="215" x="832" y="640" width="64" height="64"/>
+  <object id="216" x="704" y="640" width="64" height="64"/>
  </objectgroup>
- <objectgroup name="Power" visible="0">
-  <object id="203" x="192" y="320" width="64" height="64">
+ <objectgroup name="Power">
+  <object id="203" x="128" y="704" width="64" height="64">
    <properties>
     <property name="type" value="bomb"/>
    </properties>
   </object>
-  <object id="204" x="576" y="256" width="64" height="64">
-   <properties>
-    <property name="type" value="speed"/>
-   </properties>
-  </object>
-  <object id="206" x="448" y="576" width="64" height="64">
+  <object id="206" x="832" y="384" width="64" height="64">
    <properties>
     <property name="type" value="fire"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="Exit" visible="0">
-  <object id="208" x="704" y="512" width="64" height="64"/>
+ <objectgroup name="Exit">
+  <object id="208" x="704" y="192" width="64" height="64"/>
  </objectgroup>
 </map>
