@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IExplosionListener;
 import com.bomberman.game.Interfaces.IMovingModel;
+import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.Bomb;
 import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Model.Ghost;
@@ -28,6 +29,7 @@ public class GhostController implements IController,IExplosionListener {
     private int directionIndex;
     private Random randomGenerator = new Random();
     private float elapsedTime = 0;
+    private IStatsChangeListener statsListener;
 
 
     public GhostController(Map map)
@@ -55,6 +57,7 @@ public class GhostController implements IController,IExplosionListener {
     {
         if(ghostsToDelete.size()>0)
         {
+            statsListener.onScoreChange(ghostsToDelete.size() * 50);
             ghosts.removeAll(ghostsToDelete);
             ghostsToDelete.clear();
         }
@@ -67,7 +70,10 @@ public class GhostController implements IController,IExplosionListener {
             }
         }
     }
-
+    public void setStatsListener(IStatsChangeListener statsListener)
+    {
+        this.statsListener = statsListener;
+    }
     public void update(Ghost ghost)
     {
         float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;

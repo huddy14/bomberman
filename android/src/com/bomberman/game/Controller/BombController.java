@@ -138,6 +138,7 @@ public class BombController implements IController, Bomb.BombListener
             listener.onExplosion(bomb);
 
         player.bombExploded();
+        statsListener.onScoreChange(bomb.getExplosionBounds().toDeleteCount() * 10);
         statsListener.onBombCountChange(player.getAvalibleBombs());
     }
 

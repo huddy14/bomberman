@@ -25,12 +25,25 @@ public class Bomberman implements IMovingModel{
     Direction direction = Direction.DOWN;
     private static final double pi = Math.PI;
     private int HEIGHT,WIDTH;
+    private int score;
 
     public Bomberman(Vector2 position) {
         this.position = position;
 
     }
 
+    public int getScore()
+    {
+        return this.score;
+    }
+    public void setScore(int score)
+    {
+        this.score = score;
+    }
+    public void addToScore(int amount)
+    {
+        this.score += amount;
+    }
     public boolean isBombPlanted()
     {
         return bombPlanted>0;

@@ -143,6 +143,8 @@ public class BombermanController implements IController,IExplosionListener {
         }
         map.deletePower();
         AudioManager.getInstance().onBonusTake();
+        statsListener.onScoreChange(20);
+
     }
     private void smoothPlayerMovement(float oldX, float oldY)
     {

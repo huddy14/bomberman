@@ -23,8 +23,12 @@ public final class AssetsPaths {
     public static final String TOUCHPAD_BACKGROUND = "Touchpad/touchBackground.png"  ;
     public static final String TOUCHPAD_KNOB = "Touchpad/touchKnob.png" ;
     public static final String SPLASH_SCREEN = "SplashScreen/SplashScreen.png";
+
     public static final String PLAY_BUTTON_MENU = "Screens/MainMenu/playButton.png";
     public static final String STOP_BUTTON_MENU = "Screens/MainMenu/stopButton.png";
+    public static final String SCORES_BUTTON_MENU = "Screens/MainMenu/scoreButton.png";
+    public static final String BUTTON_BACKGROUND_MENU = "Screens/MainMenu/buttonBackground.png";
+
 
     public static final String[] LEVEL_SELECTION_MAP = {"Screens/LevelSelection/map1.png","Screens/LevelSelection/map2.png","Screens/LevelSelection/map3.png","Screens/LevelSelection/map4.png","Screens/LevelSelection/map5.png","Screens/LevelSelection/map6.png"};
     public static final String LEVEL_SELECTION_LOCK = "Screens/LevelSelection/Lock.png";

@@ -9,4 +9,5 @@ public interface IStatsChangeListener {
     void onBombCountChange(int bombs);
     void onBombRangeChange(int range);
     void onSpeedChange(float velocity);
+    void onScoreChange(int amount);
 }

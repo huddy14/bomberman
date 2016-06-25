@@ -3,6 +3,7 @@ package com.bomberman.game.Screen.ScreenManagment;
 import com.badlogic.gdx.Screen;
 import com.bomberman.game.Screen.AbstractScreen;
 import com.bomberman.game.Screen.GameScreen;
+import com.bomberman.game.Screen.HighscoreScreen;
 import com.bomberman.game.Screen.LevelSelection;
 import com.bomberman.game.Screen.MenuScreen;
 import com.bomberman.game.Screen.SplashScreen;
@@ -33,6 +34,10 @@ public enum ScreenEnum {
         public AbstractScreen getScreen(Object... params){
             return new SplashScreen();
         }
+    },
+
+    HIGHSCORE {
+        public AbstractScreen getScreen(Object... params) {return  new HighscoreScreen();}
     };
 
     public abstract AbstractScreen getScreen(Object... params);

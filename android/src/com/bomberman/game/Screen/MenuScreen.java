@@ -21,6 +21,7 @@ public class MenuScreen extends AbstractScreen {
     private Texture textureBg;
     private Texture textureExit;
     private Texture texturePlay;
+    private Texture textureScore;
     private SpriteBatch batch = new SpriteBatch();
 
     public MenuScreen()
@@ -29,27 +30,39 @@ public class MenuScreen extends AbstractScreen {
         textureBg = new Texture(AssetsPaths.BACKGROUND_MENU);
         textureExit = new Texture(AssetsPaths.STOP_BUTTON_MENU);
         texturePlay = new Texture(AssetsPaths.PLAY_BUTTON_MENU);
+        textureScore = new Texture(AssetsPaths.SCORES_BUTTON_MENU);
 
         buildStage();
     }
 
     @Override
     public void buildStage() {
-       Image bg = new Image(textureBg);
+        Image bg = new Image(textureBg);
         bg.setBounds(0,0,getWidth(),getHeight());
         bg.setFillParent(true);
-       addActor(bg);
+        addActor(bg);
+
         float x = getWidth() ;
+
         float y = getHeight();
+
+        Image btnBg = new Image(new Texture(AssetsPaths.BUTTON_BACKGROUND_MENU));
+        btnBg.setBounds(x/4,0,x/2,y);
+        addActor(btnBg);
+
         Button btnPlay = UIFactory.createButton(texturePlay);
         //btnPlay.setPosition(getWidth()/2f,getHeight() - getHeight()/4, Align.center);
-        btnPlay.setBounds(x/4,y*5/8,x/2,y/4);
+        btnPlay.setBounds(x/4,3*y/4,x/2,y/4);
         addActor(btnPlay);
 
         Button btnExit = UIFactory.createButton(textureExit);
-        btnExit.setBounds(x/4,y/8,x/2,y/4);
+        btnExit.setBounds(x/4,0,x/2,y/4);
         //btnExit.setPosition(getWidth()/2f,getHeight()/4,Align.center);
         addActor(btnExit);
+
+        Button btnHighscore = UIFactory.createButton(textureScore);
+        btnHighscore.setBounds(x/4,y*3/8,x/2,y/4);
+        addActor(btnHighscore);
 
         btnExit.addListener(
                 new InputListener() {
@@ -61,6 +74,8 @@ public class MenuScreen extends AbstractScreen {
                 });
 
         btnPlay.addListener(UIFactory.createListener(ScreenEnum.LEVEL_SELECTION));
+
+        btnHighscore.addListener(UIFactory.createListener(ScreenEnum.HIGHSCORE));
 
         //Log.w("H: ",""+bg.getHeight()+" W: "+bg.getWidth());
     }

@@ -7,6 +7,7 @@ import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Constants;
 import com.bomberman.game.Interfaces.IController;
 import com.bomberman.game.Interfaces.IStatsChangeListener;
+import com.bomberman.game.Model.Bomberman;
 import com.bomberman.game.Model.Ghost;
 import com.bomberman.game.Model.Map;
 
@@ -76,6 +77,14 @@ public class Controllers implements IController{
         bombController.draw(camera);
         ghostController.draw(camera);
         bombermanController.draw(camera);
+
+    }
+
+    public void setStatsListeners(IStatsChangeListener listener)
+    {
+        bombermanController.setStatsListener(listener);
+        bombController.setStatsListener(listener);
+        ghostController.setStatsListener(listener);
     }
 
     public void loadPreferances()
@@ -85,11 +94,26 @@ public class Controllers implements IController{
         bombController.setRange(bp.getBombRange());
         bombermanController.getPlayer().setBombsCount(bp.getBombCount());
         bombermanController.getPlayer().setLifes(bp.getLifes());
+        bombermanController.getPlayer().setScore(bp.getScore());
     }
 
-    public void setStatsListeners(IStatsChangeListener listener)
+    public void savePreferances(int level)
     {
-        bombermanController.setStatsListener(listener);
-        bombController.setStatsListener(listener);
+        Bomberman player = bombermanController.getPlayer();
+        BombermanPreferances bp = BombermanPreferances.getInstance();
+        bp.setScore(player.getScore());
+        bp.setBombRange(bombController.getRange());
+        bp.setBombsCount(player.getBombCount());
+        bp.setVelocity(player.getVelocity());
+        bp.setLifes(player.getLifes());
+        bp.setMaxMapIndex(level);
+    }
+    public void resetStats() {
+        Bomberman player = bombermanController.getPlayer();
+        player.setBombsCount(1);
+        player.setLifes(3);
+        player.setVelocity(2f);
+        player.setScore(0);
+        bombController.setRange(1);
     }
 }

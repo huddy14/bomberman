@@ -49,7 +49,11 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     {
         super();
         this.level=level;
-        hud = new TopBarView();
+
+        initializeMap();
+        initializeControllers();
+        initializeView();
+
         buildStage();
         audioManager = AudioManager.getInstance();
         audioManager.playSoundtrack();
@@ -82,16 +86,8 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         }
     }
 
-    @Override
-    public void show() {
-        init();
-    }
-
-    private void init()
+    private void initializeControllers()
     {
-        tiledMap = new TmxMapLoader().load(AssetsPaths.MAPS[level]);
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        map = new Map(tiledMap);
 
         controller = Controllers.getInstance();
         controller.initializeControllers(map);
@@ -99,13 +95,26 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         //ustawiamy te klase jako sluchacza zmiany stanu gry
 
         controller.bomberman().setOnGameStatusChangeListener(this);
+    }
+
+    private void initializeMap()
+    {
+        tiledMap = new TmxMapLoader().load(AssetsPaths.MAPS[level]);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        map = new Map(tiledMap);
+
+    }
+
+    private void initializeView()
+    {
+        hud = new TopBarView();
+
         camera = new MapCamera(tiledMap.getProperties(),controller.bomberman().getPlayer());
+
         if(camera.getMapWidth() < Gdx.graphics.getWidth())
             camera.setToOrtho(false,camera.getMapWidth() ,Gdx.graphics.getHeight());
         else
             camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
-        controller.setStatsListeners(hud);
     }
 
     @Override
@@ -127,32 +136,22 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     public void onGameStatusChange(GameStatus gameStatus) {
         if(gameStatus.equals(GameStatus.LOSE))
         {
-            resetStats();
-            savePreferances(0);
-            ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
+            BombermanPreferances.getInstance().setHighScore(controller.bomberman().getPlayer().getScore());
+            controller.resetStats();
+            controller.savePreferances(level);
+            ScreenManager.getInstance().showScreen(ScreenEnum.HIGHSCORE);
         }
         if(gameStatus.equals(GameStatus.WIN)) {
-            savePreferances(1);
+
+            //dodajemy bonus za czas
+            hud.onScoreChange(2 * hud.getRemaningTime());
+
+            //zapisujemy statystyki w preferencjach, odblokowujemy kolejną mape
+            controller.savePreferances(level+1);
+
             ScreenManager.getInstance().showScreen(ScreenEnum.LEVEL_SELECTION);
         }
 
-    }
-
-    private void savePreferances(int i)
-    {
-        Bomberman player =controller.bomberman().getPlayer();
-        BombermanPreferances bp = BombermanPreferances.getInstance();
-        bp.setBombRange(controller.bomb().getRange());
-        bp.setBombsCount(player.getBombCount());
-        bp.setVelocity(player.getVelocity());
-        bp.setLifes(player.getLifes());
-        bp.setMaxMapIndex(level+i);
-    }
-    private void resetStats() {
-        controller.bomberman().getPlayer().setBombsCount(1);
-        controller.bomberman().getPlayer().setLifes(3);
-        controller.bomberman().getPlayer().setVelocity(2f);
-        controller.bomb().setRange(1);
     }
 
     @Override
@@ -164,6 +163,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
     private class TopBarView implements IStatsChangeListener {
         private int elapsedTime;
         private float timeCount;
+        private final String LIFES = "Lifes: ", SCORE = "Score: ", BOMBS = "Bombs: ", LEVEL = "Level: ", RANGE = "Range: ", TIME = "Time: ", SPEED = "Speed: ";
 
         private Label _rangeLabel;
         private Label _bombLabel;
@@ -171,13 +171,15 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         private Label _levelLabel;
         private Label _timeLabel;
         private Label _lifeLabel;
+        private Label _score;
 
 
         private final int TIME_TO_SCORE_UPDATE = 1;
         private final int MAX_TIME = 300;
 
 
-        public TopBarView(){
+        private TopBarView(){
+            controller.setStatsListeners(this);
             timeCount = 0;
             elapsedTime = 0;
             setElements();
@@ -191,18 +193,21 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
             BitmapFont font = new BitmapFont();
             font.getData().setScale(1.5f);
             Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
-            _levelLabel = new Label("Level: 1", labelStyle);
-            _bombLabel = new Label("Bombs: 1", labelStyle);
-            _rangeLabel = new Label("Range: 1", labelStyle);
-            _speedLabel = new Label("Speed: 1", labelStyle);
-            _timeLabel  = new Label("Time: 0", labelStyle);
-            _lifeLabel  = new Label("Lifes: 3", labelStyle);
+            _levelLabel = new Label(LEVEL, labelStyle);
+            _bombLabel = new Label(BOMBS, labelStyle);
+            _rangeLabel = new Label(RANGE, labelStyle);
+            _speedLabel = new Label(SPEED, labelStyle);
+            _timeLabel  = new Label(TIME, labelStyle);
+            _lifeLabel  = new Label(LIFES, labelStyle);
+            _score  = new Label(SCORE, labelStyle);
+
             table.row();
             table.add(_levelLabel).expandX();
             table.add(_lifeLabel).expandX();
             table.add(_bombLabel).expandX();
             table.add(_rangeLabel).expandX();
             table.add(_speedLabel).expandX();
+            table.add(_score).expandX();
             table.add(_timeLabel).expandX();
             addActor(table);
 
@@ -214,10 +219,15 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
         {
             BombermanPreferances bp = BombermanPreferances.getInstance();
             onLevelChange(level+1);
-            _lifeLabel.setText("Lifes: " + bp.getLifes());
-            _bombLabel.setText("Bombs: " + bp.getBombCount());
-            _rangeLabel.setText("Range: " + bp.getBombRange());
-            _speedLabel.setText("Speed: " + bp.getVelocity());
+            onLifeCountChange(bp.getLifes());
+            onBombCountChange(bp.getBombCount());
+            onBombRangeChange(bp.getBombRange());
+            onSpeedChange(bp.getVelocity());
+            onScoreChange( bp.getScore());
+        }
+        public int getRemaningTime()
+        {
+            return MAX_TIME - elapsedTime;
         }
 
         public void update(float dt)
@@ -237,32 +247,38 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
 
         @Override
         public void onLevelChange(int level) {
-            _levelLabel.setText("Level: " + level);
+            _levelLabel.setText(LEVEL + level);
 
         }
 
         @Override
         public void onLifeCountChange(int lifes) {
-            _lifeLabel.setText("Lifes: " + lifes);
+            _lifeLabel.setText(LIFES + lifes);
 
         }
 
         @Override
         public void onBombCountChange(int bombs) {
-            _bombLabel.setText("Bombs: " + bombs);
+            _bombLabel.setText(BOMBS + bombs);
 
         }
 
         @Override
         public void onBombRangeChange(int range) {
-            _rangeLabel.setText("Range: " + range);
+            _rangeLabel.setText(RANGE + range);
 
         }
 
         @Override
         public void onSpeedChange(float velocity) {
-            _speedLabel.setText("Speed: " + velocity);
+            _speedLabel.setText(SPEED + velocity);
 
+        }
+
+        @Override
+        public void onScoreChange(int amount) {
+            controller.bomberman().getPlayer().addToScore(amount);
+            _score.setText(SCORE + controller.bomberman().getPlayer().getScore());
         }
 
     }

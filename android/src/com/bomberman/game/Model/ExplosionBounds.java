@@ -49,6 +49,14 @@ public class ExplosionBounds {
         return this.xmin;
     }
 
+    public int toDeleteCount()
+    {
+        int res = 0;
+        for(int i = 0 ; i < toDelete.length ; i++ )
+            if(toDelete[i]!=null)res++;
+        return res;
+    }
+
     public Rectangle[] getToDelete()
     {
         return this.toDelete;
