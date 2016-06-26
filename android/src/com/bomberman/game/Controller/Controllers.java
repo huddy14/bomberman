@@ -1,5 +1,7 @@
 package com.bomberman.game.Controller;
 
+import android.util.Log;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.bomberman.game.AssetsPaths;
@@ -47,17 +49,59 @@ public class Controllers implements IController{
         bombController.addOnExplosionListener(bombermanController);
         bombController.addOnExplosionListener(ghostController);
 
-        bombermanController.setControllers(bombController,ghostController);
+        bombermanController.setControllers(bombController, ghostController);
 
         ghostController.setPlayer(bombermanController.getPlayer());
-        ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 5* Constants.TILE_SIZE)));
-        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 9* Constants.TILE_SIZE)));
-        ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
 
         //ładujemy zapisane informacje o graczu ilosc bomb, zasieg etc..
         loadPreferances();
     }
 
+    public void initializePosition(int level){
+        switch (level){
+            case 0:
+                ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 5* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 9* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                break;
+            case 1:
+                ghostController.addGhost(new Ghost(new Vector2(3 * Constants.TILE_SIZE, 9* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(9 * Constants.TILE_SIZE, 4* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(9 * Constants.TILE_SIZE, 7* Constants.TILE_SIZE)));
+                break;
+            case 2:
+                ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 1* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(11 * Constants.TILE_SIZE, 5* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(9 * Constants.TILE_SIZE, 5* Constants.TILE_SIZE)));
+                break;
+            case 3:
+                ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 13* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(14 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(14 * Constants.TILE_SIZE, 11* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(6 * Constants.TILE_SIZE, 13* Constants.TILE_SIZE)));
+                break;
+            case 4:
+                ghostController.addGhost(new Ghost(new Vector2(1 * Constants.TILE_SIZE, 1* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(3 * Constants.TILE_SIZE, 5* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(5 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(12 * Constants.TILE_SIZE, 11* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(14 * Constants.TILE_SIZE, 11* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(12 * Constants.TILE_SIZE, 7* Constants.TILE_SIZE)));
+                break;
+            case 5:
+                ghostController.addGhost(new Ghost(new Vector2(3 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(7 * Constants.TILE_SIZE, 5* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(16 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(12 * Constants.TILE_SIZE, 3* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(14 * Constants.TILE_SIZE, 11* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(4 * Constants.TILE_SIZE, 15* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(8 * Constants.TILE_SIZE, 11* Constants.TILE_SIZE)));
+                ghostController.addGhost(new Ghost(new Vector2(10 * Constants.TILE_SIZE, 15* Constants.TILE_SIZE)));
+                break;
+        }
+    }
     public BombController bomb() {
         return this.bombController;
     }

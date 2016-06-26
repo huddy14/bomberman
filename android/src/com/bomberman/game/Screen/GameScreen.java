@@ -92,7 +92,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
 
         controller = Controllers.getInstance();
         controller.initializeControllers(map);
-
+        controller.initializePosition(level);
         //ustawiamy te klase jako sluchacza zmiany stanu gry
 
         controller.bomberman().setOnGameStatusChangeListener(this);
