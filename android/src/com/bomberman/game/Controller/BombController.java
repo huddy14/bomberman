@@ -75,21 +75,15 @@ public class BombController implements IController, Bomb.BombListener
                 bombView.drawBomb(bomb.getPosition());
 
                 //rysowanie zasiegu bomby
-                shapeRenderer.setProjectionMatrix(camera.combined);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(Color.WHITE);
-                //shapeRenderer.set();
-                shapeRenderer.circle(bomb.getBounds().x, bomb.getBounds().y, bomb.getBounds().radius);
-                shapeRenderer.rect(bomb.getExplosionBounds().getHorizontalRectangle().x,bomb.getExplosionBounds().getHorizontalRectangle().y,bomb.getExplosionBounds().getHorizontalRectangle().width,
-                        bomb.getExplosionBounds().getHorizontalRectangle().height);
-                shapeRenderer.rect(bomb.getExplosionBounds().getVerticalRectangle().x,bomb.getExplosionBounds().getVerticalRectangle().y,bomb.getExplosionBounds().getVerticalRectangle().width,
-                        bomb.getExplosionBounds().getVerticalRectangle().height);
-//                Log.w("x:",""+bomb.getExplosionBounds().getHorizontalRectangle().x);
-//                Log.w("y",""+bomb.getExplosionBounds().getHorizontalRectangle().y);
-//                Log.w("widht",""+bomb.getExplosionBounds().getHorizontalRectangle().width);
-//                Log.w("height",""+
+//                shapeRenderer.setProjectionMatrix(camera.combined);
+//                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//                shapeRenderer.setColor(Color.WHITE);
+//                shapeRenderer.circle(bomb.getBounds().x, bomb.getBounds().y, bomb.getBounds().radius);
+//                shapeRenderer.rect(bomb.getExplosionBounds().getHorizontalRectangle().x,bomb.getExplosionBounds().getHorizontalRectangle().y,bomb.getExplosionBounds().getHorizontalRectangle().width,
 //                        bomb.getExplosionBounds().getHorizontalRectangle().height);
-                shapeRenderer.end();
+//                shapeRenderer.rect(bomb.getExplosionBounds().getVerticalRectangle().x,bomb.getExplosionBounds().getVerticalRectangle().y,bomb.getExplosionBounds().getVerticalRectangle().width,
+//                        bomb.getExplosionBounds().getVerticalRectangle().height);
+//                shapeRenderer.end();
             }
         }
         if(bomb.getState()==Bomb.State.EXPLODED) {

@@ -18,7 +18,7 @@ public class BombermanPreferances {
     private static Preferences prefs;
 
     private final String BOMBERMAN = "bomberman", BOMBS_COUNT = "bombscount", BOMB_RANGE = "bombrange",
-            VELOCITY = "velocity", LIFES = "lifes", LEVEL = "level", SCORE = "score", HIGHSCORE = "highscore";
+            VELOCITY = "velocity", LIFES = "lifes", LEVEL = "level", SCORE = "score", HIGHSCORE = "highscore",SOUND_ENABLED = "sound";
 
     public static BombermanPreferances getInstance() {
         if(ourInstance==null)
@@ -139,4 +139,19 @@ public class BombermanPreferances {
 
         return prefs.getInteger(LIFES);
     }
+
+    public boolean getSound()
+    {
+        if(!prefs.contains(SOUND_ENABLED)) {
+            setSound(true);
+        }
+        return prefs.getBoolean(SOUND_ENABLED);
+    }
+
+    public void setSound(boolean isEnabled)
+    {
+        prefs.putBoolean(SOUND_ENABLED,isEnabled);
+        prefs.flush();
+    }
+
 }

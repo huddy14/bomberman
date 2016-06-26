@@ -31,31 +31,36 @@ public class HighscoreScreen extends AbstractScreen {
     }
     @Override
     public void buildStage() {
+
         Table table = new Table();
         table.top();
         table.left();
         table.setFillParent(true);
-        BitmapFont font = new BitmapFont();
-//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-//        parameter.size = 60;
-       BitmapFont font2 = FontGenerator.getInstance().getHighscoreBigFont();
-//        parameter.size = 40;
-        BitmapFont font3 = FontGenerator.getInstance().getHighscoreSmallFont();
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font3, Color.WHITE);
+
+        BitmapFont fontBig = FontGenerator.getInstance().getHighscoreBigFont();
+
+        BitmapFont fontSmall = FontGenerator.getInstance().getHighscoreSmallFont();
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(fontSmall, Color.WHITE);
 
         BombermanPreferances bp = BombermanPreferances.getInstance();
+
         for(int i = 0; i < 3 ; i++)
         {
             labels[i] = new Label((i+1)+". "+ bp.getHighScore(i),labelStyle);
         }
+
         Image im = new Image(texture);
+
         im.setBounds(0,0,getWidth()/2,getWidth()/2);
         im.setFillParent(false);
+
         addActor(im);
+
         table.row();
-        table.add(new Label("HIGHEST SCORES ",new Label.LabelStyle(font2,Color.BLUE)));
+        table.add(new Label("HIGHEST SCORES ",new Label.LabelStyle(fontBig,Color.BLUE)));
         table.row();
-        table.add(new Label("",new Label.LabelStyle(font2,Color.BLUE)));
+        table.add(new Label("",new Label.LabelStyle(fontBig,Color.BLUE)));
         table.row();
         table.add(labels[0]).expandX();
         table.row();

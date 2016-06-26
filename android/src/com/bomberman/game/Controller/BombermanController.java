@@ -196,14 +196,14 @@ public class BombermanController implements IController,IExplosionListener {
             playerView.setProjectionMatrix(camera.combined);
             playerView.drawBomberman(player.getDirection(), elapsedTime, player.getPosition().x, player.getPosition().y);
 
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.WHITE);
-
-            Circle rect = player.getCollisionCircle();
-            shapeRenderer.circle(rect.x,rect.y,rect.radius);
-
-            shapeRenderer.end();
+//            shapeRenderer.setProjectionMatrix(camera.combined);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//            shapeRenderer.setColor(Color.WHITE);
+//
+//            Circle rect = player.getCollisionCircle();
+//            shapeRenderer.circle(rect.x,rect.y,rect.radius);
+//
+//            shapeRenderer.end();
         }
     }
 

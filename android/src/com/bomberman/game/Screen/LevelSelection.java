@@ -16,7 +16,6 @@ import com.bomberman.game.Screen.ScreenManagment.UIFactory;
  */
 public class LevelSelection extends AbstractScreen {
     private Texture textureBg;
-    private Texture textureExit;
     private Texture textureMap;
     private Texture lock;
     private Image lockImage;
@@ -63,7 +62,6 @@ public class LevelSelection extends AbstractScreen {
                 lockImage = new Image(lock);
                 lockImage.setBounds(x, y, lockHeight, lockHeight);
                 addActor(lockImage);
-                //locks.add(lockImage);
             }
             else
                 buttons[i].addListener(UIFactory.createListener(ScreenEnum.GAME, i));

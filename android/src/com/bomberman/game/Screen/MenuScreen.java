@@ -5,11 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bomberman.game.AssetsPaths;
+import com.bomberman.game.Audio.AudioManager;
+import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
 import com.bomberman.game.Screen.ScreenManagment.UIFactory;
 
@@ -22,7 +27,7 @@ public class MenuScreen extends AbstractScreen {
     private Texture textureExit;
     private Texture texturePlay;
     private Texture textureScore;
-    private SpriteBatch batch = new SpriteBatch();
+    private Image imageAudio;
 
     public MenuScreen()
     {
@@ -51,18 +56,37 @@ public class MenuScreen extends AbstractScreen {
         addActor(btnBg);
 
         Button btnPlay = UIFactory.createButton(texturePlay);
-        //btnPlay.setPosition(getWidth()/2f,getHeight() - getHeight()/4, Align.center);
         btnPlay.setBounds(x/4,3*y/4,x/2,y/4);
         addActor(btnPlay);
 
         Button btnExit = UIFactory.createButton(textureExit);
         btnExit.setBounds(x/4,0,x/2,y/4);
-        //btnExit.setPosition(getWidth()/2f,getHeight()/4,Align.center);
         addActor(btnExit);
 
         Button btnHighscore = UIFactory.createButton(textureScore);
         btnHighscore.setBounds(x/4,y*3/8,x/2,y/4);
         addActor(btnHighscore);
+
+
+        final TextureRegion audioON = new TextureRegion(new Texture("Audio/buttonON.png"));
+        final TextureRegion audioOFF = new TextureRegion(new Texture("Audio/buttonOFF.png"));
+
+        final AudioManager audioManager =  AudioManager.getInstance();
+        imageAudio = new Image();
+        imageAudio.setDrawable(new TextureRegionDrawable(audioManager.isSoundEnabled() ? audioON : audioOFF ));
+        imageAudio.setBounds(getWidth()-getHeight()/5,0,getHeight()/5,getHeight()/5);
+
+        addActor(imageAudio);
+
+        imageAudio.addListener(
+                new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        AudioManager.getInstance().setSoundEnabled();
+                        imageAudio.setDrawable(new TextureRegionDrawable(audioManager.isSoundEnabled() ? audioON : audioOFF ));
+                        return false;
+                    }
+                });
 
         btnExit.addListener(
                 new InputListener() {
@@ -76,8 +100,6 @@ public class MenuScreen extends AbstractScreen {
         btnPlay.addListener(UIFactory.createListener(ScreenEnum.LEVEL_SELECTION));
 
         btnHighscore.addListener(UIFactory.createListener(ScreenEnum.HIGHSCORE));
-
-        //Log.w("H: ",""+bg.getHeight()+" W: "+bg.getWidth());
     }
 
 
