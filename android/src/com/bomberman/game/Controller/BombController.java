@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 /**
  * Created by huddy on 6/3/16.
+ * Class created to control all bomb events
  */
 public class BombController implements IController, Bomb.BombListener
 {
@@ -45,12 +46,24 @@ public class BombController implements IController, Bomb.BombListener
         this.bombView = new BombView();
     }
 
+    /**
+     * Returning current bomb range
+     * @return
+     */
     public int getRange()
     {
         return this.range;
     }
+
+    /**
+     * Setting bomb range
+     * @param range new bomb range
+     */
     public void setRange(int range) { this.range = MathUtils.clamp(range,1,3);}
 
+    /**
+     * Adding new bomb to bombs list
+     */
     public void addBomb()
     {
         //dodajac bombe od razu sprawdzamy jakie stale elementy wybuchną
@@ -59,11 +72,14 @@ public class BombController implements IController, Bomb.BombListener
         Log.w("ilosc itemow :","" + bombs.size());
     }
 
+    /**
+     * Setting Statisctic change listener
+     * @param statsListener statistic listener
+     */
     public void setStatsListener(IStatsChangeListener statsListener)
     {
         this.statsListener = statsListener;
     }
-
 
     public void drawBomb(Bomb bomb,OrthographicCamera camera)
     {

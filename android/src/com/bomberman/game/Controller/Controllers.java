@@ -29,6 +29,10 @@ public class Controllers implements IController{
         return instance;
     }
 
+    /**
+     * Initializing all controllers for specified map
+     * @param map loaded map
+     */
     //TODO: dla kazdej mapy beda inne wsporzedne playera i ghostow, tez stworzyc tablice gdzie bedziemy to trzymac
     public void initializeControllers(Map map) {
         //inicjalizujemy kontrollery
@@ -87,6 +91,7 @@ public class Controllers implements IController{
         ghostController.setStatsListener(listener);
     }
 
+
     public void loadPreferances()
     {
         BombermanPreferances bp = BombermanPreferances.getInstance();
@@ -108,6 +113,10 @@ public class Controllers implements IController{
         bp.setLifes(player.getLifes());
         bp.setMaxMapIndex(level);
     }
+
+    /**
+     * Reseting player stats upon death
+     */
     public void resetStats() {
         Bomberman player = bombermanController.getPlayer();
         player.setBombsCount(1);

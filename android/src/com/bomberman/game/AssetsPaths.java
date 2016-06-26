@@ -2,6 +2,7 @@ package com.bomberman.game;
 
 /**
  * Created by huddy on 6/3/16.
+ * Contains all paths for used assets
  */
 public final class AssetsPaths {
     //ścieżki animacji bombermana

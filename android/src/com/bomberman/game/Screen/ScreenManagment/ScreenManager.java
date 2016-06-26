@@ -5,6 +5,7 @@ import com.bomberman.game.BombGame;
 
 /**
  * Created by huddy on 6/22/16.
+ * Singleton class; Managing screens
  */
 public class ScreenManager {
     private static ScreenManager instance;

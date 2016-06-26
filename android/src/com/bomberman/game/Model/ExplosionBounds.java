@@ -6,6 +6,7 @@ import com.bomberman.game.Constants;
 
 /**
  * Created by huddy on 6/19/16.
+ * Class created to store all necessary informations about bombs explosion range, its position, range and elements it should delete after explosion
  */
 public class ExplosionBounds {
     private int x, y, ymin, ymax, xmin, xmax, bombRange;

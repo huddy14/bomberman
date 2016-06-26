@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by huddy on 6/22/16.
+ * Singleton class used for setting and getting player preferances
  */
 public class BombermanPreferances {
 

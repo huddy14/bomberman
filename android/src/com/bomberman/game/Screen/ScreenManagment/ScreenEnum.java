@@ -10,6 +10,7 @@ import com.bomberman.game.Screen.SplashScreen;
 
 /**
  * Created by huddy on 6/22/16.
+ * Enum create to ease screen initialization
  */
 public enum ScreenEnum {
     MAIN_MENU {

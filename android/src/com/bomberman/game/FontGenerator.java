@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
  * Created by huddy on 6/26/16.
+ * Generating fonts used in application
  */
 public class FontGenerator {
     //klasa do tworzenia czcionek

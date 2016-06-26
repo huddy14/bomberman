@@ -8,6 +8,7 @@ import com.bomberman.game.Interfaces.IMovingModel;
 
 /**
  * Created by huddy on 6/20/16.
+ * Logic model for ghost
  */
 public class Ghost implements IMovingModel{
     public static final int SIZE = 64;

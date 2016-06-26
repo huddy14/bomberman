@@ -12,6 +12,7 @@ import com.bomberman.game.Interfaces.IMovingModel;
 
 /**
  * Created by Patryk on 15.05.2016.
+ * Logic model for Bomberman
  */
 public class Bomberman implements IMovingModel{
 
@@ -97,6 +98,12 @@ public class Bomberman implements IMovingModel{
         this.lifes --;
     }
 
+    /**
+     * Calculating bomberman direction from the angle of knob
+     * @param x knob lean out
+     * @param y knob lean out
+     * @return
+     */
     private Direction calculateDirection(double x, double y)
     {
 
@@ -176,6 +183,11 @@ public class Bomberman implements IMovingModel{
         this.status = status;
     }
 
+    /**
+     * updating Bomberman's position
+     * @param x player x position
+     * @param y player y position
+     */
     @Override
     public void update(float x, float y) {
         if (x == 0 && y == 0)status=Status.IDLE;

@@ -19,6 +19,8 @@ import java.util.HashMap;
 
 /**
  * Created by Patryk on 15.05.2016.
+ * Storing all necessary information about currently used map
+ * It stores collisionElements, explodableElements, powerupsElements
  */
 public class Map {
     private TiledMap map;
@@ -124,6 +126,10 @@ public class Map {
 
     //usuwanie elementów mapy graficzne oraz z tablicy obiektów kolizji
 
+    /**
+     * Graphiclly deleting objects from map and from collision tables
+     * @param eb
+     */
     public void deleteTiles(ExplosionBounds eb)
     {
         for(Rectangle obj : eb.getToDelete())
@@ -141,6 +147,11 @@ public class Map {
 
     //usuwamy graficznie wybrany element mapy
 
+    /**
+     * Graphically deleting specified tile from map
+     * @param x map coordinate x
+     * @param y map coordinate y
+     */
     private void setTileToNull(int x, int y)
     {
         if(explodingLayer.getCell(x,y)!=null)
@@ -148,14 +159,28 @@ public class Map {
     }
 
 
+    /**
+     * Class created to detect collision
+     */
     public class CollisionDetector {
 
         //TODO: generalnie ogarnac nazwy tych funkcji
+
+        /**
+         * Calculate screen coordinate to map coordinate
+         * @param x screen coordinate
+         * @return map coordinate
+         */
         private int calculateTileCord(float x)
         {
             return (int)(x - (x % Constants.TILE_SIZE)) / Constants.TILE_SIZE;
         }
 
+        /**
+         * Checking for terrain collision
+         * @param rectangle player/ghost bounds
+         * @return
+         */
         public boolean terrainCollision(Rectangle rectangle)
         {
             for (int i = 0; i < collisionElements.size(); i++)
@@ -168,6 +193,11 @@ public class Map {
 
         //sprawdzamy czy gracz nie wszedł w portal
 
+        /**
+         * Checking for player-portal collision
+         * @param rectangle player bounds
+         * @return
+         */
         public boolean portalCollison(Rectangle rectangle)
         {
             rectangle.width -= 10;
@@ -181,6 +211,11 @@ public class Map {
 
         //sprawdzamy czy gracz nie otrzymał bonusa
 
+        /**
+         * Checking for player-powerups collision
+         * @param rectangle player bounds
+         * @return
+         */
         public boolean powerCollision(Rectangle rectangle)
         {
             rectangle.width -= 10;
@@ -197,6 +232,7 @@ public class Map {
 
         //sprawdzamy czy gracz nie został zabity przez potworki
 
+
         public boolean playerGhostsCollision(Rectangle player, ArrayList<Ghost> ghosts)
         {
             for (Ghost ghost : ghosts) {
@@ -207,6 +243,13 @@ public class Map {
 
         }
         //sprawdzamy czy eksplozja bomby nie zabiła gracza/potworka
+
+        /**
+         * Checking if bomb explosion didn't kill player/ghost
+         * @param model player or ghost
+         * @param bomb
+         * @return
+         */
         public boolean movingModelExplosionBoundsCollision(IMovingModel model, Bomb bomb)
         {
             return Intersector.overlaps(model.getSmallBounds(),bomb.getExplosionBounds().getVerticalRectangle()) ||
@@ -215,6 +258,12 @@ public class Map {
 
         //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
 
+        /**
+         * Checking if bombs range cross each other
+         * @param b1 new bomb
+         * @param bombs bombs array
+         * @return explosion bounds
+         */
         public Bomb bombsExplosionBoundsCollision(Bomb b1, ArrayList<Bomb> bombs)
         {
             for(Bomb b2 : bombs) {
@@ -242,6 +291,9 @@ public class Map {
         }
 
 
+        /**
+         * Getting bomb explosion bounds and elements to delete
+         */
         public ExplosionBounds bombExplosionCollision(Bomb bomb) {
             Rectangle[] toDelete = new Rectangle[4];
             int bombX, bombY;

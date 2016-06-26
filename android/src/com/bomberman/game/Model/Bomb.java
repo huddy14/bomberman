@@ -8,6 +8,7 @@ import com.bomberman.game.View.ExplosionView;
 
 /**
  * Created by huddy on 6/3/16.
+ * Logic model for Bomb
  */
 public class Bomb {
     public interface BombListener {
@@ -25,7 +26,9 @@ public class Bomb {
     private ExplosionBounds explosionBounds;
     private int range = 1;
 
-
+    /**
+     * List of all states a bomb can be in
+     */
     public enum State {COUNT_DOWN, EXPLODED,EXPLOSION_FINISHED}
 
     public Bomb(Vector2 position, BombController bombController) {
@@ -39,15 +42,26 @@ public class Bomb {
 
     }
 
+    /**
+     * @param remainingSeconds seconds till explosion
+     */
     public void setRemaningSeconds(float remainingSeconds)
     {
         this.remainingSeconds=remainingSeconds;
     }
+
+    /**
+     * @return time remaining before bomb explosion
+     */
     public float getRemainingSeconds()
     {
         return this.remainingSeconds;
     }
 
+    /**
+     * Updating bomb timer, settining bomb states
+     * @param deltaTime gdx.graphics.getDeltatime()
+     */
     public void update(float deltaTime) {
         this.remainingSeconds -= deltaTime;
         if (remainingSeconds <= 0 && state == State.COUNT_DOWN) {

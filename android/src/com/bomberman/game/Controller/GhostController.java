@@ -17,6 +17,7 @@ import java.util.Random;
 
 /**
  * Created by huddy on 6/20/16.
+ * Class created to control and handle all ghost events
  */
 public class GhostController implements IController,IExplosionListener {
 
@@ -74,6 +75,11 @@ public class GhostController implements IController,IExplosionListener {
     {
         this.statsListener = statsListener;
     }
+
+    /**
+     * Updating ghost position; Drunkards movement applied
+     * @param ghost specific ghost
+     */
     public void update(Ghost ghost)
     {
         float oldX = ghost.getPosition().x, oldY = ghost.getPosition().y;

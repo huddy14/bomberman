@@ -13,6 +13,11 @@ public class BombGame extends Game {
     public SplashScreen game;
 
     //Utworzenie obiektu ekranu
+
+    /**
+     * Here we create runnable with all heavy task we want to do before starting our game
+     * The task will be runing in background while user will see the splashscreen
+     */
     @Override
     public void create() {
         ScreenManager.getInstance().initialize(this);

@@ -1,0 +1,9 @@
+com.bomberman.game
+com.bomberman.game.Audio
+com.bomberman.game.Controller
+com.bomberman.game.Interfaces
+com.bomberman.game.Model
+com.bomberman.game.Screen
+com.bomberman.game.Screen.CameraManagment
+com.bomberman.game.Screen.ScreenManagment
+com.bomberman.game.View

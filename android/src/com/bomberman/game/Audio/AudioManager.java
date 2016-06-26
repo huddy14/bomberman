@@ -10,6 +10,8 @@ import com.bomberman.game.Interfaces.ISoundEffects;
 
 /**
  * Created by huddy on 6/24/16.
+ *
+ * Singleton class created to manage sound in application
  */
 public class AudioManager implements ISoundEffects {
     //TODO: dodac komentarze gdzie trzeba; przycisk mute w main menu
@@ -24,38 +26,59 @@ public class AudioManager implements ISoundEffects {
     private float volume;
 
 
-
+    /**
+     * Returning instance of AudioManager
+     * @return
+     */
     public static AudioManager getInstance() {
         if(ourInstance==null)
             ourInstance=new AudioManager();
         return ourInstance;
     }
 
+    /**
+     * Reading saved preferance
+     */
     private AudioManager() {
         soundEnabled = BombermanPreferances.getInstance().getSound();
         setVolume();
     }
 
+    /**
+     * Sound played when player gets bonus
+     */
     @Override
     public void onBonusTake() {
         bonus.play(volume);
     }
 
+    /**
+     * Sound played when player dies
+     */
     @Override
     public void onPlayerDeath() {
         death.play(volume);
     }
 
+    /**
+     * Sound played when player wins a map
+     */
     @Override
     public void onPlayerVicotry() {
         victory.play(volume);
     }
 
+    /**
+     * Sound played when bomb explode
+     */
     @Override
     public void onBombEplosion() {
         explosion.play(volume);
     }
 
+    /**
+     * Sound playing in background
+     */
     public void playSoundtrack()
     {
         if(soundEnabled) {
@@ -64,14 +87,25 @@ public class AudioManager implements ISoundEffects {
         }
     }
 
+    /**
+     * Stopping the sound played in background
+     */
     public void stopSoundtrack() {
         soundtrack.stop();
     }
+
+    /**
+     * Chechking if sound is enabled
+     * @return
+     */
 
     public boolean isSoundEnabled() {
         return soundEnabled;
     }
 
+    /**
+     * Setting @soundEnabled variable to opposit value
+     */
     public void setSoundEnabled()
     {
         if(soundEnabled)
@@ -81,6 +115,9 @@ public class AudioManager implements ISoundEffects {
         BombermanPreferances.getInstance().setSound(soundEnabled);
     }
 
+    /**
+     * Setting the volume level of played sounds
+     */
     private void setVolume()
     {
         if(this.soundEnabled)volume = 1f;

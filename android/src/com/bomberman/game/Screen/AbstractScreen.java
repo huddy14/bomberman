@@ -10,6 +10,7 @@ import com.bomberman.game.Interfaces.IController;
 
 /**
  * Created by huddy on 6/22/16.
+ * Abstract class for all screens in the project
  */
 public abstract class AbstractScreen extends Stage implements Screen{
 
@@ -22,8 +23,14 @@ public abstract class AbstractScreen extends Stage implements Screen{
 
     }
 
+    /**
+     * Here we add all actors to our stage
+     */
     public abstract void buildStage();
 
+    /**
+     * Handling button back input
+     */
     public abstract void onBackButtonPressed();
 
 

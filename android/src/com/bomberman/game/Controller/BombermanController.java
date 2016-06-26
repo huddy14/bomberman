@@ -25,6 +25,7 @@ import com.bomberman.game.View.BombermanView;
 
 /**
  * Created by Patryk on 15.05.2016.
+ * Class created to control Bomberman aka player
  */
 public class BombermanController implements IController,IExplosionListener {
     private Bomberman player;
@@ -81,6 +82,11 @@ public class BombermanController implements IController,IExplosionListener {
         return this.playerView;
     }
 
+    /**
+     * Here we are checking if player didn't die, didn't lose, didn't win if not we are updating it's position
+     * @param x player x position
+     * @param y player y position
+     */
     public void update(float x, float y)
     {
         //Sprawdzenie czy player nie zginal
@@ -130,7 +136,9 @@ public class BombermanController implements IController,IExplosionListener {
         }
     }
 
-
+    /**
+     * Adding powerups to Bomberman instance
+     */
     private void setPowerUp()
     {
         String type = map.getPowerType();
@@ -153,6 +161,12 @@ public class BombermanController implements IController,IExplosionListener {
         statsListener.onScoreChange(20);
 
     }
+
+    /**
+     * Easing player movement since its only allowed to move in grid
+     * @param oldX player old x position
+     * @param oldY player old y position
+     */
     private void smoothPlayerMovement(float oldX, float oldY)
     {
         Rectangle rectangle = map.getRectangle();

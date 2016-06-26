@@ -16,6 +16,7 @@ import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 
 /**
  * Created by huddy on 6/22/16.
+ * Help for creating buttons and its listeners, which call different screens
  */
 public class UIFactory {
 
