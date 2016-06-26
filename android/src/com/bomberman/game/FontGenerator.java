@@ -33,11 +33,11 @@ public class FontGenerator {
     public void generateFonts()
     {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 60;
+        parameter.size = Gdx.graphics.getHeight()/8;
         highScoreBig = generatorScore.generateFont(parameter);
-        parameter.size = 40;
+        parameter.size = Gdx.graphics.getHeight()/10;
         highScoreSmall = generatorScore.generateFont(parameter);
-        parameter.size = 20;
+        parameter.size = Gdx.graphics.getHeight()/25;
         statistics = generatorStats.generateFont(parameter);
     }
 

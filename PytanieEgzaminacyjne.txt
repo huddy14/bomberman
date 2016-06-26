@@ -1,0 +1,20 @@
+Zadania:
+
+I. Zmiana konfiguracji
+
+1. Podmiana postaci bombermana
+2. Zmienienie prędkości animacji gracz, potworka
+3. Podmiana muzyki
+
+II. Zmiana zachowania gracza
+
+1. Gracz biegnie szybciej
+2. Gracz ma więcej bomb
+3. Gracz nie ginie gdy wybuchnie bomba w jego zasięgu
+
+
+III. Zadania implementacyjne
+
+1. Zamiana sterowania, Klikając w prawo idzie w lewo, w góre idzie w dół i na odwrót
+2. Potworki poruszają się bezkolizyjnie
+3. Odtwarzanie audio z ustaloną głośnością
