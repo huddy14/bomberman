@@ -84,21 +84,28 @@ public class BombermanController implements IController,IExplosionListener {
     public void update(float x, float y)
     {
         //Sprawdzenie czy player nie zginal
+
         if(player.getStatus().equals(IMovingModel.Status.DEAD)) {
             player.deleteLife();
             statsListener.onLifeCountChange(player.getLifes());
             AudioManager.getInstance().onPlayerDeath();
+
             //jelis zginal ale mial jeszcze kilka zyc to ressetujemy jego pozycje i zmieniamy status
+
             if (player.getLifes() > 0) {
                 player.setX(Constants.TILE_SIZE);
                 player.setY(Constants.TILE_SIZE * (HEIGHT - 2));
                 player.setStatus(IMovingModel.Status.MOVE);
             } else {
+
                 //w przeciwnym wypadku gra jest przegrana
+
                 onGameStatusChangeListener.onGameStatusChange(IGameStatus.GameStatus.LOSE);
             }
         }
+
         //jesli gracz zyje wykonujemy update jego pozycji z uwzglednieniem kolizji
+
         else
         {
             float oldX = player.getPosition().x;
@@ -203,7 +210,9 @@ public class BombermanController implements IController,IExplosionListener {
     @Override
     public void onExplosion(Bomb bomb) {
         AudioManager.getInstance().onBombEplosion();
+
         //sprawdzenie czy wybuch bomby nie zabil gracza
+
         if(collisionDetector.movingModelExplosionBoundsCollision(player,bomb))
             player.setStatus(IMovingModel.Status.DEAD);
 

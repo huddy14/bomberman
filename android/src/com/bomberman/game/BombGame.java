@@ -16,28 +16,18 @@ public class BombGame extends Game {
     @Override
     public void create() {
         ScreenManager.getInstance().initialize(this);
-        ScreenManager.getInstance().showScreen(ScreenEnum.SPLASH);
+        //tworzymy zadanie, które będzie wykonywane w tle podczas wyświetlania splash screena
+        Runnable backgroundWork = new Runnable() {
+            @Override
+            public void run() {
+                FontGenerator.getInstance().generateFonts();
+            }
+        };
+        ScreenManager.getInstance().showScreen(ScreenEnum.SPLASH,backgroundWork);
     }
 
     @Override
     public void resize(int width, int height) {
 
     }
-/*
-    @Override
-    public void render() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
-    }
-    */
 }

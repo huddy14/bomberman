@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bomberman.game.Audio.AudioManager;
 import com.bomberman.game.BombermanPreferances;
 import com.bomberman.game.AssetsPaths;
+import com.bomberman.game.FontGenerator;
 import com.bomberman.game.Interfaces.IGameStatus;
 import com.bomberman.game.Interfaces.IStatsChangeListener;
 import com.bomberman.game.Model.*;
@@ -190,8 +191,7 @@ public class GameScreen extends AbstractScreen implements Screen, IGameStatus {
             table.top();
             table.left();
             table.setFillParent(true);
-            BitmapFont font = new BitmapFont();
-            font.getData().setScale(1.5f);
+            BitmapFont font = FontGenerator.getInstance().getStatisticsFont();
             Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
             _levelLabel = new Label(LEVEL, labelStyle);
             _bombLabel = new Label(BOMBS, labelStyle);

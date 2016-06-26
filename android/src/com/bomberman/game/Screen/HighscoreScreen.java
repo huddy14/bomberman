@@ -6,12 +6,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.bomberman.game.AssetsPaths;
 import com.bomberman.game.BombermanPreferances;
+import com.bomberman.game.FontGenerator;
 import com.bomberman.game.Screen.ScreenManagment.ScreenEnum;
 import com.bomberman.game.Screen.ScreenManagment.ScreenManager;
 
@@ -35,8 +36,12 @@ public class HighscoreScreen extends AbstractScreen {
         table.left();
         table.setFillParent(true);
         BitmapFont font = new BitmapFont();
-        font.getData().setScale(5f);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
+//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.size = 60;
+       BitmapFont font2 = FontGenerator.getInstance().getHighscoreBigFont();
+//        parameter.size = 40;
+        BitmapFont font3 = FontGenerator.getInstance().getHighscoreSmallFont();
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font3, Color.WHITE);
 
         BombermanPreferances bp = BombermanPreferances.getInstance();
         for(int i = 0; i < 3 ; i++)
@@ -48,7 +53,9 @@ public class HighscoreScreen extends AbstractScreen {
         im.setFillParent(false);
         addActor(im);
         table.row();
-        table.add(new Label("HIGHEST SCORES ",labelStyle));
+        table.add(new Label("HIGHEST SCORES ",new Label.LabelStyle(font2,Color.BLUE)));
+        table.row();
+        table.add(new Label("",new Label.LabelStyle(font2,Color.BLUE)));
         table.row();
         table.add(labels[0]).expandX();
         table.row();
@@ -61,7 +68,7 @@ public class HighscoreScreen extends AbstractScreen {
 
     @Override
     public void onBackButtonPressed() {
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK) ) {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK) || Gdx.input.isTouched() ) {
             ScreenManager.getInstance().showScreen(ScreenEnum.MAIN_MENU);
         }
     }

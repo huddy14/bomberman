@@ -32,7 +32,7 @@ public enum ScreenEnum {
 
     SPLASH {
         public AbstractScreen getScreen(Object... params){
-            return new SplashScreen();
+            return new SplashScreen((Runnable)params[0]);
         }
     },
 

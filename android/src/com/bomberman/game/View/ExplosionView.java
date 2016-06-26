@@ -10,10 +10,9 @@ import com.bomberman.game.Constants;
 /**
  * Created by huddy on 6/4/16.
  */
+//klasa przygotowuje i rysuje eksplozję
 public class ExplosionView extends SpriteBatch {
     private Animation animation;
-    private float elapsedTime = 0;
-    private final static float drawingTime = 1f;
     float x,y;
 
     public ExplosionView()

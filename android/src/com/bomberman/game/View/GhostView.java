@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * Created by huddy on 6/20/16.
  */
+//Klasa przygotowuje i rysuje animacje potworków
 public class GhostView extends SpriteBatch {
     private Map<Ghost.Direction,Animation> animations=new HashMap<>();
 

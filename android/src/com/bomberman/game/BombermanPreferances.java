@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class BombermanPreferances {
 
+    //Klasa do zapisywania oraz wczytywania statystyk, ustawien gracza z lokalnego pliku preferances
     private static BombermanPreferances ourInstance;
     private static Preferences prefs;
 

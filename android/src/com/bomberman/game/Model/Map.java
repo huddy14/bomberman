@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -23,38 +22,45 @@ import java.util.HashMap;
  */
 public class Map {
     private TiledMap map;
+
     private ArrayList<Rectangle> solidElements = new ArrayList<>();
     private ArrayList<Rectangle> explodableElements = new ArrayList<>();
     private ArrayList<Rectangle> collisionElements = new ArrayList<>();
     private ArrayList<Rectangle> powerupElements = new ArrayList<>();
+
     private java.util.Map<Rectangle, String> pE;
+
     private CollisionDetector collisionDetector= new CollisionDetector();
-    private java.util.Map<Pair<Integer,Integer>,Rectangle> _CollisionElements = new HashMap<>();
     private Rectangle portal = new Rectangle();
     private int idCol, idPow;
 
     final int MAP_WIDTH;
     final int MAP_HEIGHT;
 
-    private TiledMapTileLayer layer;
+    private TiledMapTileLayer explodingLayer;
     private TiledMapTileLayer powerLayer;
 
 
     public Map(TiledMap map) {
         this.map = map;
+
+        //pobieramy właściwości mapy
+
         MAP_WIDTH = map.getProperties().get("width", Integer.class);
         MAP_HEIGHT = map.getProperties().get("height", Integer.class);
+
+        //wypelnienie tablic kolizji
+
         this.solidElements = getElements(map, AssetsPaths.SOLID_OBJECT);
         this.explodableElements = getElements(map, AssetsPaths.EXPLODING_OBJECT);
         this.powerupElements = getElements(map, AssetsPaths.POWER_OBJECT);
         this.pE = getPowerProp(map, AssetsPaths.POWER_OBJECT);
         this.portal = getElements(map, AssetsPaths.PORTAL_OBJECT).get(0);
+
         collisionElements.addAll(explodableElements);
         collisionElements.addAll(solidElements);
-        //getCollisionElements(AssetsPaths.EXPLODING_OBJECT);
-        getCollisionElements(AssetsPaths.SOLID_OBJECT, AssetsPaths.EXPLODING_OBJECT);
 
-        this.layer = (TiledMapTileLayer)map.getLayers().get(AssetsPaths.EXPLODING_LAYER);//tile layer explodin
+        this.explodingLayer = (TiledMapTileLayer)map.getLayers().get(AssetsPaths.EXPLODING_LAYER);
         this.powerLayer = (TiledMapTileLayer)map.getLayers().get(AssetsPaths.POWER_LAYER);
 
     }
@@ -111,29 +117,12 @@ public class Map {
         return this.MAP_HEIGHT;
     }
 
-    public void getCollisionElements(String layer_name, String layer_name1)
-    {
-        MapObjects mapObjects = map.getLayers().get(layer_name).getObjects();
-        for(int i=0 ; i < mapObjects.getCount(); i++)
-        {
-            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-            Rectangle rect = obj.getRectangle();
-            _CollisionElements.put(new Pair<>((int)rect.getX()/ Constants.TILE_SIZE,(int)rect.getY()/ Constants.TILE_SIZE),rect);
-        }
-        mapObjects =  map.getLayers().get(layer_name1).getObjects();
-        for(int i=0 ; i < mapObjects.getCount(); i++)
-        {
-            RectangleMapObject obj = (RectangleMapObject)mapObjects.get(i);
-            Rectangle rect = obj.getRectangle();
-            _CollisionElements.put(new Pair<>((int)rect.getX()/ Constants.TILE_SIZE,(int)rect.getY()/ Constants.TILE_SIZE),rect);
-        }
-
-    }
-
-    public CollisionDetector getCollisionDetector()
+        public CollisionDetector getCollisionDetector()
     {
         return this.collisionDetector;
     }
+
+    //usuwanie elementów mapy graficzne oraz z tablicy obiektów kolizji
 
     public void deleteTiles(ExplosionBounds eb)
     {
@@ -150,10 +139,12 @@ public class Map {
         Log.w("collision:",""+collisionElements.size()+" Explodable elements: "+explodableElements.size());
     }
 
+    //usuwamy graficznie wybrany element mapy
+
     private void setTileToNull(int x, int y)
     {
-        if(layer.getCell(x,y)!=null)
-            layer.getCell(x,y).setTile(null);
+        if(explodingLayer.getCell(x,y)!=null)
+            explodingLayer.getCell(x,y).setTile(null);
     }
 
 
@@ -174,15 +165,8 @@ public class Map {
                 }
             return false;
         }
-        public boolean terrainCollision(Circle circle)
-        {
-            for (int i = 0; i < collisionElements.size(); i++)
-                if (Intersector.overlaps(circle,collisionElements.get(i))) {
-                    idCol = i;
-                    return true;
-                }
-            return false;
-        }
+
+        //sprawdzamy czy gracz nie wszedł w portal
 
         public boolean portalCollison(Rectangle rectangle)
         {
@@ -194,6 +178,8 @@ public class Map {
                 return true;
             return false;
         }
+
+        //sprawdzamy czy gracz nie otrzymał bonusa
 
         public boolean powerCollision(Rectangle rectangle)
         {
@@ -209,6 +195,8 @@ public class Map {
             return false;
         }
 
+        //sprawdzamy czy gracz nie został zabity przez potworki
+
         public boolean playerGhostsCollision(Rectangle player, ArrayList<Ghost> ghosts)
         {
             for (Ghost ghost : ghosts) {
@@ -218,7 +206,7 @@ public class Map {
             return false;
 
         }
-
+        //sprawdzamy czy eksplozja bomby nie zabiła gracza/potworka
         public boolean movingModelExplosionBoundsCollision(IMovingModel model, Bomb bomb)
         {
             return Intersector.overlaps(model.getSmallBounds(),bomb.getExplosionBounds().getVerticalRectangle()) ||
@@ -226,7 +214,6 @@ public class Map {
         }
 
         //sprawdzenie czy bomby nie są tak położone, że wzajemnie się detonują
-        //TODO: bobmy wybuchaja razem nawet jesli pomiedzy jest explodable object
 
         public Bomb bombsExplosionBoundsCollision(Bomb b1, ArrayList<Bomb> bombs)
         {
@@ -235,6 +222,7 @@ public class Map {
                 ExplosionBounds e2 = b2.getExplosionBounds();
 
                 //sprawdzamy czy promien razenia jednej bomby nachodzi na promien razenia reszty
+
                 if (Intersector.overlaps(e1.getHorizontalRectangle(), e2.getHorizontalRectangle())) {
 
                     if ((e1.getY() % 2 != 0 && e2.getY()%2 != 0) && Math.abs(e1.getX() - e2.getX())<=b1.getRange() && Math.min(e1.getXmax(),e2.getXmax())!=Math.max(e1.getXmin(),e2.getXmin())) {
@@ -253,25 +241,29 @@ public class Map {
             return b1;
         }
 
-        //TODO: sprobowac prosciej zapisac, zrobic testy
 
         public ExplosionBounds bombExplosionCollision(Bomb bomb) {
             Rectangle[] toDelete = new Rectangle[4];
             int bombX, bombY;
 
             //pobieramy wsporzedne bomby sprawdzamy czy element kolidujacy nie znajduje sie na przekatnej
+
             bombX = calculateTileCord(bomb.getX());
             bombY = calculateTileCord(bomb.getY());
+
             //inicjujemy największe i najmniejsze wartosci wsporzednych dla eksplozji
-            //zaincjowane w taki sposob aby najmniejsza wartosc byla mniejsza od najmniejszej mozliwej na planszy, analogicznie max
+                        //zaincjowane w taki sposob aby najmniejsza wartosc byla mniejsza od najmniejszej mozliwej na planszy, analogicznie max
+
             int xmin = bombX - bomb.getRange(),xmax = bombX + bomb.getRange() ,ymin = bombY - bomb.getRange() ,ymax = bombY + bomb.getRange();
-            //int xmin = -1,xmax = 20 ,ymin = -1 ,ymax = 20;
+
             //sprawdzamy czy zasieg bomby koliduje z obiektami ktore wybuchają
+
             for (int i = 0; i < explodableElements.size(); i++) {
                 if (Intersector.overlaps(bomb.getBounds(), explodableElements.get(i))) {
 
 
                     //graficzne usuwanie elementu
+
                     int x = calculateTileCord(explodableElements.get(i).x);
                     int y = calculateTileCord(explodableElements.get(i).y);
 

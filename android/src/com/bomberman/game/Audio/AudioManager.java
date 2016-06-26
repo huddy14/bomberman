@@ -10,6 +10,7 @@ import com.bomberman.game.Interfaces.ISoundEffects;
  * Created by huddy on 6/24/16.
  */
 public class AudioManager implements ISoundEffects {
+    //TODO: dodac komentarze gdzie trzeba; przycisk mute w main menu
     private static AudioManager ourInstance;
 
     private final Sound bonus = Gdx.audio.newSound(Gdx.files.internal(AssetsPaths.AUDIO_BONUS));

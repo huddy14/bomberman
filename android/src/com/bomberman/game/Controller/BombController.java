@@ -54,6 +54,7 @@ public class BombController implements IController, Bomb.BombListener
     public void addBomb()
     {
         //dodajac bombe od razu sprawdzamy jakie stale elementy wybuchną
+
         bombs.add(collisionDetector.bombsExplosionBoundsCollision(new Bomb(new Vector2(player.getPosition().x,player.getPosition().y),this),bombs));
         Log.w("ilosc itemow :","" + bombs.size());
     }
@@ -64,7 +65,6 @@ public class BombController implements IController, Bomb.BombListener
     }
 
 
-    //zmienic na prajwat i rysuje wszystkie bomby
     public void drawBomb(Bomb bomb,OrthographicCamera camera)
     {
         //bomb.update(Gdx.graphics.getDeltaTime());
@@ -131,9 +131,13 @@ public class BombController implements IController, Bomb.BombListener
 
     @Override
     public void onBombExploded(Bomb bomb) {
+
         //usuwamy z mapy elementy ktore wybuchly
+
         map.deleteTiles(bomb.getExplosionBounds());
+
         //powiadamiamy obiekty nasłuchujące, że bomby eksplodowała
+
         for(IExplosionListener listener : onExplosionListeners)
             listener.onExplosion(bomb);
 

@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * Created by huddy on 6/1/16.
  */
+//Klasa ktora przygotowuje i rysuje animacje gracza
 public class BombermanView extends SpriteBatch {
     private Map<Bomberman.Direction,Animation>animations=new HashMap<>();
 

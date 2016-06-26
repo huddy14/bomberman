@@ -10,6 +10,7 @@ import com.bomberman.game.AssetsPaths;
 /**
  * Created by huddy on 6/3/16.
  */
+//klasa przygotowuje i rysuje animacje bomby
 public class BombView extends SpriteBatch {
 
     private Animation animation;
@@ -21,7 +22,6 @@ public class BombView extends SpriteBatch {
     }
 
 
-    //rysowanie bomby przez okreslony czas
     public void drawBomb(Vector2 position)
     {
         this.begin();
