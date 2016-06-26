@@ -83,23 +83,6 @@ project(":ios") {
     }
 }
 
-project(":html") {
-    apply plugin: "gwt"
-    apply plugin: "war"
-
-
-    dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-        compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.3:sources"
-        compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.3:sources"
-        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.3:sources"
-
-    }
-}
-
 project(":core") {
     apply plugin: "java"
 
