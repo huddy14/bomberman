@@ -33,8 +33,8 @@ public class TouchpadView extends Touchpad
         style.knob = touchKnob;
         //Create new TouchPad with the created style
         this.setBounds(touchBackground.getRightWidth()/2 + Constants.TILE_SIZE / 4,touchBackground.getRightWidth()/2 + Constants.TILE_SIZE/4,
-                Gdx.graphics.getWidth()/6.5f,
-                Gdx.graphics.getWidth()/6.5f);
+                Gdx.graphics.getWidth()/5f,
+                Gdx.graphics.getWidth()/5f);
     }
 
 
